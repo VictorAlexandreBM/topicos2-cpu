@@ -1,0 +1,79 @@
+@startuml
+class Usuario {
+    - email: String
+    - senhaHash: String
+    - RefreshTokenExp: LocalDate
+    - tipo: TipoUsuario
+}
+
+enum TipoUsuario {
+    CLIENTE
+    ADMIN
+}
+class Marca {
+    - nome: String
+}
+
+class Socket {
+    - tipo: String
+}
+
+class Tecnologia {
+    - nome: String
+    - descricao: String
+}
+
+class Chipset {
+    - tipo: String
+}
+
+class ModeloCpu {
+    - nome: String
+}
+
+abstract class Cpu {
+    - sku: String
+    - preco: BigDecimal
+    - estoque: Integer
+    - dataInclusao: LocalDate
+    - emVenda: boolean
+}
+
+class CpuTray {
+    - loteFabricacao: String
+}
+
+class CpuBox {
+    - incluiCooler: boolean
+    - pesoEmbalagemGramas: Integer
+}
+
+class ClusterNucleo {
+    - frequenciaBase: Double
+    - frequenciaTurbo: Double
+    - quantidade: Integer
+    - tipo: TipoNucleo
+}
+
+enum TipoNucleo {
+    PERFORMANCE
+    EFICIENCIA
+}
+
+class FichaTecnica {
+    - descricaoComercial: String
+    - cacheTotalMB: Double
+    - tdpBaseW: Integer
+}
+
+Cpu "*" --> "1" ModeloCpu
+Cpu <|-- CpuBox
+Cpu <|-- CpuTray
+ModeloCpu "1" *--> "1" FichaTecnica
+ModeloCpu "*" o--> "*" Chipset
+ModeloCpu "*" o--> "*" Tecnologia
+ModeloCpu "*" o--> "1" Socket
+ModeloCpu "*" --> "1" Marca
+ModeloCpu "1" *--> "*" ClusterNucleo
+
+@enduml
