@@ -1,4 +1,9 @@
 # Documento de Escopo e Visão
+
+| Versão | Data       | Autor                        |
+|--------|------------|------------------------------|
+| 1.0.0  | 21/03/2026 | Victor Alexandre B. Milhomem |
+
 | Versão | Data | Autor |
 | 1.0.0 | 21/03/2026 | Victor Alexandre B. Milhomem |
 
