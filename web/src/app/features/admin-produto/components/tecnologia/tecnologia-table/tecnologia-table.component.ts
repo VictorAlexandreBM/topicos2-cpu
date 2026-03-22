@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {Tecnologia} from '../../models/tecnologia.model';
+import {Tecnologia} from '../../../models/tecnologia.model';
 import {
   MatCell,
   MatCellDef,
