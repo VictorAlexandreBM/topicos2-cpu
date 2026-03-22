@@ -1,7 +1,5 @@
-
-<app-tecnologia-form />
+<app-tecnologia-form (tecnologiaCadastrada)="refreshTecnologias()"/>
 @if (tecnologiasResponse(); as tecnologias) {
-
   <app-tecnologia-table [tecnologias]="tecnologias" />
 
 }
