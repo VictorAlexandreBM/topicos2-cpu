@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Tecnologia} from '../models/tecnologia.model';
+import {Tecnologia, TecnologiaFormRequest} from '../models/tecnologia.model';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -12,5 +12,9 @@ export default class TecnologiaService {
 
   listar(): Observable<Tecnologia[]> {
     return this.http.get<Tecnologia[]>('tecnologias');
+  }
+
+  cadastrar(dados: TecnologiaFormRequest): Observable<Tecnologia> {
+    return this.http.post<Tecnologia>('tecnologias', dados);
   }
 }
