@@ -1,0 +1,25 @@
+<form (ngSubmit)="cadastrar()" [formGroup]="tecnologiaForm">
+    <div class="grid grid-cols-3 gap-4">
+      <div class="">
+        <mat-form-field>
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-span-2">
+        <mat-form-field >
+          <mat-label>Descrição</mat-label>
+          <input matInput formControlName="descricao" />
+        </mat-form-field>
+      </div>
+
+
+      <div class="acoes-formulario col-start-2 flex justify-end">
+        <button matButton="elevated">Cancelar</button>
+        <button matButton="filled">Adicionar</button>
+      </div>
+
+      </div>
+
+</form>
