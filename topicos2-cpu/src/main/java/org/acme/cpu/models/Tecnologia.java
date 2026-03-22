@@ -10,11 +10,9 @@ public class Tecnologia extends BaseEntity {
 
     @Column(unique = true, nullable = false, length = 100)
     @NotBlank
-    @Size(max = 100)
     private String nome;
 
     @Column(nullable = true)
-    @Size(max = 255)
     private String descricao;
 
     public String getDescricao() {
@@ -31,5 +29,19 @@ public class Tecnologia extends BaseEntity {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof Tecnologia other)) return false;
+
+        return nome != null && nome.equals(other.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.hashCode();
     }
 }
