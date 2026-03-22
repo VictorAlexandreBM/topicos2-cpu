@@ -1,7 +1,10 @@
 package org.acme.cpu.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TipoNucleo {
     PERFORMANCE("Performance", 'P'),
     EFICIENCIA("Eficiência", 'E');
@@ -24,6 +27,7 @@ public enum TipoNucleo {
         return tipo;
     }
 
+    @JsonCreator
     public static TipoNucleo fromTipo(String tipo) {
         for (TipoNucleo n : TipoNucleo.values()) {
             if (n.getNome().equalsIgnoreCase(tipo)) {
