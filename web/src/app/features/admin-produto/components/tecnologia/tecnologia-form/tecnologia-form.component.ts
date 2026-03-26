@@ -16,7 +16,6 @@ import {FieldErrorPipe} from '../../../../../core/pipes/field-error.pipe';
     MatInput,
     MatLabel,
     MatButton,
-    ErrorMessageComponent,
     MatError,
     FieldErrorPipe,
   ]
@@ -28,7 +27,7 @@ export class TecnologiaFormComponent {
   readonly tecnologiaCadastrada = output<Tecnologia>();
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(100)]);
-  protected readonly descricaoCtrl = this.fb.control('', [Validators.required, Validators.maxLength(255)]);
+  protected readonly descricaoCtrl = this.fb.control('', [Validators.maxLength(255)]);
 
   protected readonly tecnologiaForm = this.fb.group({
     nome: this.nomeCtrl,
@@ -38,8 +37,14 @@ export class TecnologiaFormComponent {
   cadastrar() {
     const dadosTratados = this.tratarDados(this.tecnologiaForm.value);
 
-    this.service.cadastrar(dadosTratados).subscribe((t) => {
-      this.tecnologiaCadastrada.emit(t);
+    this.service.cadastrar(dadosTratados).subscribe({
+      next: (t) => {
+        this.tecnologiaCadastrada.emit(t);
+        this.tecnologiaForm.reset();
+      },
+      error: err => {
+        console.error(err);
+      }
     })
   }
 

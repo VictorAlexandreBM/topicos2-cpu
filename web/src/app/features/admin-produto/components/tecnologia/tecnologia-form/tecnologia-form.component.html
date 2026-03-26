@@ -5,7 +5,7 @@
           <mat-label>Nome</mat-label>
           <input matInput formControlName="nome" />
         </mat-form-field>
-        <mat-error>{{ nomeCtrl |  fieldError }}</mat-error>
+        <mat-error>{{ nomeCtrl.errors |  fieldError:nomeCtrl.touched }}</mat-error>
       </div>
 
       <div class="col-span-2">
@@ -13,13 +13,13 @@
           <mat-label>Descrição</mat-label>
           <input matInput formControlName="descricao" />
         </mat-form-field>
-        <mat-error>{{ descricaoCtrl |  fieldError }}</mat-error>
+        <mat-error>{{ descricaoCtrl.errors |  fieldError:descricaoCtrl.touched }}</mat-error>
       </div>
 
 
       <div class="acoes-formulario col-start-2 flex justify-end">
-        <button matButton="elevated">Cancelar</button>
-        <button matButton="filled">Adicionar</button>
+        <button type="reset" matButton="elevated">Cancelar</button>
+        <button type="submit" matButton="filled" [disabled]="tecnologiaForm.invalid">Adicionar</button>
       </div>
 
 
