@@ -1,10 +1,11 @@
 import {Component, inject, output} from '@angular/core';
 import {FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import TecnologiaService from '../../../services/tecnologia.service';
 import {Tecnologia, TecnologiaFormRequest} from '../../../models/tecnologia.model';
+import {FieldErrorPipe} from '../../../../../core/pipes/field-error.pipe';
 
 @Component({
   selector: 'app-tecnologia-form',
@@ -15,6 +16,9 @@ import {Tecnologia, TecnologiaFormRequest} from '../../../models/tecnologia.mode
     MatInput,
     MatLabel,
     MatButton,
+    ErrorMessageComponent,
+    MatError,
+    FieldErrorPipe,
   ]
 })
 export class TecnologiaFormComponent {
