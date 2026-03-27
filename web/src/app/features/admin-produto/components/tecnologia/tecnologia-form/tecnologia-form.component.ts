@@ -7,6 +7,7 @@ import TecnologiaService from '../../../services/tecnologia.service';
 import {Tecnologia, TecnologiaFormRequest} from '../../../models/tecnologia.model';
 import {FieldErrorPipe} from '../../../../../core/pipes/field-error.pipe';
 import {MatIcon} from '@angular/material/icon';
+import {SnackbarService} from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-tecnologia-form',
@@ -26,6 +27,7 @@ import {MatIcon} from '@angular/material/icon';
 export class TecnologiaFormComponent {
   private readonly fb =   inject(NonNullableFormBuilder);
   private readonly service = inject(TecnologiaService);
+  private readonly snackbarService = inject(SnackbarService);
 
   public readonly inDrawer = input<boolean>(false);
 
@@ -48,6 +50,7 @@ export class TecnologiaFormComponent {
       next: (t) => {
         this.tecnologiaCadastrada.emit(t);
         this.tecnologiaForm.reset();
+        this.snackbarService.alertar('Tecnologia cadastrada com sucesso!')
       },
       error: err => {
         console.error(err);

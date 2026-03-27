@@ -25,7 +25,6 @@ import {MatIcon} from '@angular/material/icon';
 })
 export default class TecnologiaPage {
   private readonly service = inject(TecnologiaService)
-
   private refreshTrigger = signal<number>(0);
 
   protected readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
