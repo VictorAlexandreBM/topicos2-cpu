@@ -5,14 +5,22 @@ import TecnologiaTableComponent from '../../components/tecnologia/tecnologia-tab
 import {TecnologiaFormComponent} from '../../components/tecnologia/tecnologia-form/tecnologia-form.component';
 import {TecnologiaCrudComponent} from '../../components/tecnologia/tecnologia-crud.component';
 import {switchMap} from 'rxjs';
+import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
+import {MatButton, MatFabButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-tecnologia-page',
   templateUrl: './tecnologia.page.html',
+  styleUrl: 'tecnologia.page.css',
   imports: [
     TecnologiaTableComponent,
     TecnologiaFormComponent,
-    TecnologiaCrudComponent
+    MatDrawerContainer,
+    MatDrawer,
+    MatDrawerContent,
+    MatIcon,
+    MatFabButton
   ]
 })
 export default class TecnologiaPage {
