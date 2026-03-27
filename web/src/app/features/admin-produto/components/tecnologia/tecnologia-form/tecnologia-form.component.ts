@@ -32,7 +32,6 @@ export class TecnologiaFormComponent {
   public readonly inDrawer = input<boolean>(false);
 
   readonly tecnologiaCadastrada = output<Tecnologia>();
-  readonly fechar = output<boolean>();
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(100)]);
   protected readonly descricaoCtrl = this.fb.control('', [Validators.maxLength(255)]);

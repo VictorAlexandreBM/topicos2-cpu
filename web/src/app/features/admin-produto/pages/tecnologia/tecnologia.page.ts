@@ -3,10 +3,9 @@ import {Component, inject, signal} from '@angular/core';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import TecnologiaTableComponent from '../../components/tecnologia/tecnologia-table/tecnologia-table.component';
 import {TecnologiaFormComponent} from '../../components/tecnologia/tecnologia-form/tecnologia-form.component';
-import {TecnologiaCrudComponent} from '../../components/tecnologia/tecnologia-crud.component';
 import {switchMap} from 'rxjs';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
-import {MatButton, MatFabButton} from '@angular/material/button';
+import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -20,7 +19,8 @@ import {MatIcon} from '@angular/material/icon';
     MatDrawer,
     MatDrawerContent,
     MatIcon,
-    MatFabButton
+    MatFabButton,
+    MatIconButton
   ]
 })
 export default class TecnologiaPage {

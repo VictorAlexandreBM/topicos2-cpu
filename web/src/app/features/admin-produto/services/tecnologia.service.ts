@@ -17,4 +17,8 @@ export default class TecnologiaService {
   cadastrar(dados: TecnologiaFormRequest): Observable<Tecnologia> {
     return this.http.post<Tecnologia>('tecnologias', dados);
   }
+
+  deletar(id: number) {
+    return this.http.delete(`tecnologias/${id}`);
+  }
 }

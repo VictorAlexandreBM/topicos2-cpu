@@ -1,5 +1,11 @@
 <mat-drawer-container class="example-container relative" [hasBackdrop]="false">
   <mat-drawer #drawer mode="over" position="end" [disableClose]="true">
+    <div class="px-6 py-4 border-b flex justify-between items-center bg-white sticky top-0 z-20">
+      <h2 class="text-xl font-semibold text-gray-800">Cadastrar Tecnologia</h2>
+      <button mat-icon-button (click)="drawer.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <app-tecnologia-form [inDrawer]="true" (fechar)="drawer.close()" />
   </mat-drawer>
   <mat-drawer-content>
@@ -14,8 +20,7 @@
       </button>
     </div>
     @if (tecnologiasResponse(); as tecnologias) {
-      <app-tecnologia-table [tecnologias]="tecnologias" />
-
+      <app-tecnologia-table [tecnologias]="tecnologias" (tecnologiaDeletada)="refreshTecnologias()"/>
     }
 
   </mat-drawer-content>

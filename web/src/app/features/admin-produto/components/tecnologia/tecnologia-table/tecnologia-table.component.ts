@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input, output} from '@angular/core';
 import {Tecnologia} from '../../../models/tecnologia.model';
 import {
   MatCell,
@@ -9,6 +9,10 @@ import {
   MatRowDef,
   MatTable
 } from '@angular/material/table';
+import {MatIcon} from '@angular/material/icon';
+import {MatFabButton} from '@angular/material/button';
+import TecnologiaService from '../../../services/tecnologia.service';
+import {SnackbarService} from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -23,12 +27,27 @@ import {
     MatRowDef,
     MatHeaderRowDef,
     MatHeaderRow,
-    MatRow
+    MatRow,
+    MatIcon,
+    MatFabButton
   ]
 })
 export default class TecnologiaTableComponent {
   public tecnologias = input.required<Tecnologia[]>();
 
-  protected readonly colunas = ['nome', 'descricao'];
+  public tecnologiaDeletada = output<Tecnologia>();
 
+  private service = inject(TecnologiaService);
+  private snackbarService = inject(SnackbarService);
+
+  protected readonly colunas = ['acao', 'nome', 'descricao'];
+
+  protected deletar(t: Tecnologia){
+    this.service.deletar(t.id).subscribe({
+      next: _ => {
+        this.tecnologiaDeletada.emit(t);
+        this.snackbarService.alertar('Tecnologia deletada com sucesso!')
+      }
+    })
+  }
 }
