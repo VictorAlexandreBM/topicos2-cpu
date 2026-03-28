@@ -37,6 +37,7 @@ export default class TecnologiaTableComponent {
 
   public tecnologiaDeletada = output<Tecnologia>();
   public tecnologiaEditada = output<Tecnologia>();
+  public tecnologiaEmEdicao = input<Tecnologia | null>(null);
 
   private service = inject(TecnologiaService);
   private snackbarService = inject(SnackbarService);
@@ -53,6 +54,10 @@ export default class TecnologiaTableComponent {
   }
 
   protected emitirEdicao(t: Tecnologia){
-    this.tecnologiaEditada.emit(t);
+    if (this.tecnologiaEmEdicao()?.id === t.id) {
+      this.tecnologiaEditada.emit(null as any);
+    } else {
+      this.tecnologiaEditada.emit(t);
+    }
   }
 }

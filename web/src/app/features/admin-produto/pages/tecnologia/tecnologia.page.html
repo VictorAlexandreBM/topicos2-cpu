@@ -6,7 +6,7 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <app-tecnologia-form [inDrawer]="true" [(tecnologiaEmEdicao)]="tecnologiaEmEdicao" (tecnologiaCadastrada)="refreshTecnologias()"/>
+    <app-tecnologia-form [inDrawer]="true" [(tecnologiaEmEdicao)]="tecnologiaEmEdicao" (tecnologiaCadastrada)="refreshTecnologias()" (tecnologiaAtualizada)="handleAtualizacao()"/>
   </mat-drawer>
   <mat-drawer-content>
 
@@ -20,7 +20,11 @@
       </button>
     </div>
     @if (tecnologiasResponse(); as tecnologias) {
-      <app-tecnologia-table [tecnologias]="tecnologias" (tecnologiaDeletada)="refreshTecnologias()" (tecnologiaEditada)="handleEdicao($event, drawer)"/>
+      <app-tecnologia-table
+        [tecnologias]="tecnologias"
+        (tecnologiaDeletada)="handleDelecao()"
+        (tecnologiaEditada)="handleEdicao($event, drawer)"
+        [tecnologiaEmEdicao]="tecnologiaEmEdicao()"/>
     }
 
   </mat-drawer-content>

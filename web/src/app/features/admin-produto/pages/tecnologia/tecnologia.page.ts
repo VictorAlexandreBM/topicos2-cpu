@@ -28,7 +28,7 @@ export default class TecnologiaPage {
   private readonly service = inject(TecnologiaService)
   private refreshTrigger = signal<number>(0);
 
-  protected readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
+  private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
     switchMap(() => this.service.listar())
   )
 
@@ -43,6 +43,16 @@ export default class TecnologiaPage {
   handleEdicao(t: Tecnologia, drawer: MatDrawer) {
     this.tecnologiaEmEdicao.set(t);
     void drawer.open();
+  }
+
+  handleAtualizacao() {
+    this.refreshTecnologias();
+    this.tecnologiaEmEdicao.set(null);
+  }
+
+  handleDelecao() {
+    this.refreshTecnologias();
+    this.tecnologiaEmEdicao.set(null);
   }
 
 }
