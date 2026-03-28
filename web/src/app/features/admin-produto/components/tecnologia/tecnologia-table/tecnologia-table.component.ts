@@ -36,6 +36,7 @@ export default class TecnologiaTableComponent {
   public tecnologias = input.required<Tecnologia[]>();
 
   public tecnologiaDeletada = output<Tecnologia>();
+  public tecnologiaEditada = output<Tecnologia>();
 
   private service = inject(TecnologiaService);
   private snackbarService = inject(SnackbarService);
@@ -49,5 +50,9 @@ export default class TecnologiaTableComponent {
         this.snackbarService.alertar('Tecnologia deletada com sucesso!')
       }
     })
+  }
+
+  protected emitirEdicao(t: Tecnologia){
+    this.tecnologiaEditada.emit(t);
   }
 }

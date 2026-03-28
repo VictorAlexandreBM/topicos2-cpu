@@ -21,4 +21,8 @@ export default class TecnologiaService {
   deletar(id: number) {
     return this.http.delete(`tecnologias/${id}`);
   }
+
+  atualizar(id: number, dados: TecnologiaFormRequest) {
+    return this.http.put<Tecnologia>(`tecnologias/${id}`, dados);
+  }
 }

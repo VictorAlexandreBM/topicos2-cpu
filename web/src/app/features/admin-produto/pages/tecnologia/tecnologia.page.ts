@@ -7,6 +7,7 @@ import {switchMap} from 'rxjs';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
 import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {Tecnologia} from '../../models/tecnologia.model';
 
 @Component({
   selector: 'app-tecnologia-page',
@@ -33,8 +34,15 @@ export default class TecnologiaPage {
 
   protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
 
+  protected tecnologiaEmEdicao = signal<Tecnologia | null>(null);
+
   refreshTecnologias() {
     this.refreshTrigger.update((v) => v + 1);
+  }
+
+  handleEdicao(t: Tecnologia, drawer: MatDrawer) {
+    this.tecnologiaEmEdicao.set(t);
+    void drawer.open();
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from '@angular/core';
+import {Component, effect, inject, Input, input, model, output} from '@angular/core';
 import {FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -20,8 +20,6 @@ import {SnackbarService} from '../../../../../core/services/snackbar.service';
     MatButton,
     MatError,
     FieldErrorPipe,
-    MatIcon,
-    MatIconButton,
   ]
 })
 export class TecnologiaFormComponent {
@@ -29,18 +27,37 @@ export class TecnologiaFormComponent {
   private readonly service = inject(TecnologiaService);
   private readonly snackbarService = inject(SnackbarService);
 
+  public tecnologiaEmEdicao = model.required<Tecnologia | null>();
+
   public readonly inDrawer = input<boolean>(false);
 
   readonly tecnologiaCadastrada = output<Tecnologia>();
+  readonly tecnologiaAtualizada = output<Tecnologia>();
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(100)]);
   protected readonly descricaoCtrl = this.fb.control('', [Validators.maxLength(255)]);
-
 
   protected readonly tecnologiaForm = this.fb.group({
     nome: this.nomeCtrl,
     descricao: this.descricaoCtrl,
   });
+
+  constructor() {
+    effect(() => {
+      const tecnologia = this.tecnologiaEmEdicao();
+
+      if (tecnologia) {
+        this.tecnologiaForm.patchValue(tecnologia);
+      } else {
+        this.tecnologiaForm.reset();
+      }
+    })
+  }
+
+  redefinir() {
+    this.tecnologiaEmEdicao.set(null);
+    this.tecnologiaForm.reset();
+  }
 
   cadastrar() {
     const dadosTratados = this.tratarDados(this.tecnologiaForm.value);
@@ -53,6 +70,18 @@ export class TecnologiaFormComponent {
       },
       error: err => {
         console.error(err);
+      }
+    })
+  }
+
+  atualizar() {
+    const dadosTratados = this.tratarDados(this.tecnologiaForm.value);
+
+    this.service.atualizar(this.tecnologiaEmEdicao()!.id, dadosTratados).subscribe({
+      next: () => {
+        this.tecnologiaAtualizada.emit(this.tecnologiaEmEdicao()!);
+        this.redefinir()
+        this.snackbarService.alertar('Tecnologia atualizada com sucesso!')
       }
     })
   }
