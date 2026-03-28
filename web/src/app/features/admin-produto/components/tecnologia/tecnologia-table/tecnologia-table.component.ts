@@ -13,6 +13,8 @@ import {MatIcon} from '@angular/material/icon';
 import {MatFabButton} from '@angular/material/button';
 import TecnologiaService from '../../../services/tecnologia.service';
 import {SnackbarService} from '../../../../../core/services/snackbar.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -41,10 +43,16 @@ export default class TecnologiaTableComponent {
 
   private service = inject(TecnologiaService);
   private snackbarService = inject(SnackbarService);
+  private readonly dialogService   = inject(ConfirmDialogService);
 
   protected readonly colunas = ['acao', 'nome', 'descricao'];
 
-  protected deletar(t: Tecnologia){
+  protected async deletar(t: Tecnologia){
+
+    const confirmado = await this.dialogService.alertar('Deletar tecnologia', 'Deseja realmente deletar esta tecnologia?');
+
+    if (!confirmado) return;
+
     this.service.deletar(t.id).subscribe({
       next: _ => {
         this.tecnologiaDeletada.emit(t);
