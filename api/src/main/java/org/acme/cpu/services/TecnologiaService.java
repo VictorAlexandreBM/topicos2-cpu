@@ -8,7 +8,7 @@ import org.acme.cpu.models.Tecnologia;
 import java.util.Set;
 
 public interface TecnologiaService {
-    public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho);
+    public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho, String filtro);
     public TecnologiaResponseDTO getById(Long id);
     public Tecnologia criar(TecnologiaDTO t);
     public void atualizar(Long id, TecnologiaDTO t);

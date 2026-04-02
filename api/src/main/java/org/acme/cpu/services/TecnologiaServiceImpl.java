@@ -20,13 +20,13 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     TecnologiaRepository repository;
 
     @Override
-    public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho) {
-        List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho, true)
+    public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho, String filtro) {
+        List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho, filtro, true)
                 .stream()
                 .map(TecnologiaResponseDTO::new)
                 .toList();
 
-        long total = repository.count();
+        long total = repository.countListar(filtro, true);
 
         return new RespostaPaginadaDTO<>(dados, total);
     }
