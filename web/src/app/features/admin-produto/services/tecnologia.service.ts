@@ -11,14 +11,17 @@ export default class TecnologiaService {
 
   private readonly http = inject(HttpClient);
 
-  listar(pagina?: number, tamanho?: number): Observable<RespostaPaginada<Tecnologia[]>> {
+  listar(pagina?: number, tamanho?: number, filtro?: string): Observable<RespostaPaginada<Tecnologia[]>> {
     const parametros = {
       pagina,
-      tamanho
+      tamanho,
+      filtro
     }
 
     const parametrosFiltrados = Object.fromEntries(
-      Object.entries(parametros).filter(([_, v]) => v !== undefined)
+      Object.entries(parametros).filter(([_, v]) =>
+        (v !== undefined && v !== null && v !== '')
+      )
     ) as { [key: string]: string | number | boolean}
 
 

@@ -1,0 +1,11 @@
+<mat-form-field appearance="outline" class="w-full">
+  <mat-label>Pesquisar tecnologias</mat-label>
+  <input
+    matInput
+    type="text"
+    placeholder="Ex: Intel Hyper-Threading"
+    (input)="aoDigitar($event)"
+    #filtroInput
+  >
+  <mat-icon matPrefix>search</mat-icon>
+</mat-form-field>

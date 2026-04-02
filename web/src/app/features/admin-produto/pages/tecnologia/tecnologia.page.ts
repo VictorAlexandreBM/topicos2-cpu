@@ -9,6 +9,7 @@ import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {Tecnologia} from '../../models/tecnologia.model';
 import {PageEvent} from '@angular/material/paginator';
+import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
 
 @Component({
   selector: 'app-tecnologia-page',
@@ -22,15 +23,16 @@ import {PageEvent} from '@angular/material/paginator';
     MatDrawerContent,
     MatIcon,
     MatFabButton,
-    MatIconButton
+    MatIconButton,
+    TecnologiaFiltroComponent
   ]
 })
 export default class TecnologiaPage {
   private readonly service = inject(TecnologiaService)
-  private refreshTrigger = signal({pagina: 0, tamanho: 2});
+  private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: ''});
 
   private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
-    switchMap(r => this.service.listar(r.pagina, r.tamanho))
+    switchMap(r => this.service.listar(r.pagina, r.tamanho, r.filtro))
   )
 
   protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
@@ -60,7 +62,7 @@ export default class TecnologiaPage {
 
   handleMudancaPagina(event: PageEvent) {
     console.log(event);
-    this.refreshTrigger.update(r => ({pagina: event.pageIndex, tamanho: event.pageSize}));
+    this.refreshTrigger.update(r => ({...r, pagina: event.pageIndex, tamanho: event.pageSize}));
   }
 
   handleEstadoAlterado(tecnologia: Tecnologia) {
@@ -68,5 +70,9 @@ export default class TecnologiaPage {
     if (this.tecnologiaEmEdicao() === tecnologia) {
       this.tecnologiaEmEdicao.set(null);
     }
+  }
+
+  handlePesquisa(filtro: string) {
+    this.refreshTrigger.update(r => ({...r, pagina: 0, filtro}));
   }
 }
