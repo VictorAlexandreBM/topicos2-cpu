@@ -5,9 +5,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
 import org.acme.cpu.dto.Tecnologia.TecnologiaResponseDTO;
+import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.models.Tecnologia;
 import org.acme.cpu.repositories.TecnologiaRepository;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,8 +20,16 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     TecnologiaRepository repository;
 
     @Override
-    public Set<TecnologiaResponseDTO> listar() {
-        return repository.listar().stream().map(TecnologiaResponseDTO::new).collect(Collectors.toSet());
+    public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho) {
+        List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho)
+                .stream()
+                .map(TecnologiaResponseDTO::new)
+                .toList();
+
+        // Get total count for the frontend paginator
+        long total = repository.count();
+
+        return new RespostaPaginadaDTO<>(dados, total);
     }
 
     @Override

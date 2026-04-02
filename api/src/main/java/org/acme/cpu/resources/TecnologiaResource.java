@@ -7,6 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
+import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.services.TecnologiaService;
 
 
@@ -20,8 +21,11 @@ public class TecnologiaResource {
     TecnologiaService service;
 
     @GET
-    public Response listar() {
-        return Response.ok(service.listar()).build();
+    public Response listar(
+            @QueryParam("pagina") Integer pagina,
+            @QueryParam("tamanho") Integer tamanho
+    ) {
+        return Response.ok(service.listar(pagina, tamanho)).build();
     }
 
     @POST
