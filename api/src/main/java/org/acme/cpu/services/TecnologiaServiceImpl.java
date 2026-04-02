@@ -21,12 +21,11 @@ public class TecnologiaServiceImpl implements TecnologiaService {
 
     @Override
     public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho) {
-        List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho)
+        List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho, true)
                 .stream()
                 .map(TecnologiaResponseDTO::new)
                 .toList();
 
-        // Get total count for the frontend paginator
         long total = repository.count();
 
         return new RespostaPaginadaDTO<>(dados, total);
@@ -67,6 +66,13 @@ public class TecnologiaServiceImpl implements TecnologiaService {
         Tecnologia tecnologia = repository.findById(id);
 
         repository.delete(tecnologia);
+    }
 
+    @Override
+    @Transactional
+    public void alterarEstado(Long id, Boolean estado) {
+        Tecnologia tecnologia = repository.findById(id);
+
+        tecnologia.setAtivo(estado);
     }
 }

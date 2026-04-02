@@ -13,4 +13,5 @@ public interface TecnologiaService {
     public Tecnologia criar(TecnologiaDTO t);
     public void atualizar(Long id, TecnologiaDTO t);
     public void deletar(Long id);
+    public void alterarEstado(Long id, Boolean estado);
 }

@@ -9,9 +9,10 @@ public record TecnologiaResponseDTO(
 
         Long id,
         String nome,
-        String descricao
+        String descricao,
+        Boolean ativo
 ) {
     public TecnologiaResponseDTO(Tecnologia t) {
-        this(t.getId(), t.getNome(), t.getDescricao());
+        this(t.getId(), t.getNome(), t.getDescricao(), t.isAtivo());
     }
 }

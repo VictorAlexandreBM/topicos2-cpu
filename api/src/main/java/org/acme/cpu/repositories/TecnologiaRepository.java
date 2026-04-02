@@ -9,10 +9,10 @@ import java.util.List;
 
 @ApplicationScoped
 public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
-    public List<Tecnologia> listar(Integer pagina, Integer tamanho) {
-        if (pagina == null || tamanho == null) return this.listAll();
+    public List<Tecnologia> listar(Integer pagina, Integer tamanho, Boolean ativo) {
+        if (pagina == null || tamanho == null) return this.find("ativo = ?1", ativo).list();
 
         Log.info("pagina: " + pagina + " tamanho: " + tamanho);
-        return this.findAll().page(pagina, tamanho).list();
+        return this.find("ativo = ?1", ativo).page(pagina, tamanho).list();
     }
 }

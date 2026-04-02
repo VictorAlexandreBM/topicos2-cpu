@@ -10,6 +10,8 @@ import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
 import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.services.TecnologiaService;
 
+import java.util.Map;
+
 
 @ApplicationScoped
 @Path("/tecnologias")
@@ -44,6 +46,16 @@ public class TecnologiaResource {
     @Path("/{id}")
     public Response deletar(@PathParam("id") Long id) {
         service.deletar(id);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    public Response patch(@PathParam("id") Long id, Map<String, Object> updates) {
+        if (updates.containsKey("ativo")){
+            service.alterarEstado(id, (Boolean) updates.get("ativo"));
+        }
+
         return Response.noContent().build();
     }
 }
