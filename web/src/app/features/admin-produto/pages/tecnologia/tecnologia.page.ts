@@ -51,9 +51,11 @@ export default class TecnologiaPage {
     this.tecnologiaEmEdicao.set(null);
   }
 
-  handleDelecao() {
+  handleDelecao(tecnologia: Tecnologia) {
     this.refreshTecnologias();
-    this.tecnologiaEmEdicao.set(null);
+    if (this.tecnologiaEmEdicao() === tecnologia) {
+      this.tecnologiaEmEdicao.set(null);
+    }
   }
 
   handleMudancaPagina(event: PageEvent) {
@@ -61,4 +63,10 @@ export default class TecnologiaPage {
     this.refreshTrigger.update(r => ({pagina: event.pageIndex, tamanho: event.pageSize}));
   }
 
+  handleEstadoAlterado(tecnologia: Tecnologia) {
+    this.refreshTecnologias();
+    if (this.tecnologiaEmEdicao() === tecnologia) {
+      this.tecnologiaEmEdicao.set(null);
+    }
+  }
 }

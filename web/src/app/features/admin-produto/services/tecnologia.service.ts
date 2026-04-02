@@ -35,6 +35,10 @@ export default class TecnologiaService {
     return this.http.delete(`tecnologias/${id}`);
   }
 
+  alterarEstado(id: number, ativo: boolean) {
+    return this.http.patch(`tecnologias/${id}`, {ativo});
+  }
+
   atualizar(id: number, dados: TecnologiaFormRequest) {
     return this.http.put<Tecnologia>(`tecnologias/${id}`, dados);
   }

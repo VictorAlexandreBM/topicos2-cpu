@@ -44,6 +44,7 @@ export default class TecnologiaTableComponent {
 
   public tecnologiaDeletada = output<Tecnologia>();
   public tecnologiaEditada = output<Tecnologia>();
+  public tecnologiaAlteradaEstado = output<Tecnologia>();
   public tecnologiaEmEdicao = input<Tecnologia | null>(null);
 
   private service = inject(TecnologiaService);
@@ -62,6 +63,24 @@ export default class TecnologiaTableComponent {
       next: _ => {
         this.tecnologiaDeletada.emit(t);
         this.snackbarService.alertar('Tecnologia deletada com sucesso!')
+      }
+    })
+  }
+
+
+  protected async alterarEstado(t: Tecnologia, ativo: boolean)
+  {
+    if (!ativo){
+      const confirmado = await this.dialogService.alertar('Desativar tecnologia', 'Deseja realmente desativar esta tecnologia?');
+
+      if (!confirmado) return;
+
+    }
+
+    this.service.alterarEstado(t.id, ativo).subscribe({
+      next: _ => {
+        this.tecnologiaAlteradaEstado.emit(t);
+        this.snackbarService.alertar(`Tecnologia ${ativo ? 'Ativada' : 'Desativada'} com sucesso!`)
       }
     })
   }

@@ -19,6 +19,9 @@
             {{ tecnologiaEmEdicao()?.id === e.id ? 'close' : 'edit' }}
           </mat-icon>
         </button>
+        <button matFab (click)="alterarEstado(e, !e.ativo)">
+          <mat-icon> {{ e.ativo ? 'visibility_off' : 'visibility_on' }}</mat-icon>
+        </button>
         <button matFab (click)="deletar(e)">
           <mat-icon>delete</mat-icon>
         </button>

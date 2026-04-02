@@ -24,8 +24,9 @@
         [tecnologias]="resposta.dados"
         [total]="resposta.total"
         (mudancaPagina)="handleMudancaPagina($event)"
-        (tecnologiaDeletada)="handleDelecao()"
+        (tecnologiaDeletada)="handleDelecao($event)"
         (tecnologiaEditada)="handleEdicao($event, drawer)"
+        (tecnologiaAlteradaEstado)="handleEstadoAlterado($event)"
         [tecnologiaEmEdicao]="tecnologiaEmEdicao()"/>
 
     }
