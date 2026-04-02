@@ -11,6 +11,7 @@ import {Tecnologia} from '../../models/tecnologia.model';
 import {PageEvent} from '@angular/material/paginator';
 import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
 
+
 @Component({
   selector: 'app-tecnologia-page',
   templateUrl: './tecnologia.page.html',
@@ -29,10 +30,10 @@ import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-
 })
 export default class TecnologiaPage {
   private readonly service = inject(TecnologiaService)
-  private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: ''});
+  private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: '', ativo: true});
 
   private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
-    switchMap(r => this.service.listar(r.pagina, r.tamanho, r.filtro))
+    switchMap(r => this.service.listar(r.pagina, r.tamanho, r.filtro, r.ativo))
   )
 
   protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
@@ -74,5 +75,10 @@ export default class TecnologiaPage {
 
   handlePesquisa(filtro: string) {
     this.refreshTrigger.update(r => ({...r, pagina: 0, filtro}));
+  }
+
+  handleMostrarInativos(mostrarInativos: boolean) {
+    this.refreshTrigger.update(r => ({...r, pagina: 0, ativo: !mostrarInativos}));
+
   }
 }

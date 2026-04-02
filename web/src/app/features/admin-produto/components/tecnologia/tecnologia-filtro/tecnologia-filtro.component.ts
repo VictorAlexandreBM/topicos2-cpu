@@ -2,6 +2,7 @@ import {Component, OnDestroy, output} from '@angular/core';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-tecnologia-filtro',
@@ -9,13 +10,15 @@ import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
     MatFormField,
     MatLabel,
     MatInput,
-    MatIcon
+    MatIcon,
+    MatCheckbox
   ],
   templateUrl: './tecnologia-filtro.component.html'
 })
 export class TecnologiaFiltroComponent implements OnDestroy {
 
   public filtroAlterado = output<string>();
+  public mostrarInativos = output<boolean>();
 
   protected filtroSubject = new Subject<string>();
 
@@ -29,6 +32,10 @@ export class TecnologiaFiltroComponent implements OnDestroy {
   aoDigitar(e: Event) {
     const valor = (e.target as HTMLInputElement).value;
     this.filtroSubject.next(valor);
+  }
+
+  aoMudarInativos(mostrarInativos: boolean) {
+    this.mostrarInativos.emit(mostrarInativos);
   }
 
   ngOnDestroy() {

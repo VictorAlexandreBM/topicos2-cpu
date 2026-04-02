@@ -26,9 +26,10 @@ public class TecnologiaResource {
     public Response listar(
             @QueryParam("pagina") Integer pagina,
             @QueryParam("tamanho") Integer tamanho,
-            @QueryParam("filtro") String filtro
+            @QueryParam("filtro") String filtro,
+            @QueryParam("ativo") Boolean ativo
     ) {
-        return Response.ok(service.listar(pagina, tamanho, filtro)).build();
+        return Response.ok(service.listar(pagina, tamanho, filtro, ativo)).build();
     }
 
     @POST

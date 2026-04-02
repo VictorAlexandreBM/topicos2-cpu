@@ -19,7 +19,7 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    <app-tecnologia-filtro (filtroAlterado)="handlePesquisa($event)"/>
+    <app-tecnologia-filtro (filtroAlterado)="handlePesquisa($event)" (mostrarInativos)="handleMostrarInativos($event)"/>
     @if (tecnologiasResponse(); as resposta) {
       <app-tecnologia-table
         [tecnologias]="resposta.dados"

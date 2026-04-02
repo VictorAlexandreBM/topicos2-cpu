@@ -11,11 +11,12 @@ export default class TecnologiaService {
 
   private readonly http = inject(HttpClient);
 
-  listar(pagina?: number, tamanho?: number, filtro?: string): Observable<RespostaPaginada<Tecnologia[]>> {
+  listar(pagina?: number, tamanho?: number, filtro?: string, ativo?: boolean): Observable<RespostaPaginada<Tecnologia[]>> {
     const parametros = {
       pagina,
       tamanho,
-      filtro
+      filtro,
+      ativo
     }
 
     const parametrosFiltrados = Object.fromEntries(
