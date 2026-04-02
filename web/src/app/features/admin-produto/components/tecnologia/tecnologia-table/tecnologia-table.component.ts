@@ -15,6 +15,7 @@ import TecnologiaService from '../../../services/tecnologia.service';
 import {SnackbarService} from '../../../../../core/services/snackbar.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.service';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -31,11 +32,15 @@ import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.
     MatHeaderRow,
     MatRow,
     MatIcon,
-    MatFabButton
+    MatFabButton,
+    MatPaginator
   ]
 })
 export default class TecnologiaTableComponent {
   public tecnologias = input.required<Tecnologia[]>();
+  public total = input.required<number>();
+
+  public mudancaPagina = output<PageEvent>();
 
   public tecnologiaDeletada = output<Tecnologia>();
   public tecnologiaEditada = output<Tecnologia>();
@@ -67,5 +72,10 @@ export default class TecnologiaTableComponent {
     } else {
       this.tecnologiaEditada.emit(t);
     }
+  }
+
+  paginar(event: PageEvent) {
+    console.log(event);
+    this.mudancaPagina.emit(event);
   }
 }

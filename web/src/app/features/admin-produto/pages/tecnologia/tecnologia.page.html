@@ -19,12 +19,15 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    @if (tecnologiasResponse(); as tecnologias) {
+    @if (tecnologiasResponse(); as resposta) {
       <app-tecnologia-table
-        [tecnologias]="tecnologias"
+        [tecnologias]="resposta.dados"
+        [total]="resposta.total"
+        (mudancaPagina)="handleMudancaPagina($event)"
         (tecnologiaDeletada)="handleDelecao()"
         (tecnologiaEditada)="handleEdicao($event, drawer)"
         [tecnologiaEmEdicao]="tecnologiaEmEdicao()"/>
+
     }
 
   </mat-drawer-content>

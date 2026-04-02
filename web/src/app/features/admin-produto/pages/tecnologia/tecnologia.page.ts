@@ -8,6 +8,7 @@ import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material
 import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {Tecnologia} from '../../models/tecnologia.model';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-tecnologia-page',
@@ -26,10 +27,10 @@ import {Tecnologia} from '../../models/tecnologia.model';
 })
 export default class TecnologiaPage {
   private readonly service = inject(TecnologiaService)
-  private refreshTrigger = signal<number>(0);
+  private refreshTrigger = signal({pagina: 0, tamanho: 2});
 
   private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
-    switchMap(() => this.service.listar())
+    switchMap(r => this.service.listar(r.pagina, r.tamanho))
   )
 
   protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
@@ -37,7 +38,7 @@ export default class TecnologiaPage {
   protected tecnologiaEmEdicao = signal<Tecnologia | null>(null);
 
   refreshTecnologias() {
-    this.refreshTrigger.update((v) => v + 1);
+    this.refreshTrigger.update((r) => ({...r}));
   }
 
   handleEdicao(t: Tecnologia, drawer: MatDrawer) {
@@ -53,6 +54,11 @@ export default class TecnologiaPage {
   handleDelecao() {
     this.refreshTecnologias();
     this.tecnologiaEmEdicao.set(null);
+  }
+
+  handleMudancaPagina(event: PageEvent) {
+    console.log(event);
+    this.refreshTrigger.update(r => ({pagina: event.pageIndex, tamanho: event.pageSize}));
   }
 
 }
