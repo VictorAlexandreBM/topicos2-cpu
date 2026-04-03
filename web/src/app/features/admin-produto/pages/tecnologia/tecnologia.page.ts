@@ -58,8 +58,12 @@
       this.refreshTrigger.update((r) => ({...r}));
     }
 
-    handleEdicao(t: Tecnologia) {
+    handleEdicao(t: Tecnologia | null) {
       this.tecnologiaEmEdicao.set(t);
+      if (!t) {
+        this.abrirFormulario();
+        return;
+      }
       this.abrirFormulario(t);
     }
 
@@ -67,6 +71,7 @@
       this.refreshTecnologias();
       if (this.tecnologiaEmEdicao() === tecnologia) {
         this.tecnologiaEmEdicao.set(null);
+        this.dialog.closeAll()
       }
     }
 
@@ -117,11 +122,18 @@
       const subAtualizacao = dialogRef.componentInstance.tecnologiaAtualizada.subscribe(t => {
         this.refreshTecnologias();
         this.tecnologiaEmEdicao.set(null);
+
+        this.abrirFormulario();
+      })
+
+      const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe( () => {
+        this.tecnologiaEmEdicao.set(null);
       })
 
       dialogRef.afterClosed().subscribe( () => {
-          subAtualizacao.unsubscribe();
-          subCadastro.unsubscribe();
+        subAtualizacao.unsubscribe();
+        subCadastro.unsubscribe();
+        subCancelado.unsubscribe();
       });
     }
   }

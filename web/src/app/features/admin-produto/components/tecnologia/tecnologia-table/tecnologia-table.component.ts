@@ -50,7 +50,7 @@ export default class TecnologiaTableComponent {
   public estaCarregando = input.required<boolean>();
 
   public tecnologiaDeletada = output<Tecnologia>();
-  public tecnologiaEditada = output<Tecnologia>();
+  public tecnologiaEditada = output<Tecnologia | null>();
   public tecnologiaAlteradaEstado = output<Tecnologia>();
   public tecnologiaEmEdicao = input<Tecnologia | null>(null);
 
@@ -105,7 +105,7 @@ export default class TecnologiaTableComponent {
 
   protected emitirEdicao(t: Tecnologia){
     if (this.tecnologiaEmEdicao()?.id === t.id) {
-      this.tecnologiaEditada.emit(null as any);
+      this.tecnologiaEditada.emit(null);
     } else {
       this.tecnologiaEditada.emit(t);
     }

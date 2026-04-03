@@ -1,4 +1,4 @@
-import {Component, inject, output} from '@angular/core';
+import {Component, effect, inject, output} from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -36,8 +36,9 @@ export class TecnologiaFormComponent {
 
   readonly tecnologiaCadastrada = output<Tecnologia>();
   readonly tecnologiaAtualizada  = output<Tecnologia>();
+  readonly cadastroCancelado = output<void>();
 
-  public readonly tecnologiaEmEdicao = inject<Tecnologia | null>(MAT_DIALOG_DATA, { optional: true });
+  public readonly tecnologiaEmEdicao = inject<Tecnologia | null>(MAT_DIALOG_DATA);
   public readonly dialogRef = inject(MatDialogRef<TecnologiaFormComponent>);
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(100)]);
@@ -55,6 +56,7 @@ export class TecnologiaFormComponent {
   }
 
   fechar(sucesso: boolean = false) {
+    this.cadastroCancelado.emit();
     this.dialogRef.close(sucesso);
   }
 
