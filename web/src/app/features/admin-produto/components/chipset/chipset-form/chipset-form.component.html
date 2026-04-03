@@ -1,0 +1,31 @@
+<div class="flex flex-col h-full bg-white">
+
+  <div class="px-6 py-4 flex justify-between items-center sticky top-0 z-20">
+    <h2 class="text-xl font-semibold text-gray-800">
+      {{ chipsetEmEdicao ? "Atualizar Chipset" : "Cadastrar Chipset" }}
+    </h2>
+    <button mat-icon-button type="button" (click)="fechar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form (ngSubmit)="chipsetEmEdicao ? atualizar() : cadastrar()" [formGroup]="chipsetForm" class="flex flex-col flex-1 p-6">
+
+    <div class="flex flex-col gap-4">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Tipo</mat-label>
+        <input matInput formControlName="tipo" placeholder="Ex: X670E" />
+        <mat-error>{{ tipoCtrl.errors | fieldError:tipoCtrl.touched }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-auto pt-4 border-t border-gray-200">
+      <button type="button" (click)="fechar()" mat-stroked-button>Cancelar</button>
+
+      <button type="submit" mat-flat-button color="primary" [disabled]="chipsetForm.invalid">
+        {{ chipsetEmEdicao ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

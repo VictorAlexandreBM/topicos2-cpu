@@ -1,0 +1,31 @@
+<div class="p-6 h-full flex flex-col">
+
+  <div class="mb-6 pb-4 border-b border-gray-200">
+    <h1 class="text-2xl font-bold text-gray-900">Gerência de Chipsets</h1>
+    <p class="text-sm text-gray-500 mt-1">Gerencie os conjuntos de chips (Chipsets) para indicar compatibilidade de CPUs.</p>
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <app-chipset-filtro
+      class="w-[550px]"
+      (filtroAlterado)="handlePesquisa($event)"
+      (mostrarInativos)="handleMostrarInativos($event)"/>
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="abrirFormulario()">
+      <mat-icon>add</mat-icon> Adicionar Chipset
+    </button>
+  </div>
+
+  <app-chipset-table
+    [chipsets]="chipsetsResponse()?.dados ?? []"
+    [total]="chipsetsResponse()?.total ?? 0"
+    [chipsetEmEdicao]="chipsetEmEdicao()"
+    [estaCarregando]="estaCarregando()"
+    (mudancaPagina)="handleMudancaPagina($event)"
+    (mudancaOrdem)="handleMudancaOrdem($event)"
+    (chipsetDeletado)="handleDelecao($event)"
+    (chipsetEditado)="handleEdicao($event)"
+    (chipsetAlteradoEstado)="handleEstadoAlterado($event)"/>
+</div>
