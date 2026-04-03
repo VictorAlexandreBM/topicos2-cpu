@@ -6,20 +6,19 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.acme.cpu.dto.tecnologia.TecnologiaDTO;
-import org.acme.cpu.services.tecnologia.TecnologiaService;
+import org.acme.cpu.dto.socket.SocketDTO;
+import org.acme.cpu.services.socket.SocketService;
 
 import java.util.Map;
 
-
 @ApplicationScoped
-@Path("/tecnologias")
+@Path("/sockets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TecnologiaResource {
+public class SocketResource {
 
     @Inject
-    TecnologiaService service;
+    SocketService service;
 
     @GET
     public Response listar(
@@ -34,13 +33,13 @@ public class TecnologiaResource {
     }
 
     @POST
-    public Response inserir(@Valid TecnologiaDTO dto) {
+    public Response inserir(@Valid SocketDTO dto) {
         return Response.ok(service.criar(dto)).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, @Valid TecnologiaDTO dto) {
+    public Response atualizar(@PathParam("id") Long id, @Valid SocketDTO dto) {
         service.atualizar(id, dto);
         return Response.noContent().build();
     }

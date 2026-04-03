@@ -6,20 +6,19 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.acme.cpu.dto.tecnologia.TecnologiaDTO;
-import org.acme.cpu.services.tecnologia.TecnologiaService;
+import org.acme.cpu.dto.chipset.ChipsetDTO;
+import org.acme.cpu.services.chipset.ChipsetService;
 
 import java.util.Map;
 
-
 @ApplicationScoped
-@Path("/tecnologias")
+@Path("/chipsets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TecnologiaResource {
+public class ChipsetResource {
 
     @Inject
-    TecnologiaService service;
+    ChipsetService service;
 
     @GET
     public Response listar(
@@ -34,13 +33,13 @@ public class TecnologiaResource {
     }
 
     @POST
-    public Response inserir(@Valid TecnologiaDTO dto) {
+    public Response inserir(@Valid ChipsetDTO dto) {
         return Response.ok(service.criar(dto)).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, @Valid TecnologiaDTO dto) {
+    public Response atualizar(@PathParam("id") Long id, @Valid ChipsetDTO dto) {
         service.atualizar(id, dto);
         return Response.noContent().build();
     }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class Marca extends BaseEntity {
+public class Marca extends BaseInativavelEntity {
 
     @Column(unique = true, nullable = false, length = 100)
     @NotBlank

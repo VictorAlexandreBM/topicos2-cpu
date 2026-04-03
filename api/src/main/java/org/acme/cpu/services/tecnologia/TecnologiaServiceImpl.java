@@ -1,19 +1,17 @@
-package org.acme.cpu.services;
+package org.acme.cpu.services.tecnologia;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
-import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
-import org.acme.cpu.dto.Tecnologia.TecnologiaResponseDTO;
+import org.acme.cpu.dto.tecnologia.TecnologiaDTO;
+import org.acme.cpu.dto.tecnologia.TecnologiaResponseDTO;
 import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.exception.ValidationException;
 import org.acme.cpu.models.Tecnologia;
 import org.acme.cpu.repositories.TecnologiaRepository;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TecnologiaServiceImpl implements TecnologiaService {

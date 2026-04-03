@@ -1,4 +1,4 @@
-package org.acme.cpu.dto.Tecnologia;
+package org.acme.cpu.dto.tecnologia;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

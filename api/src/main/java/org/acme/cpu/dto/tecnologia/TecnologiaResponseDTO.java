@@ -1,11 +1,7 @@
-package org.acme.cpu.dto.Tecnologia;
+package org.acme.cpu.dto.tecnologia;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.acme.cpu.models.Tecnologia;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record TecnologiaResponseDTO(
