@@ -3,6 +3,7 @@ package org.acme.cpu.services;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
 import org.acme.cpu.dto.Tecnologia.TecnologiaResponseDTO;
 import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
@@ -19,6 +20,16 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Inject
     TecnologiaRepository repository;
 
+    private Tecnologia getTecnologiaEntity(Long id) {
+        Tecnologia tecnologia = repository.findById(id);
+
+        if (tecnologia == null) {
+            throw new NotFoundException("Tecnologia não encontrada");
+        }
+
+        return tecnologia;
+    }
+
     @Override
     public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo) {
         List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho, filtro, ativo)
@@ -33,7 +44,7 @@ public class TecnologiaServiceImpl implements TecnologiaService {
 
     @Override
     public TecnologiaResponseDTO getById(Long id) {
-        return new TecnologiaResponseDTO(repository.findById(id));
+        return new TecnologiaResponseDTO(getTecnologiaEntity(id));
     }
 
     @Override
@@ -53,7 +64,7 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Transactional
     public void atualizar(Long id, TecnologiaDTO t) {
 
-        Tecnologia tecnologia = repository.findById(id);
+        Tecnologia tecnologia = getTecnologiaEntity(id);
 
         tecnologia.setNome(t.nome());
         tecnologia.setDescricao(t.descricao());
@@ -63,7 +74,7 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Override
     @Transactional
     public void deletar(Long id) {
-        Tecnologia tecnologia = repository.findById(id);
+        Tecnologia tecnologia =  getTecnologiaEntity(id);
 
         repository.delete(tecnologia);
     }
@@ -71,7 +82,7 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Override
     @Transactional
     public void alterarEstado(Long id, Boolean estado) {
-        Tecnologia tecnologia = repository.findById(id);
+        Tecnologia tecnologia = getTecnologiaEntity(id);
 
         tecnologia.setAtivo(estado);
     }
