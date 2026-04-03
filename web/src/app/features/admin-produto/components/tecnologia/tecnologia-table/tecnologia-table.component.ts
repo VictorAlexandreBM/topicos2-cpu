@@ -18,6 +18,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {MatSort, MatSortHeader, Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -36,19 +37,23 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     MatIcon,
     MatPaginator,
     MatIconButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatSort,
+    MatSortHeader
   ]
 })
 export default class TecnologiaTableComponent {
   public tecnologias = input.required<Tecnologia[]>();
   public total = input.required<number>();
   public estaCarregando = input.required<boolean>();
-  public mudancaPagina = output<PageEvent>();
 
   public tecnologiaDeletada = output<Tecnologia>();
   public tecnologiaEditada = output<Tecnologia>();
   public tecnologiaAlteradaEstado = output<Tecnologia>();
   public tecnologiaEmEdicao = input<Tecnologia | null>(null);
+
+  public mudancaPagina = output<PageEvent>();
+  public mudancaOrdem = output<Sort>();
 
   private service = inject(TecnologiaService);
   private snackbarService = inject(SnackbarService);
@@ -107,5 +112,10 @@ export default class TecnologiaTableComponent {
   paginar(event: PageEvent) {
     console.log(event);
     this.mudancaPagina.emit(event);
+  }
+
+
+  ordenar(event: Sort) {
+    this.mudancaOrdem.emit(event);
   }
 }

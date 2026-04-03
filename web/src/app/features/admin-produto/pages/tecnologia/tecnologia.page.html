@@ -27,6 +27,7 @@
     [total]="tecnologiasResponse()?.total ?? 0"
     [estaCarregando]="estaCarregando()"
     (mudancaPagina)="handleMudancaPagina($event)"
+    (mudancaOrdem)="handleMudancaOrdem($event)"
     (tecnologiaDeletada)="handleDelecao($event)"
     (tecnologiaEditada)="handleEdicao($event)"
     (tecnologiaAlteradaEstado)="handleEstadoAlterado($event)"/>

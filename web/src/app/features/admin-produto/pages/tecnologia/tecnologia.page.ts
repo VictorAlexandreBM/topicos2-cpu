@@ -4,7 +4,6 @@
   import TecnologiaTableComponent from '../../components/tecnologia/tecnologia-table/tecnologia-table.component';
   import {TecnologiaFormComponent} from '../../components/tecnologia/tecnologia-form/tecnologia-form.component';
   import {catchError, finalize, switchMap, tap, throwError} from 'rxjs';
-  import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
   import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
   import {MatIcon} from '@angular/material/icon';
   import {Tecnologia} from '../../models/tecnologia.model';
@@ -12,6 +11,9 @@
   import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
   import {HttpErrorResponse} from '@angular/common/http';
   import {MatDialog} from '@angular/material/dialog';
+  import {Sort} from '@angular/material/sort';
+  import {ParametrosListagem} from '../../../../core/models/parametros-lista.model';
+
 
 
   @Component({
@@ -27,7 +29,7 @@
   })
   export default class TecnologiaPage {
     private readonly service = inject(TecnologiaService)
-    private refreshTrigger = signal({pagina: 0, tamanho: 10, filtro: '', ativo: true});
+    private refreshTrigger = signal<ParametrosListagem>({pagina: 0, tamanho: 10, filtro: '', ativo: true, campoOrdenacao: 'nome', direcao: 'asc'});
     private dialog = inject(MatDialog);
 
     protected estaCarregando = signal(false);
@@ -39,7 +41,7 @@
         this.erroGerado.set(null);
       }),
       switchMap(r =>
-        this.service.listar(r.pagina, r.tamanho, r.filtro, r.ativo).pipe(
+        this.service. listar(r).pipe(
           finalize(() => this.estaCarregando.set(false)),
           catchError((err: HttpErrorResponse) => {
             this.erroGerado.set(err);
@@ -61,7 +63,6 @@
       this.abrirFormulario(t);
     }
 
-
     handleDelecao(tecnologia: Tecnologia) {
       this.refreshTecnologias();
       if (this.tecnologiaEmEdicao() === tecnologia) {
@@ -70,8 +71,13 @@
     }
 
     handleMudancaPagina(event: PageEvent) {
-      console.log(event);
       this.refreshTrigger.update(r => ({...r, pagina: event.pageIndex, tamanho: event.pageSize}));
+    }
+
+    handleMudancaOrdem(event: Sort) {
+      console.log(event);
+      this.refreshTrigger.update(r => ({...r, pagina: 0, campoOrdenacao: event.active, direcao: event.direction}));
+      console.log(this.refreshTrigger());
     }
 
     handleEstadoAlterado(tecnologia: Tecnologia) {

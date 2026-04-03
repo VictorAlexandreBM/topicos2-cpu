@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Tecnologia, TecnologiaFormRequest} from '../models/tecnologia.model';
 import {delay, Observable} from 'rxjs';
 import {RespostaPaginada} from '../../../core/models/resposta-paginada.model';
+import {ParametrosListagem} from '../../../core/models/parametros-lista.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,16 +12,10 @@ export default class TecnologiaService {
 
   private readonly http = inject(HttpClient);
 
-  listar(pagina?: number, tamanho?: number, filtro?: string, ativo?: boolean): Observable<RespostaPaginada<Tecnologia[]>> {
-    const parametros = {
-      pagina,
-      tamanho,
-      filtro,
-      ativo
-    }
+  listar(parametrosListagem: ParametrosListagem): Observable<RespostaPaginada<Tecnologia[]>> {
 
     const parametrosFiltrados = Object.fromEntries(
-      Object.entries(parametros).filter(([_, v]) =>
+      Object.entries(parametrosListagem).filter(([_, v]) =>
         (v !== undefined && v !== null && v !== '')
       )
     ) as { [key: string]: string | number | boolean}

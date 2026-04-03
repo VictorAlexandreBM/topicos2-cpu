@@ -24,7 +24,7 @@ export class ConfirmDialogService {
     })
 
     const confirmado = await firstValueFrom(dialogRef.afterClosed());
-    return confirmado!!;
+    return !!confirmado;
   }
 
 }

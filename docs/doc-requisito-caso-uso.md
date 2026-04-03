@@ -28,30 +28,35 @@ Este documento agrupa requisitos do projeto e seus casos de uso correspondente. 
     - UC02.3: Editar Marca; ATORES: Administrador;
     - UC02.4: Remover Marca; ATORES: Administrador;
     - UC02.5: Pesquisar Marca pelo nome; ATORES: Administrador;
+    - UC02.6: Inativar Marca; ATORES: Administrador;
   - RF03: Gerenciar Tecnologias;
     - UC03.1: Listar Tecnologias; ATORES: Administrador;
     - UC03.2: Cadastrar Tecnologia; ATORES: Administrador;
     - UC03.3: Editar Tecnologia; ATORES: Administrador;
     - UC03.4: Remover Tecnologia; ATORES: Administrador;
-    - UC03.5: Pesquisar Tecnologia pelo nome; ATORES: Administrador;
+    - UC03.5: Pesquisar Tecnologias; ATORES: Administrador;
+    - UC03.6: Inativar Tecnologia; ATORES: Administrador;
   - RF04: Gerenciar Sockets;
     - UC04.1: Listar Sockets; ATORES: Administrador;
     - UC04.2: Cadastrar Socket; ATORES: Administrador;
     - UC04.3: Editar Socket; ATORES: Administrador;
     - UC04.4: Remover Socket; ATORES: Administrador;
     - UC04.5: Pesquisar Socket pelo nome; ATORES: Administrador;
+    - UC04.6: Inativar Socket; ATORES: Administrador;
   - RF05: Gerenciar Chipsets;
     - UC05.1: Listar Chipsets; ATORES: Administrador;
     - UC05.2: Cadastrar Chipset; ATORES: Administrador;
     - UC05.3: Editar Chipset; ATORES: Administrador;
     - UC05.4: Remover Chipset; ATORES: Administrador;
     - UC05.5: Pesquisar Chipset pelo nome; ATORES: Administrador;
+    - UC05.6: Inativar Chipset; ATORES: Administrador;
   - RF06: Gerenciar Modelos de CPUs:
     - UC06.1: Listar Modelos de CPUs; ATORES: Administrador;
     - UC06.2: Cadastrar Modelo de CPU; ATORES: Administrador;
     - UC06.3: Editar Modelo de CPU; ATORES: Administrador;
     - UC06.4: Remover Modelo de CPU; ATORES: Administrador;
     - UC06.5: Pesquisar Modelo de CPU pelo nome; ATORES: Administrador;
+    - UC06.6: Inativar Modelo de CPU; ATORES: Administrador;
   - RF07: Gerenciar CPUs:
     - UC07.1: Listar CPUs; ATORES: Administrador;
     - UC07.2: Cadastrar CPU; ATORES: Administrador;
@@ -59,6 +64,7 @@ Este documento agrupa requisitos do projeto e seus casos de uso correspondente. 
     - UC07.4: Remover CPU; ATORES: Administrador;
     - UC07.5: Pesquisar CPU pelo nome; ATORES: Administrador;
     - UC07.6: Colocar CPU à venda; ATORES: Administrador;
+    - UC07.7: Inativar CPU; ATORES: Administrador;
   - RF08: Cadastrar e logar:
     - UC08.1: Cadastrar-se como cliente; ATORES: Visitante;
     - UC08.2: Logar como cliente; ATORES: Visitante;
