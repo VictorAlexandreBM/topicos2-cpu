@@ -1,36 +1,28 @@
-<mat-drawer-container class="example-container relative" [hasBackdrop]="false">
-  <mat-drawer #drawer mode="over" position="end" [disableClose]="true">
-    <div class="px-6 py-4 border-b flex justify-between items-center bg-white sticky top-0 z-20">
-      <h2 class="text-xl font-semibold text-gray-800">{{tecnologiaEmEdicao() !== null ? "Atualizar Tecnologia" : "Cadastrar Tecnologia"}}</h2>
-      <button mat-icon-button (click)="drawer.close()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <app-tecnologia-form [inDrawer]="true" [(tecnologiaEmEdicao)]="tecnologiaEmEdicao" (tecnologiaCadastrada)="refreshTecnologias()" (tecnologiaAtualizada)="handleAtualizacao()"/>
-  </mat-drawer>
-  <mat-drawer-content>
+<div class="p-6 h-full flex flex-col">
 
-    <div class="fixed bottom-10 right-20">
-      <button
-        mat-fab
-        color="primary"
-        class="z-10"
-        (click)="drawer.open()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-    <app-tecnologia-filtro (filtroAlterado)="handlePesquisa($event)" (mostrarInativos)="handleMostrarInativos($event)"/>
-      <app-tecnologia-table
-        [tecnologias]="tecnologiasResponse()?.dados ?? []"
-        [total]="tecnologiasResponse()?.total ?? 0"
-        [estaCarregando]="estaCarregando()"
-        (mudancaPagina)="handleMudancaPagina($event)"
-        (tecnologiaDeletada)="handleDelecao($event)"
-        (tecnologiaEditada)="handleEdicao($event, drawer)"
-        (tecnologiaAlteradaEstado)="handleEstadoAlterado($event)"
-        [tecnologiaEmEdicao]="tecnologiaEmEdicao()"/>
+  <div class="mb-6 pb-4 border-b border-gray-200">
+    <h1 class="text-2xl font-bold text-gray-900">Gerência de Tecnologias</h1>
+    <p class="text-sm text-gray-500 mt-1">Gerencie as tecnologias disponíveis para o catálogo de CPUs.</p>
+  </div>
 
+  <div class="flex items-center gap-4 mb-4">
 
-  </mat-drawer-content>
-</mat-drawer-container>
+    <app-tecnologia-filtro
+      class="w-[550px]"
+      (filtroAlterado)="handlePesquisa($event)"
+      (mostrarInativos)="handleMostrarInativos($event)"/>
 
+    <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="abrirFormulario()">
+      <mat-icon>add</mat-icon> Adicionar Tecnologia
+    </button>
+  </div>
+
+  <app-tecnologia-table
+    [tecnologias]="tecnologiasResponse()?.dados ?? []"
+    [total]="tecnologiasResponse()?.total ?? 0"
+    [estaCarregando]="estaCarregando()"
+    (mudancaPagina)="handleMudancaPagina($event)"
+    (tecnologiaDeletada)="handleDelecao($event)"
+    (tecnologiaEditada)="handleEdicao($event)"
+    (tecnologiaAlteradaEstado)="handleEstadoAlterado($event)"/>
+</div>

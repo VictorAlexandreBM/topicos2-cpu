@@ -11,6 +11,7 @@
   import {PageEvent} from '@angular/material/paginator';
   import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
   import {HttpErrorResponse} from '@angular/common/http';
+  import {MatDialog} from '@angular/material/dialog';
 
 
   @Component({
@@ -19,19 +20,15 @@
     styleUrl: 'tecnologia.page.css',
     imports: [
       TecnologiaTableComponent,
-      TecnologiaFormComponent,
-      MatDrawerContainer,
-      MatDrawer,
-      MatDrawerContent,
       MatIcon,
-      MatFabButton,
-      MatIconButton,
-      TecnologiaFiltroComponent
+      TecnologiaFiltroComponent,
+      MatButton
     ]
   })
   export default class TecnologiaPage {
     private readonly service = inject(TecnologiaService)
-    private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: '', ativo: true});
+    private refreshTrigger = signal({pagina: 0, tamanho: 10, filtro: '', ativo: true});
+    private dialog = inject(MatDialog);
 
     protected estaCarregando = signal(false);
     protected erroGerado = signal<HttpErrorResponse|null>(null);
@@ -59,15 +56,11 @@
       this.refreshTrigger.update((r) => ({...r}));
     }
 
-    handleEdicao(t: Tecnologia, drawer: MatDrawer) {
+    handleEdicao(t: Tecnologia) {
       this.tecnologiaEmEdicao.set(t);
-      void drawer.open();
+      this.abrirFormulario(t);
     }
 
-    handleAtualizacao() {
-      this.refreshTecnologias();
-      this.tecnologiaEmEdicao.set(null);
-    }
 
     handleDelecao(tecnologia: Tecnologia) {
       this.refreshTecnologias();
@@ -95,5 +88,34 @@
     handleMostrarInativos(mostrarInativos: boolean) {
       this.refreshTrigger.update(r => ({...r, pagina: 0, ativo: !mostrarInativos}));
 
+    }
+
+    abrirFormulario(tecnologia?: Tecnologia) {
+      this.dialog.closeAll();
+
+      const dialogRef = this.dialog.open(TecnologiaFormComponent, {
+        position: { right: '0', top: '0', bottom: '0' },
+        height: '100vh',
+        width: '400px',
+        hasBackdrop: false,
+        disableClose: true,
+        panelClass: 'slide-over-panel',
+        data: tecnologia
+      });
+
+      const subCadastro = dialogRef.componentInstance.tecnologiaCadastrada.subscribe(t => {
+        this.refreshTecnologias();
+        this.tecnologiaEmEdicao.set(null);
+      })
+
+      const subAtualizacao = dialogRef.componentInstance.tecnologiaAtualizada.subscribe(t => {
+        this.refreshTecnologias();
+        this.tecnologiaEmEdicao.set(null);
+      })
+
+      dialogRef.afterClosed().subscribe( () => {
+          subAtualizacao.unsubscribe();
+          subCadastro.unsubscribe();
+      });
     }
   }

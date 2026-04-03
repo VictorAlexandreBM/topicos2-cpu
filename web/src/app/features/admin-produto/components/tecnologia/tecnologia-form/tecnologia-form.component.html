@@ -1,28 +1,37 @@
-<form (ngSubmit)="tecnologiaEmEdicao() ? atualizar() : cadastrar()" [formGroup]="tecnologiaForm" class="flex flex-col h-full">
-  <div [class]="inDrawer() ? 'flex flex-col gap-4 p-4' : 'grid grid-cols-3 gap-6'">
-    <div class="">
-      <mat-form-field>
+<div class="flex flex-col h-full bg-white">
+
+  <div class="px-6 py-4 flex justify-between items-center sticky top-0 z-20">
+    <h2 class="text-xl font-semibold text-gray-800">
+      {{ tecnologiaEmEdicao ? "Atualizar Tecnologia" : "Cadastrar Tecnologia" }}
+    </h2>
+    <button mat-icon-button type="button" (click)="fechar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form (ngSubmit)="tecnologiaEmEdicao ? atualizar() : cadastrar()" [formGroup]="tecnologiaForm" class="flex flex-col flex-1 p-6">
+
+    <div class="flex flex-col gap-4">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Nome</mat-label>
         <input matInput formControlName="nome" />
-        <mat-error>{{ nomeCtrl.errors |  fieldError:nomeCtrl.touched }}</mat-error>
+        <mat-error>{{ nomeCtrl.errors | fieldError:nomeCtrl.touched }}</mat-error>
       </mat-form-field>
-    </div>
 
-    <div [class]="inDrawer() ? '' : 'col-span-2'">
-      <mat-form-field [class]="inDrawer() ? 'w-[100%]' : ''">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Descrição</mat-label>
-        <input matInput formControlName="descricao" />
-        <mat-error>{{ descricaoCtrl.errors |  fieldError:descricaoCtrl.touched }}</mat-error>
+        <textarea matInput formControlName="descricao" rows="4"></textarea>
+        <mat-error>{{ descricaoCtrl.errors | fieldError:descricaoCtrl.touched }}</mat-error>
       </mat-form-field>
     </div>
 
-    <div class="flex justify-end gap-2 mt-auto pt-4 border-t">
-      <button type="button" (click)="redefinir()" mat-stroked-button>Cancelar</button>
-      <button type="submit" mat-flat-button [color]="tecnologiaEmEdicao() ? 'secondary' : 'primary' " [disabled]="tecnologiaForm.invalid">
-        {{ tecnologiaEmEdicao() ? 'Atualizar' : 'Adicionar' }}
+    <div class="flex justify-end gap-2 mt-auto pt-4 border-t border-gray-200">
+      <button type="button" (click)="fechar()" mat-stroked-button>Cancelar</button>
+
+      <button type="submit" mat-flat-button color="primary" [disabled]="tecnologiaForm.invalid">
+        {{ tecnologiaEmEdicao ? 'Atualizar' : 'Adicionar' }}
       </button>
     </div>
 
-  </div>
-
-</form>
+  </form>
+</div>

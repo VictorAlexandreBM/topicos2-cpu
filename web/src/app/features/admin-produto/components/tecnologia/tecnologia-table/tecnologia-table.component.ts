@@ -10,15 +10,14 @@ import {
   MatTable
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
-import {MatFabButton} from '@angular/material/button';
+import {MatFabButton, MatIconButton} from '@angular/material/button';
 import TecnologiaService from '../../../services/tecnologia.service';
 import {SnackbarService} from '../../../../../core/services/snackbar.service';
-import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
-import {MatProgressBar} from '@angular/material/progress-bar';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -35,9 +34,9 @@ import {MatProgressBar} from '@angular/material/progress-bar';
     MatHeaderRow,
     MatRow,
     MatIcon,
-    MatFabButton,
     MatPaginator,
-    MatProgressBar
+    MatIconButton,
+    MatProgressSpinner
   ]
 })
 export default class TecnologiaTableComponent {
