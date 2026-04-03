@@ -16,6 +16,8 @@ import {SnackbarService} from '../../../../../core/services/snackbar.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {HttpErrorResponse} from '@angular/common/http';
+import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -63,6 +65,10 @@ export default class TecnologiaTableComponent {
       next: _ => {
         this.tecnologiaDeletada.emit(t);
         this.snackbarService.alertar('Tecnologia deletada com sucesso!')
+      },
+      error: (err: HttpErrorResponse) => {
+        const erro = err.error as BackendError;
+        this.snackbarService.alertar('Erro ao deletar tecnologia: ' + erro.detail);
       }
     })
   }
@@ -81,6 +87,10 @@ export default class TecnologiaTableComponent {
       next: _ => {
         this.tecnologiaAlteradaEstado.emit(t);
         this.snackbarService.alertar(`Tecnologia ${ativo ? 'Ativada' : 'Desativada'} com sucesso!`)
+      },
+      error: (err: HttpErrorResponse) => {
+        const erro = err.error as BackendError;
+        this.snackbarService.alertar('Erro ao desativar tecnologia: ' + erro.detail);
       }
     })
   }

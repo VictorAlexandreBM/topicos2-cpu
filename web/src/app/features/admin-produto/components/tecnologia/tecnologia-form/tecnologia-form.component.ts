@@ -73,10 +73,8 @@ export class TecnologiaFormComponent {
         this.tecnologiaForm.reset();
         this.snackbarService.alertar('Tecnologia cadastrada com sucesso!')
       },
-      error: (err: HttpErrorResponse) => {
-        this.snackbarService.alertar('Erro ao cadastrar tecnologia!');
-        this.tratarErros(err);
-      }
+      error: (err: HttpErrorResponse) => this.tratarErros(err, 'Erro ao cadastrar tecnologia')
+
     })
   }
 
@@ -89,10 +87,7 @@ export class TecnologiaFormComponent {
         this.redefinir()
         this.snackbarService.alertar('Tecnologia atualizada com sucesso!')
       },
-      error: (err: HttpErrorResponse) => {
-        this.snackbarService.alertar('Erro ao atualizar tecnologia!');
-        this.tratarErros(err);
-      }
+      error: (err: HttpErrorResponse) => this.tratarErros(err, 'Erro ao atualizar tecnologia')
     })
   }
 
@@ -100,7 +95,7 @@ export class TecnologiaFormComponent {
     return dados as TecnologiaFormRequest;
   }
 
-  private tratarErros(err: HttpErrorResponse): void {
+  private tratarErros(err: HttpErrorResponse, mensagem: string): void {
 
     if (Object.hasOwn(err.error, 'errors')){
       const erros: ValidationError<CamposFormularioTecnologia>[] = err.error.errors;
@@ -114,7 +109,7 @@ export class TecnologiaFormComponent {
     }
     else {
       const erro = err.error as BackendError;
-      this.snackbarService.alertar('Erro ao Cadastrar Tecnologia: ' + erro.detail);
+      this.snackbarService.alertar(`${mensagem}: ${erro.detail}`);
     }
   }
 }
