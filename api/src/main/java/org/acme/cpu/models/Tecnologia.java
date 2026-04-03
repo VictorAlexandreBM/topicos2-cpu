@@ -3,7 +3,6 @@ package org.acme.cpu.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class Tecnologia extends BaseInativavelEntity {

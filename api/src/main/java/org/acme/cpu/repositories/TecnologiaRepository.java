@@ -44,4 +44,8 @@ public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
 
         return this.count(q, mapaParametros);
     }
+
+    public Tecnologia buscarAtivaPorNome(String nome) {
+        return this.find("nome = ?1 AND ativo = ?2", nome, true).firstResult();
+    }
 }

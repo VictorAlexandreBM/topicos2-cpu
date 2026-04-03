@@ -7,6 +7,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.acme.cpu.dto.Tecnologia.TecnologiaDTO;
 import org.acme.cpu.dto.Tecnologia.TecnologiaResponseDTO;
 import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.exception.ValidationException;
 import org.acme.cpu.models.Tecnologia;
 import org.acme.cpu.repositories.TecnologiaRepository;
 
@@ -52,6 +53,10 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     public Tecnologia criar(TecnologiaDTO t) {
         Tecnologia tecnologia = new Tecnologia();
 
+        if (repository.buscarAtivaPorNome(t.nome()) != null) {
+            throw ValidationException.ofConflito("nome", "Uma tecnologia com este nome já existe!");
+        }
+
         tecnologia.setNome(t.nome());
         tecnologia.setDescricao(t.descricao());
 
@@ -66,6 +71,10 @@ public class TecnologiaServiceImpl implements TecnologiaService {
 
         Tecnologia tecnologia = getTecnologiaEntity(id);
 
+        if (!tecnologia.getNome().equals(t.nome()) && repository.buscarAtivaPorNome(t.nome()) != null) {
+            throw ValidationException.ofConflito("nome", "Uma tecnologia com este nome já existe!");
+        }
+
         tecnologia.setNome(t.nome());
         tecnologia.setDescricao(t.descricao());
 
@@ -74,7 +83,7 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Override
     @Transactional
     public void deletar(Long id) {
-        Tecnologia tecnologia =  getTecnologiaEntity(id);
+        Tecnologia tecnologia = getTecnologiaEntity(id);
 
         repository.delete(tecnologia);
     }
