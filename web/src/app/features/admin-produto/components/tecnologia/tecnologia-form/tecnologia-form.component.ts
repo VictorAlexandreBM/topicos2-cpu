@@ -1,13 +1,16 @@
-import {Component, effect, inject, Input, input, model, output} from '@angular/core';
+import {Component, effect, inject, Input, input, model, output, signal} from '@angular/core';
 import {FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import TecnologiaService from '../../../services/tecnologia.service';
 import {Tecnologia, TecnologiaFormRequest} from '../../../models/tecnologia.model';
 import {FieldErrorPipe} from '../../../../../core/pipes/field-error.pipe';
 import {MatIcon} from '@angular/material/icon';
 import {SnackbarService} from '../../../../../core/services/snackbar.service';
+import {BackendValidationError} from '../../../../../core/models/backend-error.model';
+import {HttpErrorResponse} from '@angular/common/http';
+
+type CamposFormularioTecnologia = 'nome' | 'descricao';
 
 @Component({
   selector: 'app-tecnologia-form',
@@ -52,6 +55,8 @@ export class TecnologiaFormComponent {
         this.tecnologiaForm.reset();
       }
     })
+
+
   }
 
   redefinir() {
@@ -68,8 +73,9 @@ export class TecnologiaFormComponent {
         this.tecnologiaForm.reset();
         this.snackbarService.alertar('Tecnologia cadastrada com sucesso!')
       },
-      error: err => {
-        console.error(err);
+      error: (err: HttpErrorResponse) => {
+        this.snackbarService.alertar('Erro ao cadastrar tecnologia!');
+        this.tratarErros(err);
       }
     })
   }
@@ -82,11 +88,26 @@ export class TecnologiaFormComponent {
         this.tecnologiaAtualizada.emit(this.tecnologiaEmEdicao()!);
         this.redefinir()
         this.snackbarService.alertar('Tecnologia atualizada com sucesso!')
+      },
+      error: (err: HttpErrorResponse) => {
+        this.snackbarService.alertar('Erro ao atualizar tecnologia!');
+        this.tratarErros(err);
       }
     })
   }
 
-  tratarDados(dados: object) {
+  private tratarDados(dados: object) {
     return dados as TecnologiaFormRequest;
+  }
+
+  private tratarErros(err: HttpErrorResponse): void {
+    const erros: BackendValidationError<CamposFormularioTecnologia>[] = err.error.errors;
+
+    erros.forEach((erro) => {
+      const control = this.tecnologiaForm.get(erro.field);
+      if (control) {
+        control.setErrors({ backend: erro.message });
+      }
+    });
   }
 }
