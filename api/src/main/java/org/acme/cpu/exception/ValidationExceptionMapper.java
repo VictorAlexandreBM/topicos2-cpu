@@ -31,7 +31,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
         var p = new Problem();
         p.type = baseUrl + "/errors/validation-error";
         p.title = "Erro de validação";
-        p.status = Response.Status.BAD_REQUEST.getStatusCode();
+        p.status = e.isConflito() ? Response.Status.CONFLICT.getStatusCode() :  Response.Status.BAD_REQUEST.getStatusCode();
         p.detail = e.getMessage();
         p.instance = (uri != null ? uri.getRequestUri().getPath() : null);
         p.timestamp = OffsetDateTime.now();
