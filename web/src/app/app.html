@@ -1,25 +1,46 @@
 <mat-sidenav-container class="h-screen w-full bg-gray-50" [hasBackdrop]="false">
 
   <mat-sidenav #sidenav mode="side" [opened]="true" class="w-64 bg-white border-r">
+    <nav class="px-2">
+      <mat-accordion multi="true" displayMode="flat">
+        @for (secao of secoes(); track secao.label) {
+          <mat-expansion-panel [expanded]="secao.aberta" class="!shadow-none !bg-transparent border-none">
 
-    <nav class="flex flex-col p-4 gap-2">
-      @for (item of itens(); track item.nome) {
-        <a mat-button [routerLink]="`/admin/${item.nome}`" routerLinkActive="bg-gray-100 text-blue-600">
-          {{ item.label }}
-        </a>
-      }
+            <mat-expansion-panel-header class="!px-4 hover:bg-gray-50 !h-12">
+              <mat-panel-title class="flex items-center gap-3 text-gray-700 font-medium">
+                <mat-icon class="text-gray-400">{{ secao.icone }}</mat-icon>
+                {{ secao.label }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="flex flex-col gap-1 py-1">
+              @for (item of secao.subItens; track item.rota) {
+                <a mat-button [routerLink]="['/admin', item.rota]"
+                   routerLinkActive="!bg-blue-50 !text-blue-700 font-semibold"
+                   class="!w-full !justify-start !pl-12 !h-10 !text-gray-500 !text-sm">
+                  {{ item.label }}
+                </a>
+              }
+            </div>
+
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
     </nav>
   </mat-sidenav>
 
   <mat-sidenav-content class="flex flex-col h-full overflow-hidden">
 
-    <header class="h-18 bg-white flex items-center px-4 shrink-0 shadow-sm z-10 relative">
+    <header class="h-16 bg-white flex items-center px-6 shrink-0 shadow-sm z-10 relative border-b">
+      <div>
+        <span class="text-3xl font-bold"> Painel de Administrador </span>
+      </div>
       <div class="ml-auto">
         <button mat-button>Administrador</button>
       </div>
     </header>
 
-    <main class="flex-1 overflow-auto p-6">
+    <main class="flex-1 overflow-auto bg-gray-50">
       <router-outlet></router-outlet>
     </main>
 

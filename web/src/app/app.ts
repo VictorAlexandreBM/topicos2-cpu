@@ -3,44 +3,47 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
 
 interface ItemMenuLateral {
   nome: string;
-  label: string;
+  rota: string;
 }
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavContainer, MatSidenav, MatButton, RouterLink, RouterLinkActive, MatSidenavContent, MatIconButton, MatIcon],
+  imports: [RouterOutlet, MatSidenavContainer, MatSidenav, MatButton, RouterLink, RouterLinkActive, MatSidenavContent, MatIconButton, MatIcon, MatMenuTrigger, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('web');
-  protected readonly itens = signal<ItemMenuLateral[]>([
+  protected secoes = signal([
     {
-      nome: 'dashboard',
-      label: 'Dashboard'
+      label: 'Configurações Base',
+      icone: 'settings',
+      aberta: true,
+      subItens: [
+        { label: 'Tecnologias', rota: 'tecnologia' },
+        { label: 'Sockets', rota: 'socket' },
+        { label: 'Marcas', rota: 'marca' },
+        { label: 'Chipsets', rota: 'chipset' }
+      ]
     },
     {
-      nome: 'modelo',
-      label: 'Modelos'
-    },
-    {
-      nome: 'tecnologia',
-      label: 'Tecnologias'
-    },
-    {
-      nome: 'socket',
-      label: 'Sockets'
-    },
-    {
-      nome: 'marca',
-      label: 'Marcas'
-    },
-    {
-      nome: 'chipset',
-      label: 'Chipsets'
+      label: 'Hardware',
+      icone: 'memory',
+      aberta: false,
+      subItens: [
+        { label: 'Modelos de CPU', rota: 'modelos-cpu' },
+        { label: 'Processadores', rota: 'cpus' }
+      ]
     }
   ]);
 }
