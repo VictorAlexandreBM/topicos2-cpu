@@ -20,17 +20,16 @@
       </button>
     </div>
     <app-tecnologia-filtro (filtroAlterado)="handlePesquisa($event)" (mostrarInativos)="handleMostrarInativos($event)"/>
-    @if (tecnologiasResponse(); as resposta) {
       <app-tecnologia-table
-        [tecnologias]="resposta.dados"
-        [total]="resposta.total"
+        [tecnologias]="tecnologiasResponse()?.dados ?? []"
+        [total]="tecnologiasResponse()?.total ?? 0"
+        [estaCarregando]="estaCarregando()"
         (mudancaPagina)="handleMudancaPagina($event)"
         (tecnologiaDeletada)="handleDelecao($event)"
         (tecnologiaEditada)="handleEdicao($event, drawer)"
         (tecnologiaAlteradaEstado)="handleEstadoAlterado($event)"
         [tecnologiaEmEdicao]="tecnologiaEmEdicao()"/>
 
-    }
 
   </mat-drawer-content>
 </mat-drawer-container>

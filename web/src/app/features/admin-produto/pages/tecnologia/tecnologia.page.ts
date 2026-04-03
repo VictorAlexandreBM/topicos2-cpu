@@ -1,84 +1,99 @@
-import TecnologiaService from '../../services/tecnologia.service';
-import {Component, inject, signal} from '@angular/core';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import TecnologiaTableComponent from '../../components/tecnologia/tecnologia-table/tecnologia-table.component';
-import {TecnologiaFormComponent} from '../../components/tecnologia/tecnologia-form/tecnologia-form.component';
-import {switchMap} from 'rxjs';
-import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
-import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {Tecnologia} from '../../models/tecnologia.model';
-import {PageEvent} from '@angular/material/paginator';
-import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
+  import TecnologiaService from '../../services/tecnologia.service';
+  import {Component, inject, signal} from '@angular/core';
+  import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+  import TecnologiaTableComponent from '../../components/tecnologia/tecnologia-table/tecnologia-table.component';
+  import {TecnologiaFormComponent} from '../../components/tecnologia/tecnologia-form/tecnologia-form.component';
+  import {catchError, finalize, switchMap, tap, throwError} from 'rxjs';
+  import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
+  import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
+  import {MatIcon} from '@angular/material/icon';
+  import {Tecnologia} from '../../models/tecnologia.model';
+  import {PageEvent} from '@angular/material/paginator';
+  import {TecnologiaFiltroComponent} from '../../components/tecnologia/tecnologia-filtro/tecnologia-filtro.component';
+  import {HttpErrorResponse} from '@angular/common/http';
 
 
-@Component({
-  selector: 'app-tecnologia-page',
-  templateUrl: './tecnologia.page.html',
-  styleUrl: 'tecnologia.page.css',
-  imports: [
-    TecnologiaTableComponent,
-    TecnologiaFormComponent,
-    MatDrawerContainer,
-    MatDrawer,
-    MatDrawerContent,
-    MatIcon,
-    MatFabButton,
-    MatIconButton,
-    TecnologiaFiltroComponent
-  ]
-})
-export default class TecnologiaPage {
-  private readonly service = inject(TecnologiaService)
-  private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: '', ativo: true});
+  @Component({
+    selector: 'app-tecnologia-page',
+    templateUrl: './tecnologia.page.html',
+    styleUrl: 'tecnologia.page.css',
+    imports: [
+      TecnologiaTableComponent,
+      TecnologiaFormComponent,
+      MatDrawerContainer,
+      MatDrawer,
+      MatDrawerContent,
+      MatIcon,
+      MatFabButton,
+      MatIconButton,
+      TecnologiaFiltroComponent
+    ]
+  })
+  export default class TecnologiaPage {
+    private readonly service = inject(TecnologiaService)
+    private refreshTrigger = signal({pagina: 0, tamanho: 2, filtro: '', ativo: true});
 
-  private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
-    switchMap(r => this.service.listar(r.pagina, r.tamanho, r.filtro, r.ativo))
-  )
+    protected estaCarregando = signal(false);
+    protected erroGerado = signal<HttpErrorResponse|null>(null);
 
-  protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
+    private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
+      tap(() => {
+        this.estaCarregando.set(true)
+        this.erroGerado.set(null);
+      }),
+      switchMap(r =>
+        this.service.listar(r.pagina, r.tamanho, r.filtro, r.ativo).pipe(
+          finalize(() => this.estaCarregando.set(false)),
+          catchError((err: HttpErrorResponse) => {
+            this.erroGerado.set(err);
+            return throwError(() => err)
+          })
+        ))
+    )
 
-  protected tecnologiaEmEdicao = signal<Tecnologia | null>(null);
+    protected readonly tecnologiasResponse = toSignal(this.tecnologiasResponse$);
 
-  refreshTecnologias() {
-    this.refreshTrigger.update((r) => ({...r}));
-  }
+    protected tecnologiaEmEdicao = signal<Tecnologia | null>(null);
 
-  handleEdicao(t: Tecnologia, drawer: MatDrawer) {
-    this.tecnologiaEmEdicao.set(t);
-    void drawer.open();
-  }
+    refreshTecnologias() {
+      this.refreshTrigger.update((r) => ({...r}));
+    }
 
-  handleAtualizacao() {
-    this.refreshTecnologias();
-    this.tecnologiaEmEdicao.set(null);
-  }
+    handleEdicao(t: Tecnologia, drawer: MatDrawer) {
+      this.tecnologiaEmEdicao.set(t);
+      void drawer.open();
+    }
 
-  handleDelecao(tecnologia: Tecnologia) {
-    this.refreshTecnologias();
-    if (this.tecnologiaEmEdicao() === tecnologia) {
+    handleAtualizacao() {
+      this.refreshTecnologias();
       this.tecnologiaEmEdicao.set(null);
     }
-  }
 
-  handleMudancaPagina(event: PageEvent) {
-    console.log(event);
-    this.refreshTrigger.update(r => ({...r, pagina: event.pageIndex, tamanho: event.pageSize}));
-  }
+    handleDelecao(tecnologia: Tecnologia) {
+      this.refreshTecnologias();
+      if (this.tecnologiaEmEdicao() === tecnologia) {
+        this.tecnologiaEmEdicao.set(null);
+      }
+    }
 
-  handleEstadoAlterado(tecnologia: Tecnologia) {
-    this.refreshTecnologias();
-    if (this.tecnologiaEmEdicao() === tecnologia) {
-      this.tecnologiaEmEdicao.set(null);
+    handleMudancaPagina(event: PageEvent) {
+      console.log(event);
+      this.refreshTrigger.update(r => ({...r, pagina: event.pageIndex, tamanho: event.pageSize}));
+    }
+
+    handleEstadoAlterado(tecnologia: Tecnologia) {
+      this.refreshTecnologias();
+      if (this.tecnologiaEmEdicao() === tecnologia) {
+        this.tecnologiaEmEdicao.set(null);
+      }
+    }
+
+    handlePesquisa(filtro: string) {
+      this.refreshTrigger.update(r => ({...r, pagina: 0, filtro}));
+    }
+
+    handleMostrarInativos(mostrarInativos: boolean) {
+      this.refreshTrigger.update(r => ({...r, pagina: 0, ativo: !mostrarInativos}));
+
     }
   }
-
-  handlePesquisa(filtro: string) {
-    this.refreshTrigger.update(r => ({...r, pagina: 0, filtro}));
-  }
-
-  handleMostrarInativos(mostrarInativos: boolean) {
-    this.refreshTrigger.update(r => ({...r, pagina: 0, ativo: !mostrarInativos}));
-
-  }
-}

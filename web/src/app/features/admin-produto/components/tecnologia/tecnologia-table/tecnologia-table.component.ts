@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {Tecnologia} from '../../../models/tecnologia.model';
 import {
   MatCell,
@@ -18,6 +18,7 @@ import {ConfirmDialogService} from '../../../../../core/services/confirm-dialog.
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
+import {MatProgressBar} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -35,13 +36,14 @@ import {BackendError, ValidationError} from '../../../../../core/models/backend-
     MatRow,
     MatIcon,
     MatFabButton,
-    MatPaginator
+    MatPaginator,
+    MatProgressBar
   ]
 })
 export default class TecnologiaTableComponent {
   public tecnologias = input.required<Tecnologia[]>();
   public total = input.required<number>();
-
+  public estaCarregando = input.required<boolean>();
   public mudancaPagina = output<PageEvent>();
 
   public tecnologiaDeletada = output<Tecnologia>();

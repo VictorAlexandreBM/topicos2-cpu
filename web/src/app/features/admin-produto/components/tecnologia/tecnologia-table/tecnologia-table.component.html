@@ -1,4 +1,9 @@
 <div class="mat-elevation-z8">
+
+  @if (estaCarregando()) {
+    <mat-progress-bar mode="indeterminate" class="absolute top-0 z-10"></mat-progress-bar>
+  }
+
   <table mat-table [dataSource]="tecnologias()">
 
     <ng-container matColumnDef="nome">
@@ -46,6 +51,11 @@ t
     showFirstLastButtons
     (page)="paginar($event)"
   ></mat-paginator>
+
+  @if (estaCarregando()) {
+    <div class="absolute inset-0 bg-white/50 z-0 flex items-center justify-center">
+    </div>
+  }
 </div>
 
 

@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Tecnologia, TecnologiaFormRequest} from '../models/tecnologia.model';
-import {Observable} from 'rxjs';
+import {delay, Observable} from 'rxjs';
 import {RespostaPaginada} from '../../../core/models/resposta-paginada.model';
 
 @Injectable({
