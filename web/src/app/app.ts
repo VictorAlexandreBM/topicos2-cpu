@@ -4,6 +4,11 @@ import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/mater
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 
+interface ItemMenuLateral {
+  nome: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, MatSidenavContainer, MatSidenav, MatButton, RouterLink, RouterLinkActive, MatSidenavContent, MatIconButton, MatIcon],
@@ -12,4 +17,30 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class App {
   protected readonly title = signal('web');
+  protected readonly itens = signal<ItemMenuLateral[]>([
+    {
+      nome: 'dashboard',
+      label: 'Dashboard'
+    },
+    {
+      nome: 'modelo',
+      label: 'Modelos'
+    },
+    {
+      nome: 'tecnologia',
+      label: 'Tecnologias'
+    },
+    {
+      nome: 'socket',
+      label: 'Sockets'
+    },
+    {
+      nome: 'marca',
+      label: 'Marcas'
+    },
+    {
+      nome: 'chipset',
+      label: 'Chipsets'
+    }
+  ]);
 }
