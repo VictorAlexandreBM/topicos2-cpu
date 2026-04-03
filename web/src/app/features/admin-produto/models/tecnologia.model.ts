@@ -2,6 +2,7 @@ export interface Tecnologia {
   id: number;
   nome: string;
   descricao: string;
+  dataCriacao: string;
   ativo: boolean;
 }
 

@@ -19,6 +19,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatSort, MatSortHeader, Sort} from '@angular/material/sort';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-tecnologia-table',
@@ -39,7 +40,8 @@ import {MatSort, MatSortHeader, Sort} from '@angular/material/sort';
     MatIconButton,
     MatProgressSpinner,
     MatSort,
-    MatSortHeader
+    MatSortHeader,
+    DatePipe
   ]
 })
 export default class TecnologiaTableComponent {
@@ -59,7 +61,7 @@ export default class TecnologiaTableComponent {
   private snackbarService = inject(SnackbarService);
   private readonly dialogService   = inject(ConfirmDialogService);
 
-  protected readonly colunas = ['acao', 'nome', 'descricao'];
+  protected readonly colunas = ['acao', 'nome', 'descricao', 'dataCriacao'];
 
   protected async deletar(t: Tecnologia){
 

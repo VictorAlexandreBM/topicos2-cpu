@@ -25,6 +25,7 @@
   <app-tecnologia-table
     [tecnologias]="tecnologiasResponse()?.dados ?? []"
     [total]="tecnologiasResponse()?.total ?? 0"
+    [tecnologiaEmEdicao]="tecnologiaEmEdicao()"
     [estaCarregando]="estaCarregando()"
     (mudancaPagina)="handleMudancaPagina($event)"
     (mudancaOrdem)="handleMudancaOrdem($event)"
