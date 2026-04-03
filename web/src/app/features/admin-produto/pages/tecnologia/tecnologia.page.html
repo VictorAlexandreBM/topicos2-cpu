@@ -12,10 +12,15 @@
       (filtroAlterado)="handlePesquisa($event)"
       (mostrarInativos)="handleMostrarInativos($event)"/>
 
+  </div>
+  <div class="flex items-center gap-4 mb-4">
+
     <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="abrirFormulario()">
       <mat-icon>add</mat-icon> Adicionar Tecnologia
     </button>
   </div>
+
+
 
   <app-tecnologia-table
     [tecnologias]="tecnologiasResponse()?.dados ?? []"
