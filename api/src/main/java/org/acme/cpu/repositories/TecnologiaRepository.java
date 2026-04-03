@@ -2,16 +2,22 @@ package org.acme.cpu.repositories;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.logging.Log;
+import io.quarkus.panache.common.Sort;
+import io.quarkus.panache.common.Sort.Direction;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.cpu.models.Tecnologia;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @ApplicationScoped
 public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
-    public List<Tecnologia> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo) {
+
+    private static final Set<String> CAMPOS_ORDENAVEIS = Set.of("id", "nome", "descricao");
+
+    public List<Tecnologia> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
         Map<String, Object> mapaParametros = new HashMap<>();
         String q = "ativo = :ativo";
 
@@ -23,7 +29,14 @@ public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
             mapaParametros.put("pesquisa", pesquisa);
         }
 
-        var panacheQuery = this.find(q, mapaParametros);
+        Direction direcaoFinal = "desc".equalsIgnoreCase(direcao) ? Direction.Descending : Direction.Ascending;
+
+        String campoOrdenacaoFinal = (campoOrdenacao != null && CAMPOS_ORDENAVEIS.contains(campoOrdenacao.toLowerCase()))
+                ? campoOrdenacao.toLowerCase() : "id";
+
+        Sort sort = Sort.by(campoOrdenacaoFinal, direcaoFinal);
+
+        var panacheQuery = this.find(q, sort, mapaParametros);
 
         if (pagina == null || tamanho == null) return panacheQuery.list();
 
