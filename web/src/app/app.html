@@ -1,1 +1,32 @@
-<router-outlet />
+<mat-sidenav-container class="h-screen w-full bg-gray-50" [hasBackdrop]="false">
+
+  <mat-sidenav #sidenav mode="side" [opened]="true" class="w-64 bg-white border-r">
+
+    <nav class="flex flex-col p-4 gap-2">
+      <a mat-button routerLink="/admin/dashboard" routerLinkActive="bg-gray-100 text-blue-600">
+        Dashboard
+      </a>
+      <a mat-button routerLink="/admin/modelos" routerLinkActive="bg-gray-100 text-blue-600">
+        Modelos de CPU
+      </a>
+      <a mat-button routerLink="/admin/tecnologias" routerLinkActive="bg-gray-100 text-blue-600">
+        Tecnologias
+      </a>
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="flex flex-col h-full overflow-hidden">
+
+    <header class="h-18 bg-white flex items-center px-4 shrink-0 shadow-sm z-10 relative">
+      <div class="ml-auto">
+        <button mat-button>Administrador</button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
