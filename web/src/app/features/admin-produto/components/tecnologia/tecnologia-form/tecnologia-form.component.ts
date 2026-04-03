@@ -7,7 +7,7 @@ import {Tecnologia, TecnologiaFormRequest} from '../../../models/tecnologia.mode
 import {FieldErrorPipe} from '../../../../../core/pipes/field-error.pipe';
 import {MatIcon} from '@angular/material/icon';
 import {SnackbarService} from '../../../../../core/services/snackbar.service';
-import {BackendValidationError} from '../../../../../core/models/backend-error.model';
+import {BackendError, ValidationError} from '../../../../../core/models/backend-error.model';
 import {HttpErrorResponse} from '@angular/common/http';
 
 type CamposFormularioTecnologia = 'nome' | 'descricao';
@@ -101,13 +101,20 @@ export class TecnologiaFormComponent {
   }
 
   private tratarErros(err: HttpErrorResponse): void {
-    const erros: BackendValidationError<CamposFormularioTecnologia>[] = err.error.errors;
 
-    erros.forEach((erro) => {
-      const control = this.tecnologiaForm.get(erro.field);
-      if (control) {
-        control.setErrors({ backend: erro.message });
-      }
-    });
+    if (Object.hasOwn(err.error, 'errors')){
+      const erros: ValidationError<CamposFormularioTecnologia>[] = err.error.errors;
+
+      erros.forEach((erro) => {
+        const control = this.tecnologiaForm.get(erro.field);
+        if (control) {
+          control.setErrors({ backend: erro.message });
+        }
+      });
+    }
+    else {
+      const erro = err.error as BackendError;
+      this.snackbarService.alertar('Erro ao Cadastrar Tecnologia: ' + erro.detail);
+    }
   }
 }
