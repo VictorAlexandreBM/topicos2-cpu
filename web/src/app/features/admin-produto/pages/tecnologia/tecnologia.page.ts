@@ -41,7 +41,7 @@
         this.erroGerado.set(null);
       }),
       switchMap(r =>
-        this.service. listar(r).pipe(
+        this.service.listar(r).pipe(
           finalize(() => this.estaCarregando.set(false)),
           catchError((err: HttpErrorResponse) => {
             this.erroGerado.set(err);

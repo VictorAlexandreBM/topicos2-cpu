@@ -2,6 +2,9 @@
 
   <mat-sidenav #sidenav mode="side" [opened]="true" class="w-64 bg-white border-r">
     <nav class="px-2">
+      <div class="h-16 pt-2 flex justify-items-center">
+        <span class="text-2xl font-bold m-auto"> Painel de Administrador </span>
+      </div>
       <mat-accordion multi="true" displayMode="flat">
         @for (secao of secoes(); track secao.label) {
           <mat-expansion-panel [expanded]="secao.aberta" class="!shadow-none !bg-transparent border-none">
@@ -32,9 +35,7 @@
   <mat-sidenav-content class="flex flex-col h-full overflow-hidden">
 
     <header class="h-16 bg-white flex items-center px-6 shrink-0 shadow-sm z-10 relative border-b">
-      <div>
-        <span class="text-3xl font-bold"> Painel de Administrador </span>
-      </div>
+
       <div class="ml-auto">
         <button mat-button>Administrador</button>
       </div>
