@@ -1,17 +1,14 @@
 package org.acme.cpu.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import org.acme.cpu.models.enums.TipoNucleo;
 
-@Entity
-public class ClusterNucleo extends BaseEntity {
+@Embeddable
+public class ClusterNucleo {
     @Column(nullable = false)
     @NotNull()
     @Positive()

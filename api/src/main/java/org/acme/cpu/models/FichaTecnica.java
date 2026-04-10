@@ -24,4 +24,35 @@ public class FichaTecnica {
     @Column(nullable = true)
     private Double cacheL3MB;
 
+    public String getDescricaoComercial() {
+        return descricaoComercial;
+    }
+
+    public void setDescricaoComercial(String descricaoComercial) {
+        this.descricaoComercial = descricaoComercial;
+    }
+
+    public Integer getTdpBaseW() {
+        return tdpBaseW;
+    }
+
+    public void setTdpBaseW(Integer tdpBaseW) {
+        this.tdpBaseW = tdpBaseW;
+    }
+
+    public Double getCacheL2MB() {
+        return cacheL2MB;
+    }
+
+    public void setCacheL2MB(Double cacheL2MB) {
+        this.cacheL2MB = cacheL2MB;
+    }
+
+    public Double getCacheL3MB() {
+        return cacheL3MB;
+    }
+
+    public void setCacheL3MB(Double cacheL3MB) {
+        this.cacheL3MB = cacheL3MB;
+    }
 }

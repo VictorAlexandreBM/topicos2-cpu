@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class ModeloCpu extends BaseEntity {
+public class ModeloCpu extends BaseInativavelEntity {
 
     @Column(unique = true, nullable = false, length = 100)
     @NotBlank
@@ -33,8 +33,8 @@ public class ModeloCpu extends BaseEntity {
     )
     private Set<Tecnologia> tecnologias = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "modelo_cpu_id")
+    @ElementCollection
+    @CollectionTable(name = "modelo_cpu_cluster_nucleo", joinColumns = @JoinColumn(name = "modelo_cpu_id"))
     private Set<ClusterNucleo> clustersNucleo = new HashSet<>();
 
     @ManyToOne(targetEntity = Socket.class)
@@ -45,4 +45,63 @@ public class ModeloCpu extends BaseEntity {
     @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public FichaTecnica getFichaTecnica() {
+        return fichaTecnica;
+    }
+
+    public void setFichaTecnica(FichaTecnica fichaTecnica) {
+        this.fichaTecnica = fichaTecnica;
+    }
+
+    public Set<Tecnologia> getTecnologias() {
+        return tecnologias;
+    }
+
+    public void setTecnologias(Set<Tecnologia> tecnologias) {
+        this.tecnologias = tecnologias;
+    }
+
+    public Set<Chipset> getChipsets() {
+        return chipsets;
+    }
+
+    public void setChipsets(Set<Chipset> chipsets) {
+        this.chipsets = chipsets;
+    }
+
+    public Set<ClusterNucleo> getClustersNucleo() {
+        return clustersNucleo;
+    }
+
+    public void setClustersNucleo(Set<ClusterNucleo> clustersNucleo) {
+        this.clustersNucleo = clustersNucleo;
+    }
+
+    public void addClusterNucleo(ClusterNucleo clusterNucleo) {
+        this.clustersNucleo.add(clusterNucleo);
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
 }
