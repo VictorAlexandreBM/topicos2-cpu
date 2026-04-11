@@ -1,0 +1,128 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+actor "Visitante" as Visit
+actor "Cliente" as Cliente
+actor "Administrador" as Admin
+
+Cliente -up-|> Visit
+Admin -up-|> Cliente
+
+rectangle "Ecommerce de CPUs" {
+
+    rectangle "Busca e Navegação" {
+        usecase "UC01.1\nPesquisar CPU" as UC01_1
+        usecase "UC01.2\nPaginação" as UC01_2
+        UC01_1 <.. UC01_2 : <<extend>>
+    }
+
+    rectangle "Autenticação" {
+        usecase "UC08.1\nCadastrar-se" as UC08_1
+        usecase "UC08.2\nLogin Cliente" as UC08_2
+        usecase "UC08.3\nLogin Admin" as UC08_3
+        usecase "UC08.4\nLogoff" as UC08_4
+    }
+
+    rectangle "Cadastros Base" {
+        ' Marcas
+        usecase "UC02.1\nListar Marcas" as UC02_1
+        usecase "UC02.2\nCadastrar Marca" as UC02_2
+        usecase "UC02.3\nEditar Marca" as UC02_3
+        usecase "UC02.4\nRemover Marca" as UC02_4
+        usecase "UC02.5\nPesquisar Marcas" as UC02_5
+        usecase "UC02.6\nInativar Marca" as UC02_6
+        UC02_1 <.. UC02_2 : <<extend>>
+        UC02_1 <.. UC02_3 : <<extend>>
+        UC02_1 <.. UC02_4 : <<extend>>
+        UC02_1 <.. UC02_6 : <<extend>>
+
+        ' Tecnologias
+        usecase "UC03.1\nListar Tecnologias" as UC03_1
+        usecase "UC03.2\nCadastrar Tecnologia" as UC03_2
+        usecase "UC03.3\nEditar Tecnologia" as UC03_3
+        usecase "UC03.4\nRemover Tecnologia" as UC03_4
+        usecase "UC03.5\nPesquisar Tecnologias" as UC03_5
+        usecase "UC03.6\nInativar Tecnologia" as UC03_6
+        UC03_1 <.. UC03_2 : <<extend>>
+        UC03_1 <.. UC03_3 : <<extend>>
+        UC03_1 <.. UC03_4 : <<extend>>
+        UC03_1 <.. UC03_6 : <<extend>>
+
+        ' Sockets
+        usecase "UC04.1\nListar Sockets" as UC04_1
+        usecase "UC04.2\nCadastrar Socket" as UC04_2
+        usecase "UC04.3\nEditar Socket" as UC04_3
+        usecase "UC04.4\nRemover Socket" as UC04_4
+        usecase "UC04.5\nPesquisar Sockets" as UC04_5
+        usecase "UC04.6\nInativar Socket" as UC04_6
+        UC04_1 <.. UC04_2 : <<extend>>
+        UC04_1 <.. UC04_3 : <<extend>>
+        UC04_1 <.. UC04_4 : <<extend>>
+        UC04_1 <.. UC04_6 : <<extend>>
+
+        ' Chipsets
+        usecase "UC05.1\nListar Chipsets" as UC05_1
+        usecase "UC05.2\nCadastrar Chipset" as UC05_2
+        usecase "UC05.3\nEditar Chipset" as UC05_3
+        usecase "UC05.4\nRemover Chipset" as UC05_4
+        usecase "UC05.5\nPesquisar Chipsets" as UC05_5
+        usecase "UC05.6\nInativar Chipset" as UC05_6
+        UC05_1 <.. UC05_2 : <<extend>>
+        UC05_1 <.. UC05_3 : <<extend>>
+        UC05_1 <.. UC05_4 : <<extend>>
+        UC05_1 <.. UC05_6 : <<extend>>
+    }
+
+    rectangle "Inventário" {
+        ' Modelos
+        usecase "UC06.1\nListar Modelos" as UC06_1
+        usecase "UC06.2\nCadastrar Modelo" as UC06_2
+        usecase "UC06.3\nEditar Modelo" as UC06_3
+        usecase "UC06.4\nRemover Modelo" as UC06_4
+        usecase "UC06.5\nPesquisar Modelos" as UC06_5
+        usecase "UC06.6\nInativar Modelo" as UC06_6
+        UC06_1 <.. UC06_2 : <<extend>>
+        UC06_1 <.. UC06_3 : <<extend>>
+        UC06_1 <.. UC06_4 : <<extend>>
+        UC06_1 <.. UC06_6 : <<extend>>
+
+        ' CPUs
+        usecase "UC07.1\nListar CPUs" as UC07_1
+        usecase "UC07.2\nCadastrar CPU" as UC07_2
+        usecase "UC07.3\nEditar CPU" as UC07_3
+        usecase "UC07.4\nRemover CPU" as UC07_4
+        usecase "UC07.5\nPesquisar CPUs" as UC07_5
+        usecase "UC07.6\nColocar à Venda" as UC07_6
+        usecase "UC07.7\nInativar CPU" as UC07_7
+        UC07_1 <.. UC07_2 : <<extend>>
+        UC07_1 <.. UC07_3 : <<extend>>
+        UC07_1 <.. UC07_4 : <<extend>>
+        UC07_1 <.. UC07_6 : <<extend>>
+        UC07_1 <.. UC07_7 : <<extend>>
+    }
+}
+
+Visit -- UC01_1
+Visit -- UC08_1
+Visit -- UC08_2
+Visit -- UC08_3
+
+Cliente -- UC08_4
+
+Admin -- UC02_1
+Admin -- UC02_5
+Admin -- UC03_1
+Admin -- UC03_5
+Admin -- UC04_1
+Admin -- UC04_5
+Admin -- UC05_1
+Admin -- UC05_5
+Admin -- UC06_1
+Admin -- UC06_5
+Admin -- UC07_1
+Admin -- UC07_5
+
+@enduml

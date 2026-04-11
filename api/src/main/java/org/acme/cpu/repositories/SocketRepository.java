@@ -59,4 +59,8 @@ public class SocketRepository implements PanacheRepository<Socket> {
     public Socket buscarAtivaPorTipo(String tipo) {
         return this.find("tipo = ?1 AND ativo = ?2", tipo, true).firstResult();
     }
+
+    public Socket findByIdAtivo(Long id) {
+        return this.find("id = ?1 AND ativo = ?2", id, true).firstResult();
+    }
 }

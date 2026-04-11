@@ -1,15 +1,4 @@
 @startuml
-class Usuario {
-    - email: String
-    - senhaHash: String
-    - RefreshTokenExp: LocalDate
-    - tipo: TipoUsuario
-}
-
-enum TipoUsuario {
-    CLIENTE
-    ADMIN
-}
 class Marca {
     - nome: String
 }
@@ -45,14 +34,14 @@ class CpuTray {
 
 class CpuBox {
     - incluiCooler: boolean
-    - pesoEmbalagemGramas: Integer
+    - pesoEmbalagemGramas: Double
 }
 
 class ClusterNucleo {
     - frequenciaBase: Double
-    - frequenciaTurbo: Double
-    - quantidade: Integer
-    - tipo: TipoNucleo
+    - frequenciaMaxima: Double
+    - quantidadeNucleos: Integer
+    - tipoNucleo: TipoNucleo
 }
 
 enum TipoNucleo {
@@ -62,8 +51,9 @@ enum TipoNucleo {
 
 class FichaTecnica {
     - descricaoComercial: String
-    - cacheTotalMB: Double
     - tdpBaseW: Integer
+    - cacheL2MB: Double
+    - cacheL3MB: Double
 }
 
 Cpu "*" --> "1" ModeloCpu

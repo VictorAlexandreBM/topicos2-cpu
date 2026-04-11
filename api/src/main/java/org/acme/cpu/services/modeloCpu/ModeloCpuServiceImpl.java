@@ -111,6 +111,7 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
         } else {
             modelo.setSocket(null);
         }
+
         modelo.setChipsets(carregarChipsetsValidos(dto.chipsetIds()));
         modelo.setTecnologias(carregarTecnologiasValidas(dto.tecnologiaIds()));
         modelo.setFichaTecnica(montarFichaTecnica(dto.fichaTecnica()));
