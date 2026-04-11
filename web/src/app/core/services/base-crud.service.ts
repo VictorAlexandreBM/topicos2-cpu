@@ -10,15 +10,15 @@ import {RespostaPaginada} from '../models/resposta-paginada.model';
 export default abstract class BaseCrudService<T extends {id: number}, TREQ> {
 
   protected abstract readonly recurso: string;
-  private readonly http = inject(HttpClient);
+  protected readonly http = inject(HttpClient);
 
-  listar(parametrosListagem: ParametrosListagem): Observable<RespostaPaginada<T[]>> {
+  listar(parametrosListagem?: ParametrosListagem): Observable<RespostaPaginada<T[]>> {
 
-    const parametrosFiltrados = Object.fromEntries(
+    const parametrosFiltrados = parametrosListagem ? Object.fromEntries(
       Object.entries(parametrosListagem).filter(([_, v]) =>
         (v !== undefined && v !== null && v !== '')
       )
-    ) as { [key: string]: string | number | boolean}
+    ) as { [key: string]: string | number | boolean} : {}
 
 
     return this.http.get<RespostaPaginada<T[]>>(this.recurso, {

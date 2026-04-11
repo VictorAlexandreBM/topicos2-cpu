@@ -3,6 +3,7 @@ package org.acme.cpu.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TipoNucleo {
@@ -17,20 +18,18 @@ public enum TipoNucleo {
         this.sigla = sigla;
     }
 
-    @JsonProperty("sigla")
+    @JsonValue
     public char getSigla() {
         return sigla;
     }
 
-    @JsonProperty("tipo")
-    public String getNome() {
+    public String getTipo() {
         return tipo;
     }
 
-    @JsonCreator
     public static TipoNucleo fromTipo(String tipo) {
         for (TipoNucleo n : TipoNucleo.values()) {
-            if (n.getNome().equalsIgnoreCase(tipo)) {
+            if (n.getTipo().equalsIgnoreCase(tipo)) {
                 return n;
             }
         }
@@ -38,6 +37,7 @@ public enum TipoNucleo {
         throw new IllegalArgumentException("Tipo de Núcleo inválido: " + tipo);
     }
 
+    @JsonCreator
     public static TipoNucleo fromSigla(char sigla) {
         for (TipoNucleo n : TipoNucleo.values()) {
             if (n.getSigla() == sigla) {

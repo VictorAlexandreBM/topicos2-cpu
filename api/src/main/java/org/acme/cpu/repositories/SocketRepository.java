@@ -6,6 +6,7 @@ import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.cpu.models.Socket;
+import org.acme.cpu.models.Tecnologia;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,11 @@ public class SocketRepository implements PanacheRepository<Socket> {
 
     private PanacheQuery<Socket> construirQueryListar(String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
         Map<String, Object> mapaParametros = new HashMap<>();
+
+        boolean filtrarAtivo = (ativo != null) ? ativo : true;
+        
         String q = "ativo = :ativo";
-        mapaParametros.put("ativo", ativo);
+        mapaParametros.put("ativo", filtrarAtivo);
 
         if (filtro != null && !filtro.isBlank()) {
             q += " AND LOWER(tipo) LIKE LOWER(:pesquisa)";
@@ -41,6 +45,11 @@ public class SocketRepository implements PanacheRepository<Socket> {
             return query.list();
         }
         return query.page(pagina, tamanho).list();
+    }
+
+
+    public List<Socket> listar(Boolean ativo) {
+        return listar(null, null, null, ativo, null, null);
     }
 
     public long countListar(String filtro, Boolean ativo) {

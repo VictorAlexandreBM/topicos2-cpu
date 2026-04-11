@@ -19,6 +19,23 @@ export const routes: Routes = [
       {
         path: 'chipset',
         loadComponent: () => import('./features/admin-produto/pages/chipset/chipset.page')
+      },
+      {
+        path: 'modelo-cpu',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/admin-produto/pages/modelo-cpu/modelo-cpu.page')
+          },
+          {
+            path: 'criar',
+            loadComponent: () => import('@features/admin-produto/components/modelo-cpu/modelo-cpu-form/modelo-cpu-form.component')
+          },
+          {
+            path: 'editar/:id',
+            loadComponent: () => import('@features/admin-produto/components/modelo-cpu/modelo-cpu-form/modelo-cpu-form.component')
+          }
+        ]
       }
     ]
   }

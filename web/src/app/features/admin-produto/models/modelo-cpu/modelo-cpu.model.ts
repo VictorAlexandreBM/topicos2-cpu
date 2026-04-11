@@ -18,7 +18,7 @@ export interface ModeloCpuDetail {
   clustersNucleo: ClusterNucleo[];
 }
 
-export interface ModeloCpuListDTO {
+export interface ModeloCpuList {
   id: number;
   nome: string;
   nomeMarca: string;
@@ -28,7 +28,7 @@ export interface ModeloCpuListDTO {
   ativo: boolean;
 }
 
-export interface ModeloCpuRequestDTO {
+export interface ModeloCpuFormRequest {
   nome: string;
 
   marcaId: number;
@@ -42,4 +42,11 @@ export interface ModeloCpuRequestDTO {
   chipsetIds?: number[];
 
   tecnologiaIds?: number[];
+}
+
+export interface ModeloCpuOpcoesForm {
+    marcas: Marca[];
+    sockets: Socket[];
+    tecnologias: Tecnologia[];
+    chipsets: Chipset[];
 }

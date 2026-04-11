@@ -19,8 +19,11 @@ public class MarcaRepository implements PanacheRepository<Marca> {
 
     private PanacheQuery<Marca> construirQueryListar(String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
         Map<String, Object> mapaParametros = new HashMap<>();
+
+        boolean filtrarAtivo = (ativo != null) ? ativo : true;
+
         String q = "ativo = :ativo";
-        mapaParametros.put("ativo", ativo);
+        mapaParametros.put("ativo", filtrarAtivo);
 
         if (filtro != null && !filtro.isBlank()) {
             q += " AND LOWER(nome) LIKE LOWER(:pesquisa)";
@@ -42,6 +45,11 @@ public class MarcaRepository implements PanacheRepository<Marca> {
         }
         return query.page(pagina, tamanho).list();
     }
+
+    public List<Marca> listar(Boolean ativo) {
+        return listar(null, null, null, ativo, null, null);
+    }
+
 
     public long countListar(String filtro, Boolean ativo) {
         return construirQueryListar(filtro, ativo, null, null).count();

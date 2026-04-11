@@ -65,4 +65,10 @@ public class ModeloCpuResource {
         }
         return Response.noContent().build();
     }
+
+    @GET
+    @Path("/opcoes-form")
+    public Response getOpcoesForm() {
+        return Response.ok(service.getOpcoesForm()).build();
+    }
 }

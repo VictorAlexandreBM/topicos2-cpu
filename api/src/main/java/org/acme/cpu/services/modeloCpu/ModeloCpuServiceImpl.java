@@ -4,11 +4,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+import org.acme.cpu.dto.chipset.ChipsetResponseDTO;
+import org.acme.cpu.dto.marca.MarcaResponseDTO;
 import org.acme.cpu.dto.modeloCpu.ModeloCpuDetailDTO;
 import org.acme.cpu.dto.modeloCpu.ModeloCpuListDTO;
+import org.acme.cpu.dto.modeloCpu.ModeloCpuOpcoesForm;
 import org.acme.cpu.dto.modeloCpu.ModeloCpuRequestDTO;
 import org.acme.cpu.dto.modeloCpu.fichaTecnica.FichaTecnicaRequestDTO;
 import org.acme.cpu.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.dto.socket.SocketResponseDTO;
+import org.acme.cpu.dto.tecnologia.TecnologiaResponseDTO;
 import org.acme.cpu.exception.ValidationException;
 import org.acme.cpu.models.*;
 import org.acme.cpu.repositories.*;
@@ -27,7 +32,7 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
     @Inject
     SocketRepository socketRepository;
     @Inject
-    ChipsetRepository chipsetRepositinjectory;
+    ChipsetRepository chipsetRepository;
     @Inject
     TecnologiaRepository tecnologiaRepository;
 
@@ -39,10 +44,11 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
         return new RespostaPaginadaDTO<>(listaModelos, quantidade);
     }
 
+
     private Marca carregarMarcaValida(Long id) {
         Marca marca = marcaRepository.findById(id);
         if (marca == null) {
-            throw ValidationException.of("marca", "Elemento não encontrado");
+                throw ValidationException.of("marcaId", "Elemento não encontrado");
         }
         return marca;
     }
@@ -50,16 +56,16 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
     private Socket carregarSocketValido(Long id) {
         Socket socket = socketRepository.findById(id);
         if (socket == null) {
-            throw ValidationException.of("socket", "Elemento não encontrado");
+            throw ValidationException.of("socketId", "Elemento não encontrado");
         }
         return socket;
     }
 
     private Set<Chipset> carregarChipsetsValidos(Set<Long> ids) {
         return ids != null ? ids.stream().map(id -> {
-            Chipset chipset = chipsetRepositinjectory.findById(id);
+            Chipset chipset = chipsetRepository.findById(id);
             if (chipset == null) {
-                throw ValidationException.of("chipsets", "Algum chipset não foi encontrado");
+                throw ValidationException.of("chipsetsIds", "Algum chipset não foi encontrado");
             }
             return chipset;
         }).collect(Collectors.toSet()) : Set.of();
@@ -69,7 +75,7 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
         return ids != null ? ids.stream().map(id -> {
             Tecnologia tecnologia = tecnologiaRepository.findById(id);
             if (tecnologia == null) {
-                throw ValidationException.of("tecnologias", "Alguma tecnologia não foi encontrada");
+                throw ValidationException.of("tecnologiasIds", "Alguma tecnologia não foi encontrada");
             }
             return tecnologia;
         }).collect(Collectors.toSet()) : Set.of();
@@ -141,25 +147,34 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
             ModeloCpu atualizado = repository.findByIdWithDetails(id);
         }
 
-        private ModeloCpu getModeloEntity(Long id) {
-            ModeloCpu modelo = repository.findById(id);
-            if (modelo == null) {
-                throw new NotFoundException("Modelo não encontrado");
-            }
-            return modelo;
+    private ModeloCpu getModeloEntity(Long id) {
+        ModeloCpu modelo = repository.findById(id);
+        if (modelo == null) {
+            throw new NotFoundException("Modelo não encontrado");
         }
-
-        @Override
-        @Transactional
-        public void deletar(Long id) {
-            ModeloCpu modelo = getModeloEntity(id);
-            repository.delete(modelo);
-        }
-
-        @Override
-        @Transactional
-        public void alterarEstado(Long id, Boolean estado) {
-            ModeloCpu modelo = getModeloEntity(id);
-            modelo.setAtivo(estado);
-        }
+        return modelo;
     }
+
+    @Override
+    @Transactional
+    public void deletar(Long id) {
+        ModeloCpu modelo = getModeloEntity(id);
+        repository.delete(modelo);
+    }
+
+    @Override
+    @Transactional
+    public void alterarEstado(Long id, Boolean estado) {
+        ModeloCpu modelo = getModeloEntity(id);
+        modelo.setAtivo(estado);
+    }
+
+    @Override
+    public ModeloCpuOpcoesForm getOpcoesForm() {
+        List<MarcaResponseDTO> marcaResponseDTOS = marcaRepository.listar(true).stream().map(MarcaResponseDTO::new).toList();
+        List<SocketResponseDTO> socketResponseDTOS = socketRepository.listar(true).stream().map(SocketResponseDTO::new).toList();
+        List<ChipsetResponseDTO> chipsetResponseDTOS = chipsetRepository.listar(true).stream().map(ChipsetResponseDTO::new).toList();
+        List<TecnologiaResponseDTO> tecnologiaResponseDTOS = tecnologiaRepository.listar(true).stream().map(TecnologiaResponseDTO::new).toList();
+        return new ModeloCpuOpcoesForm(marcaResponseDTOS, socketResponseDTOS, chipsetResponseDTOS, tecnologiaResponseDTOS);
+    }
+}

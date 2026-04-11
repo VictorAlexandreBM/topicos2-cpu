@@ -41,9 +41,10 @@ export class App {
       icone: 'memory',
       aberta: false,
       subItens: [
-        { label: 'Modelos de CPU', rota: 'modelos-cpu' },
+        { label: 'Modelos de CPU', rota: 'modelo-cpu' },
         { label: 'Processadores', rota: 'cpus' }
       ]
     }
   ]);
+  protected readonly Array = Array;
 }

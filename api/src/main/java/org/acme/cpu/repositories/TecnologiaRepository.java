@@ -6,6 +6,7 @@ import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.cpu.models.Marca;
 import org.acme.cpu.models.Tecnologia;
 
 import java.util.HashMap;
@@ -20,8 +21,11 @@ public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
 
     private PanacheQuery<Tecnologia> construirQueryListar(String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
         Map<String, Object> mapaParametros = new HashMap<>();
+
+        boolean filtrarAtivo = (ativo != null) ? ativo : true;
+        
         String q = "ativo = :ativo";
-        mapaParametros.put("ativo", ativo);
+        mapaParametros.put("ativo", filtrarAtivo);
 
         if (filtro != null && !filtro.isBlank()) {
             q += " AND (LOWER(nome) LIKE LOWER(:pesquisa) OR LOWER(descricao) LIKE LOWER(:pesquisa))";
@@ -42,6 +46,10 @@ public class TecnologiaRepository implements PanacheRepository<Tecnologia> {
             return query.list();
         }
         return query.page(pagina, tamanho).list();
+    }
+
+    public List<Tecnologia> listar(Boolean ativo) {
+        return listar(null, null, null, ativo, null, null);
     }
 
     public long countListar(String filtro, Boolean ativo) {

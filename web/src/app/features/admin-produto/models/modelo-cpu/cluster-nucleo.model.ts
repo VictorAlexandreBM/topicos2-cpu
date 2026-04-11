@@ -1,13 +1,23 @@
 export enum TipoNucleo {
-  PERFORMANCE = "Performance",
-  EFICIENCIA = "Eficiência"
+  PERFORMANCE = 'P',
+  EFICIENCIA = 'E'
 }
 
+export const TipoNucleoDescricao: Record<TipoNucleo, string> = {
+  [TipoNucleo.PERFORMANCE]: 'Performance',
+  [TipoNucleo.EFICIENCIA]: 'Eficiência'
+};
+
+export const TipoNucleoOpcoes = [
+  { valor: TipoNucleo.PERFORMANCE, descricao: TipoNucleoDescricao[TipoNucleo.PERFORMANCE] },
+  { valor: TipoNucleo.EFICIENCIA, descricao: TipoNucleoDescricao[TipoNucleo.EFICIENCIA] }
+];
+
 export interface ClusterNucleo {
-  frequenciaBase: number | null;
-  frequenciaMaxima: number | null;
-  quantidadeNucleos: number | null;
-  tipoNucleo: TipoNucleo | null;
+  frequenciaBase: number;
+  frequenciaMaxima: number;
+  quantidadeNucleos: number;
+  tipoNucleo: TipoNucleo;
 }
 
 export interface ClusterNucleoFormRequest {
