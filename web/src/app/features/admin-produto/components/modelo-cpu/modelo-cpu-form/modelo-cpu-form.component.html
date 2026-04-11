@@ -1,0 +1,141 @@
+<div class="flex flex-col h-full bg-white">
+
+  <div class="flex flex-row align-bottom gap-4 px-6 pt-6 pb-4 border-b border-gray-200">
+    <button mat-icon-button (click)="voltarParaListagem()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="text-3xl font-bold text-gray-800">
+      {{ modoEdicao ? 'Editar Modelo de CPU' : 'Novo Modelo de CPU' }}
+    </h2>
+  </div>
+
+  <form class="flex flex-col flex-1 p-6 gap-6" [formGroup]="modeloForm" (ngSubmit)="salvar('voltar')">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nome do modelo</mat-label>
+        <input matInput placeholder="Ex: Core i7-13700K" formControlName="nome">
+        <mat-error>{{ nomeCtrl.errors | fieldError:nomeCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <app-chipset-select
+        [control]="chipsetIdsCtrl"
+        [chipsets]="chipsetsResponse()?.dados || []">
+      </app-chipset-select>
+
+      <app-tecnologia-select
+        [control]="tecnologiaIdsCtrl"
+        [tecnologias]="tecnologiasResponse()?.dados || []">
+      </app-tecnologia-select>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <app-marca-select
+          [control]="marcaIdCtrl"
+          [marcas]="marcasResponse()?.dados || []">
+        </app-marca-select>
+
+        <app-socket-select
+          [control]="socketIdCtrl"
+          [sockets]="socketsResponse()?.dados || []">
+        </app-socket-select>
+      </div>
+    </div>
+
+    <div class="border border-gray-200 rounded-lg p-4">
+      <h3 class="text-base font-semibold text-gray-700 mb-3">Ficha técnica</h3>
+
+      <div formGroupName="fichaTecnica" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <mat-form-field class="md:col-span-2" appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Descrição comercial</mat-label>
+          <textarea matInput rows="3" placeholder="Texto comercial do produto" formControlName="descricaoComercial"></textarea>
+          <mat-error>{{ descricaoComercialCtrl.errors | fieldError:descricaoComercialCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>TDP base (W)</mat-label>
+          <input matInput type="text" min="0" step="1" placeholder="Ex: 65" formControlName="tdpBaseW">
+          <mat-error>{{ tdpBaseWCtrl.errors | fieldError:tdpBaseWCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Cache L2 (MB)</mat-label>
+          <input matInput type="text" min="0" step="0.5" placeholder="Ex: 12" formControlName="cacheL2MB">
+          <mat-error>{{ cacheL2MBCtrl.errors | fieldError:cacheL2MBCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Cache L3 (MB)</mat-label>
+          <input matInput type="text" min="0" step="0.5" placeholder="Ex: 30" formControlName="cacheL3MB">
+          <mat-error>{{ cacheL3MBCtrl.errors | fieldError:cacheL3MBCtrl.touched }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold text-gray-700">Clusters de núcleo</h3>
+        <button type="button" mat-stroked-button color="primary" (click)="adicionarCluster()">
+          <mat-icon class="mr-1">add</mat-icon>
+          Adicionar cluster
+        </button>
+      </div>
+
+      <div formArrayName="clustersNucleo" class="flex flex-col gap-4">
+        <div class="border border-gray-200 rounded-lg p-4" *ngFor="let grupo of clustersArray.controls; let i = index" [formGroupName]="i">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Frequência base (GHz)</mat-label>
+              <input matInput type="text" min="0" step="0.1" formControlName="frequenciaBase" placeholder="Ex: 3.4">
+              <mat-error>{{ grupo.get('frequenciaBase')!.errors | fieldError:grupo.get('frequenciaBase')!.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Frequência máxima (GHz)</mat-label>
+              <input matInput type="text" min="0" step="0.1" formControlName="frequenciaMaxima" placeholder="Ex: 5.2">
+              <mat-error>{{ grupo.get('frequenciaMaxima')!.errors | fieldError:grupo.get('frequenciaMaxima')!.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Qtde. núcleos</mat-label>
+              <input matInput type="text" min="1" step="1" formControlName="quantidadeNucleos" placeholder="Ex: 8">
+              <mat-error>{{ grupo.get('quantidadeNucleos')!.errors | fieldError:grupo.get('quantidadeNucleos')!.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Tipo de núcleo</mat-label>
+              <mat-select formControlName="tipoNucleo">
+                <mat-option [value]="null">Selecione...</mat-option>
+                <mat-option *ngFor="let opcao of tiposNucleoOpcoes" [value]="opcao.valor">
+                  {{ opcao.descricao }}
+                </mat-option>
+              </mat-select>
+              <mat-error>{{ grupo.get('tipoNucleo')!.errors | fieldError:grupo.get('tipoNucleo')!.touched }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="flex justify-end mt-3">
+            <button type="button" mat-stroked-button color="warn" (click)="removerCluster(i)" [disabled]="clustersArray.length <= 1">
+              <mat-icon class="mr-1">delete</mat-icon>
+              Remover cluster
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 pt-4 border-t border-gray-200">
+      <button type="button" mat-stroked-button (click)="cancelar()">Cancelar</button>
+
+      @if (!modoEdicao) {
+        <button type="button" mat-stroked-button color="primary" [disabled]="modeloForm.invalid" (click)="salvar('continuar')">
+          Salvar e Cadastrar Outro
+        </button>
+      }
+
+      <button type="submit" mat-flat-button color="primary" [disabled]="modeloForm.invalid">
+        {{ modoEdicao ? 'Atualizar e Voltar' : 'Salvar e Voltar' }}
+      </button>
+    </div>
+
+  </form>
+</div>
