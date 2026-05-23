@@ -36,6 +36,23 @@ export const routes: Routes = [
             loadComponent: () => import('@features/admin-produto/components/modelo-cpu/modelo-cpu-form/modelo-cpu-form.component')
           }
         ]
+      },
+      {
+        path: 'cpu',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/admin-produto/pages/cpu/cpu.page')
+          },
+          {
+            path: 'criar',
+            loadComponent: () => import('@features/admin-produto/components/cpu/cpu-form/cpu-form.component')
+          },
+          {
+            path: 'editar/:id',
+            loadComponent: () => import('@features/admin-produto/components/cpu/cpu-form/cpu-form.component')
+          }
+        ]
       }
     ]
   }

@@ -39,4 +39,62 @@ public abstract class Cpu extends BaseEntity {
     @JoinColumn(name = "modelo_id", nullable = false)
     @NotNull
     private ModeloCpu modelo;
+
+    private String nomeComercial;
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public Integer getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
+    }
+
+    public LocalDate getDataInclusao() {
+        return dataInclusao;
+    }
+
+    public void setDataInclusao(LocalDate dataInclusao) {
+        this.dataInclusao = dataInclusao;
+    }
+
+    public boolean isEmVenda() {
+        return emVenda;
+    }
+
+    public void setEmVenda(boolean emVenda) {
+        this.emVenda = emVenda;
+    }
+
+    public ModeloCpu getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(ModeloCpu modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getNomeComercial() {
+        return nomeComercial;
+    }
+
+    public void setNomeComercial(String nomeComercial) {
+        this.nomeComercial = nomeComercial;
+    }
 }

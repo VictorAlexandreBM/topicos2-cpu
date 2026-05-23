@@ -42,7 +42,7 @@ export class App {
       aberta: false,
       subItens: [
         { label: 'Modelos de CPU', rota: 'modelo-cpu' },
-        { label: 'Processadores', rota: 'cpus' }
+        { label: 'Processadores', rota: 'cpu' }
       ]
     }
   ]);

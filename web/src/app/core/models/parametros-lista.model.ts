@@ -5,6 +5,7 @@ export interface ParametrosListagem {
   tamanho?: number;
   filtro?: string;
   ativo?: boolean;
+  emVenda?: boolean;
   campoOrdenacao?: string;
   direcao?: SortDirection;
 }

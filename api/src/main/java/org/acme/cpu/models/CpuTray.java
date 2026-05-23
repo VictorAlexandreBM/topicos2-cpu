@@ -10,8 +10,14 @@ import jakarta.validation.constraints.PositiveOrZero;
 @DiscriminatorValue("tray")
 public class CpuTray extends Cpu {
 
-    @PositiveOrZero
-    @NotNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String loteFabricacao;
+
+    public String getLoteFabricacao() {
+        return loteFabricacao;
+    }
+
+    public void setLoteFabricacao(String loteFabricacao) {
+        this.loteFabricacao = loteFabricacao;
+    }
 }

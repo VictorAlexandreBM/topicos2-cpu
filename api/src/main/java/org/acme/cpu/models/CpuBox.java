@@ -9,12 +9,26 @@ import jakarta.validation.constraints.PositiveOrZero;
 @Entity
 @DiscriminatorValue("box")
 public class CpuBox extends Cpu {
-    @NotNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean incluiCooler;
 
-    @NotNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     @PositiveOrZero
     private Double pesoEmbalagemGramas;
+
+    public boolean isIncluiCooler() {
+        return incluiCooler;
+    }
+
+    public void setIncluiCooler(boolean incluiCooler) {
+        this.incluiCooler = incluiCooler;
+    }
+
+    public Double getPesoEmbalagemGramas() {
+        return pesoEmbalagemGramas;
+    }
+
+    public void setPesoEmbalagemGramas(Double pesoEmbalagemGramas) {
+        this.pesoEmbalagemGramas = pesoEmbalagemGramas;
+    }
 }

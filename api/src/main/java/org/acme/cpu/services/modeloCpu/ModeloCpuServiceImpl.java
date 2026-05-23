@@ -145,7 +145,6 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
                 throw new NotFoundException("Modelo não encontrado");
             }
             aplicarDtoNoModelo(modelo, modeloDTO);
-            ModeloCpu atualizado = repository.findByIdWithDetails(id);
         }
 
     private ModeloCpu getModeloEntity(Long id) {
