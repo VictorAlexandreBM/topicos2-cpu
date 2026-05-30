@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Acesse sua conta
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Ainda não tem uma conta?
+      <a routerLink="/cadastro" class="font-medium text-primary-600 hover:text-primary-500">
+        Cadastre-se aqui
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <form class="flex flex-col gap-6" [formGroup]="loginForm" (ngSubmit)="logar()">
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" [formControl]="emailCtrl" placeholder="Ex: email@dominio.com">
+          <mat-icon matPrefix class="text-gray-400 mr-2">email</mat-icon>
+          <mat-error>{{ emailCtrl.errors | fieldError:emailCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+          <mat-label>Senha</mat-label>
+          <input matInput [type]="mostrarSenha ? 'text' : 'password'" [formControl]="senhaCtrl">
+          <mat-icon matPrefix class="text-gray-400 mr-2">lock</mat-icon>
+          <button type="button" mat-icon-button matSuffix (click)="mostrarSenha = !mostrarSenha" tabindex="-1">
+            <mat-icon>{{ mostrarSenha ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error>{{ senhaCtrl.errors | fieldError:senhaCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <div class="flex items-center justify-between mt-[-10px]">
+          <div></div>
+          <div class="text-sm">
+            <a href="#" class="font-medium text-primary-600 hover:text-primary-500">
+              Esqueceu a senha?
+            </a>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" mat-flat-button color="primary" class="w-full py-2" [disabled]="loginForm.invalid || estaCarregando()">
+            @if (estaCarregando()) {
+              <span class="flex items-center justify-center gap-2">
+                <mat-spinner diameter="20"></mat-spinner> Entrando...
+              </span>
+            } @else {
+              Entrar
+            }
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

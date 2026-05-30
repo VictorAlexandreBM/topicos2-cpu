@@ -1,15 +1,16 @@
-import { Component, signal } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatMenuTrigger} from '@angular/material/menu';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
+import { AuthService } from './features/cliente/services/auth.service';
 
 interface ItemMenuLateral {
   nome: string;
@@ -18,11 +19,30 @@ interface ItemMenuLateral {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavContainer, MatSidenav, MatButton, RouterLink, RouterLinkActive, MatSidenavContent, MatIconButton, MatIcon, MatMenuTrigger, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle],
+  imports: [
+    RouterOutlet,
+    MatSidenavContainer,
+    MatSidenav,
+    MatButton,
+    RouterLink,
+    RouterLinkActive,
+    MatSidenavContent,
+    MatIconButton,
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
+  private readonly authService = inject(AuthService);
+
   protected readonly title = signal('web');
   protected secoes = signal([
     {
@@ -47,4 +67,8 @@ export class App {
     }
   ]);
   protected readonly Array = Array;
+
+  protected sair(): void {
+    this.authService.logout().subscribe();
+  }
 }

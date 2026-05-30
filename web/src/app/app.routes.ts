@@ -55,5 +55,13 @@ export const routes: Routes = [
         ]
       }
     ]
+  },
+  {
+    path: 'cadastro',
+    loadComponent: () => import('./features/cliente/pages/cadastro/cadastro.page')
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/cliente/pages/login/login.page')
   }
 ];

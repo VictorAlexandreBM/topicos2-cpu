@@ -41,7 +41,15 @@
       </button>
 
       <div class="ml-auto">
-        <button mat-button>Administrador</button>
+        <button mat-button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2">
+          <mat-icon>account_circle</mat-icon> Administrador
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="sair()">
+            <mat-icon>logout</mat-icon>
+            <span>Sair do Sistema</span>
+          </button>
+        </mat-menu>
       </div>
     </header>
 
