@@ -1,13 +1,14 @@
 package org.acme.cpu.cliente.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.acme.cpu.admin.models.BaseInativavelEntity;
+import org.acme.cpu.admin.models.ClusterNucleo;
 import org.acme.cpu.cliente.dtos.telefone.TelefoneDTO;
 
-@Entity
-public class Telefone extends BaseInativavelEntity {
+@Embeddable
+public class Telefone {
 
     @Column(nullable = false, length = 9)
     @Pattern(regexp = "^\\d{8,9}$")
@@ -39,4 +40,19 @@ public class Telefone extends BaseInativavelEntity {
         this.principal = principal;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Telefone other)) return false;
+
+        return numero.equals(other.numero);
+    }
+
+    @Override
+    public int hashCode() {
+        return numero.hashCode();
+    }
 }

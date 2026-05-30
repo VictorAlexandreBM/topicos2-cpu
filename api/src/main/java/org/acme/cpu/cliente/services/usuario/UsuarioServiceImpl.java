@@ -74,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setTelefones(
                 dto.telefones().stream()
                         .map(Telefone::fromDTO)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toSet())
         );
 
         String senhaCriptografada = BcryptUtil.bcryptHash(dto.senha());
@@ -132,9 +132,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuario.setPrimeiroNome(dto.nome());
         usuario.setSobrenome(dto.sobrenome());
-        usuario.setTelefones(dto.telefones().stream().map(Telefone::fromDTO).toList());
+        usuario.setTelefones(dto.telefones().stream().map(Telefone::fromDTO).collect(Collectors.toSet()));
 
         LOG.infof("Cliente %s atualizou seus dados pessoais.", usuario.getEmail());
+
     }
 
 //    @Transactional

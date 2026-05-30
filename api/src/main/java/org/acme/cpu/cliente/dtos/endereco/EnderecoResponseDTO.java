@@ -14,6 +14,8 @@ public record EnderecoResponseDTO(
         )
         String cep,
 
+        String quadra,
+
         @Schema(
                 description = "Nome do logradouro",
                 example = "Avenida Teotônio Segurado"
@@ -55,6 +57,7 @@ public record EnderecoResponseDTO(
         this(
                 e.getId(),
                 e.getCep(),
+                e.getQuadra(),
                 e.getLogradouro(),
                 e.getNumero(),
                 e.getComplemento(),

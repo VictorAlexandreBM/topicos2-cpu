@@ -10,7 +10,9 @@ import org.acme.cpu.cliente.models.enums.Perfil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Usuario extends BaseInativavelEntity {
@@ -34,11 +36,13 @@ public class Usuario extends BaseInativavelEntity {
     @Column(nullable = false, length = 255)
     private String sobrenome;
 
-    @OneToMany(targetEntity = Endereco.class, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Endereco> enderecos = new ArrayList<>();
+    @OneToMany(targetEntity = Endereco.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "usuario_id")
+    private Set<Endereco> enderecos = new HashSet<>();
 
-    @OneToMany(targetEntity = Telefone.class, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Telefone> telefones = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Telefone> telefones = new HashSet<>();
 
     @Column(name = "refresh_token", unique = true)
     private String refreshToken;
@@ -86,19 +90,19 @@ public class Usuario extends BaseInativavelEntity {
         this.sobrenome = sobrenome;
     }
 
-    public List<Endereco> getEnderecos() {
+    public Set<Endereco> getEnderecos() {
         return enderecos;
     }
 
-    public void setEnderecos(List<Endereco> enderecos) {
+    public void setEnderecos(Set<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
 
-    public List<Telefone> getTelefones() {
+    public Set<Telefone> getTelefones() {
         return telefones;
     }
 
-    public void setTelefones(List<Telefone> telefones) {
+    public void setTelefones(Set<Telefone> telefones) {
         this.telefones = telefones;
     }
 

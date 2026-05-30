@@ -1,6 +1,7 @@
 package org.acme.cpu.cliente.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.acme.cpu.admin.models.BaseEntity;
 
@@ -33,6 +34,23 @@ public class Endereco extends BaseEntity {
     private String estado;
 
     // Getters e Setters
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Endereco other = (Endereco) obj;
+        return cep.equals(other.cep) && numero.equals(other.numero) && bairro.equals(other.bairro) && cidade.equals(other.cidade) && estado.equals(other.estado);
+    }
+
+    @Override
+    public int hashCode() {
+        return cep.hashCode() + numero.hashCode() + bairro.hashCode() + cidade.hashCode() + estado.hashCode();
+    }
 
     public String getCep() {
         return cep;
