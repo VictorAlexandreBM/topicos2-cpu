@@ -7,10 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
-import org.acme.cpu.cliente.dtos.usuario.UsuarioCadastroDTO;
-import org.acme.cpu.cliente.dtos.usuario.UsuarioLogadoResponseDTO;
-import org.acme.cpu.cliente.dtos.usuario.UsuarioLoginDTO;
-import org.acme.cpu.cliente.dtos.usuario.UsuarioResponseDTO;
+import org.acme.cpu.cliente.dtos.usuario.*;
 import org.acme.cpu.cliente.models.Telefone;
 import org.acme.cpu.cliente.models.Usuario;
 import org.acme.cpu.cliente.models.enums.Perfil;
@@ -84,6 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setSenha(senhaCriptografada);
 
         Perfil perfilClientePadrao = Perfil.CLIENTE;
+        usuario.setPerfil(perfilClientePadrao);
         repository.persist(usuario);
 
         LOG.infof("Cliente cadastrado com sucesso: %s (Nome: %s, ID: %d)",
@@ -124,6 +122,19 @@ public class UsuarioServiceImpl implements UsuarioService {
         LOG.infof("Login realizado com sucesso: %s", usuario.getEmail());
 
         return tokenService.gerarInfoToken(usuario);
+    }
+
+
+    @Transactional
+    @Override
+    public void atualizar(UsuarioUpdateDTO dto) {
+        Usuario usuario = getUsuarioLogado();
+
+        usuario.setPrimeiroNome(dto.nome());
+        usuario.setSobrenome(dto.sobrenome());
+        usuario.setTelefones(dto.telefones().stream().map(Telefone::fromDTO).toList());
+
+        LOG.infof("Cliente %s atualizou seus dados pessoais.", usuario.getEmail());
     }
 
 //    @Transactional
