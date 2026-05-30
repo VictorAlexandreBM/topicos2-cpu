@@ -1,4 +1,87 @@
 @startuml
+class Usuario {
+    - email: string
+    - senha: string
+    - ativo: boolean
+    - dataCadastro: LocalDateTime
+}
+
+class Telefone {
+    - numero: string
+}
+
+class Endereco {
+    - cep: string
+    - bairro: string
+    - rua: string
+    - numero: string
+    - complemento: string
+}
+
+class PerfilAcesso {
+    - codigo: String
+}
+
+class Perfil {
+    - nome: String
+    - sobrenome: String
+}
+
+class Pedido {
+    - horario: LocalDateTime
+    - status: StatusPedido
+}
+
+class ItemPedido {
+    - quantidade: Integer
+    - precoUnico: BigDecimal
+}
+
+enum StatusPedido {
+   AGUARDANDO_PAGAMENTO
+   PAGO
+   ENVIADO
+   ENTREGUE
+   CANCELADO
+}
+
+enum StatusPagamento {
+    PENDENTE
+    APROVADO
+    RECUSADO
+    ESTORNADO
+}
+
+abstract class Pagamento {
+    - horarioPagamento: LocalDateTime
+    - valor: BigDecimal
+    - status: StatusPagamento
+}
+
+class PagamentoPix {
+    - chavePixDestino: String
+    - codigoCopiaECola: String
+    - txid: String
+}
+
+class PagamentoDebito {
+    - autenticacao3DS: Boolean
+}
+
+class PagamentoCredito {
+    - parcelas: Integer
+    - jurosAplicados: BigDecimal
+}
+
+class Cartao {
+    - gatewayToken: String
+    - ultimos4: String
+    - bandeira: String
+    - mesExpiracao: Integer
+    - anoExpiracao: Integer
+    - ativo: Boolean
+}
+
 class Marca {
     - nome: String
 }
@@ -65,5 +148,24 @@ ModeloCpu "*" o--> "*" Tecnologia
 ModeloCpu "*" o--> "1" Socket
 ModeloCpu "*" --> "1" Marca
 ModeloCpu "1" *--> "*" ClusterNucleo
+
+Usuario "1" *--> "1" PerfilAcesso
+Usuario "1" *--> "1" Perfil
+Usuario "1" *--> "*" Endereco
+Usuario "1" *--> "*" Telefone
+Usuario "1" o--> "*" Cartao
+
+Usuario "1" --> "*" Pedido
+Endereco "1" *--> "1" Pedido
+Pedido "1" *--> "*" ItemPedido
+ItemPedido "*" --> "1" Cpu
+
+Pedido "1" --> "1..*" Pagamento
+Pagamento <|-- PagamentoPix
+Pagamento <|-- PagamentoDebito
+Pagamento <|-- PagamentoCredito
+
+PagamentoCredito "*" --> "1" Cartao
+PagamentoDebito "*" --> "1" Cartao
 
 @enduml
