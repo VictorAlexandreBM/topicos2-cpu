@@ -13,6 +13,7 @@ export interface UsuarioLogadoResponse {
   email: string;
   accessToken: string;
   refreshToken: string;
+  perfil: UsuarioDetail;
 }
 
 export interface UsuarioLogadoRequest {

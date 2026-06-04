@@ -6,8 +6,10 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.acme.cpu.admin.dto.cpu.CpuFilterDTO;
 import org.acme.cpu.admin.dto.cpu.CpuRequestDTO;
 import org.acme.cpu.admin.services.cpu.CpuService;
+import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.Map;
 
@@ -22,14 +24,13 @@ public class CpuResource {
 
     @GET
     public Response listar(
-            @QueryParam("pagina") Integer pagina,
-            @QueryParam("tamanho") Integer tamanho,
-            @QueryParam("filtro") String filtro,
-            @QueryParam("emVenda") Boolean emVenda,
-            @QueryParam("campoOrdenacao") String campoOrdenacao,
-            @QueryParam("direcao") String direcao
+            @RestQuery Integer pagina,
+            @RestQuery Integer tamanho,
+            @RestQuery String campoOrdenacao,
+            @RestQuery String direcao,
+            @BeanParam CpuFilterDTO filtro
     ) {
-        return Response.ok(service.listar(pagina, tamanho, filtro, emVenda, campoOrdenacao, direcao)).build();
+        return Response.ok(service.listar(pagina, tamanho, filtro, campoOrdenacao, direcao)).build();
     }
 
     @POST

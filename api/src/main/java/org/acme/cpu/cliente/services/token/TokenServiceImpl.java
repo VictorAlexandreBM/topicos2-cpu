@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.cpu.cliente.dtos.usuario.UsuarioLogadoResponseDTO;
+import org.acme.cpu.cliente.dtos.usuario.UsuarioResponseDTO;
 import org.acme.cpu.cliente.models.Usuario;
 import org.acme.cpu.cliente.repositories.UsuarioRepository;
 import org.jboss.logging.Logger;
@@ -45,7 +46,8 @@ public class TokenServiceImpl implements TokenService {
         return new UsuarioLogadoResponseDTO(
                 usuario.getEmail(),
                 tokenAcesso,
-                refreshToken
+                refreshToken,
+                new UsuarioResponseDTO(usuario)
         );
     }
 

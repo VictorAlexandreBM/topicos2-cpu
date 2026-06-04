@@ -9,5 +9,5 @@ public interface UsuarioService {
 
     UsuarioResponseDTO cadastrar(UsuarioCadastroDTO dto);
 
-    void atualizar(UsuarioUpdateDTO dto);
+    UsuarioResponseDTO atualizar(UsuarioUpdateDTO dto);
 }

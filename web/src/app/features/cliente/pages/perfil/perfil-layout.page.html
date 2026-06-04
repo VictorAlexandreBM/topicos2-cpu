@@ -1,0 +1,39 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">
+        @if (isPerfilProprio) {
+          Olá, {{ usuarioAtual()?.nome }}!
+        } @else {
+          Perfil do Usuário
+        }
+      </h1>
+      <p class="mt-1 text-sm text-gray-500">Gerencie seus dados, pedidos e preferências.</p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8">
+
+      <div class="w-full md:w-64 shrink-0">
+        @if (id()) {
+          <app-perfil-sidebar [usuarioId]="id()!"></app-perfil-sidebar>
+        }
+      </div>
+
+      <div class="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[500px]">
+
+        @if (isPerfilProprio) {
+          <router-outlet></router-outlet>
+        } @else {
+          <div class="flex flex-col items-center justify-center h-full text-center">
+            <mat-icon class="text-gray-300 !h-16 !w-16 !text-6xl mb-4">visibility_off</mat-icon>
+            <h2 class="text-xl font-semibold text-gray-800">Acesso Restrito</h2>
+            <p class="text-gray-500 mt-2">Você só pode visualizar e editar os dados do seu próprio perfil.</p>
+          </div>
+        }
+
+      </div>
+    </div>
+
+  </div>
+</div>

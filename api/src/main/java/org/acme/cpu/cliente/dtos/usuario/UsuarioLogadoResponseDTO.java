@@ -23,5 +23,7 @@ public record UsuarioLogadoResponseDTO (
             format = "uuid",
             required = true
     )
-    String refreshToken
+    String refreshToken,
+
+    UsuarioResponseDTO perfil
 ){}

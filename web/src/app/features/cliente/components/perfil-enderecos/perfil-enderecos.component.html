@@ -1,0 +1,119 @@
+<div class="space-y-6">
+
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900">Meus Endereços</h2>
+      <p class="mt-1 text-sm text-gray-500">Gerencie seus endereços de entrega e faturamento.</p>
+    </div>
+    @if (!mostrandoForm()) {
+      <button mat-flat-button color="primary" (click)="abrirFormulario()">
+        <mat-icon>add</mat-icon> Novo Endereço
+      </button>
+    }
+  </div>
+
+  @if (!mostrandoForm()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      @for (endereco of enderecos(); track endereco.id) {
+        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-medium text-gray-900">{{ endereco.logradouro }}, {{ endereco.numero }}</h3>
+            </div>
+            <p class="text-sm text-gray-600">Quadra: {{ endereco.quadra }}</p>
+            @if (endereco.complemento) {
+              <p class="text-sm text-gray-600">{{ endereco.complemento }}</p>
+            }
+            <p class="text-sm text-gray-600">{{ endereco.bairro }} - {{ endereco.cidade }}/{{ endereco.estado }}</p>
+            <p class="text-sm text-gray-500 mt-1">CEP: {{ endereco.cep }}</p>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end gap-2">
+            <button mat-button color="primary" (click)="abrirFormulario(endereco)">Editar</button>
+            <button mat-button color="warn" (click)="excluir(endereco.id)">Excluir</button>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-span-full p-8 text-center bg-gray-50 border border-dashed border-gray-300 rounded-lg">
+          <mat-icon class="text-gray-400 mb-2">location_off</mat-icon>
+          <p class="text-gray-600">Você ainda não possui endereços cadastrados.</p>
+        </div>
+      }
+    </div>
+  }
+
+  @if (mostrandoForm()) {
+    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mt-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">
+        {{ enderecoEmEdicao() ? 'Editar Endereço' : 'Novo Endereço' }}
+      </h3>
+
+      <form [formGroup]="enderecoForm" (ngSubmit)="salvar()" class="flex flex-col gap-4">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>CEP</mat-label>
+            <input matInput [formControl]="cepCtrl" placeholder="Ex: 77020123" mask="00000-000">
+            <mat-error>{{ cepCtrl.errors | fieldError:cepCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="md:col-span-2">
+            <mat-label>Logradouro</mat-label>
+            <input matInput [formControl]="logradouroCtrl" placeholder="Ex: Avenida Teotônio Segurado">
+            <mat-error>{{ logradouroCtrl.errors | fieldError:logradouroCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Quadra</mat-label>
+            <input matInput [formControl]="quadraCtrl" placeholder="Ex: 804 Sul">
+            <mat-error>{{ quadraCtrl.errors | fieldError:quadraCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Número</mat-label>
+            <input matInput [formControl]="numeroCtrl" placeholder="Ex: 1500 ou S/N">
+            <mat-error>{{ numeroCtrl.errors | fieldError:numeroCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Complemento</mat-label>
+            <input matInput [formControl]="complementoCtrl" placeholder="Ex: Apto 101">
+            <mat-error>{{ complementoCtrl.errors | fieldError:complementoCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Bairro</mat-label>
+            <input matInput [formControl]="bairroCtrl">
+            <mat-error>{{ bairroCtrl.errors | fieldError:bairroCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Cidade</mat-label>
+            <input matInput [formControl]="cidadeCtrl">
+            <mat-error>{{ cidadeCtrl.errors | fieldError:cidadeCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Estado (UF)</mat-label>
+            <input matInput [formControl]="estadoCtrl" placeholder="Ex: TO">
+            <mat-error>{{ estadoCtrl.errors | fieldError:estadoCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-200">
+          <button type="button" mat-stroked-button (click)="cancelarFormulario()" [disabled]="estaCarregando()">
+            Cancelar
+          </button>
+          <button type="submit" mat-flat-button color="primary" [disabled]="enderecoForm.invalid || estaCarregando()">
+            @if (estaCarregando()) { Salvando... } @else { Salvar Endereço }
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+</div>

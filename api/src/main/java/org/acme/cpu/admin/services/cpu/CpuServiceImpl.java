@@ -27,9 +27,11 @@ public class CpuServiceImpl implements CpuService {
     ModeloCpuRepository modeloCpuRepository;
 
     @Override
-    public RespostaPaginadaDTO<CpuListDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean emVenda, String campoOrdenacao, String direcao) {
-        List<CpuListDTO> listaCpus = repository.listarResumido(pagina, tamanho, filtro, emVenda, campoOrdenacao, direcao);
-        Long quantidade = repository.countListar(filtro, emVenda);
+    public RespostaPaginadaDTO<CpuListDTO> listar(Integer pagina, Integer tamanho, CpuFilterDTO filtro, String campoOrdenacao, String direcao) {
+        // Agora repassa o objeto DTO de filtro para o repositório
+        List<CpuListDTO> listaCpus = repository.listarResumido(pagina, tamanho, filtro, campoOrdenacao, direcao);
+        Long quantidade = repository.countListar(filtro);
+
         return new RespostaPaginadaDTO<>(listaCpus, quantidade);
     }
 

@@ -15,7 +15,7 @@ public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
 
     public List<ModeloCpuListDTO> listarResumido(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
         StringBuilder q = new StringBuilder("""
-                SELECT new org.acme.cpu.dto.modeloCpu.ModeloCpuListDTO(
+                SELECT new org.acme.cpu.admin.dto.modeloCpu.ModeloCpuListDTO(
                     m.id,
                     m.nome,
                     ma.nome,

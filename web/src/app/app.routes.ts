@@ -63,5 +63,23 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./features/cliente/pages/login/login.page')
+  },
+  {
+    path: 'usuario/:id',
+    loadComponent: () => import('./features/cliente/pages/perfil/perfil-layout.page'),
+    children: [
+      { path: '', redirectTo: 'informacoes', pathMatch: 'full' },
+      { path: 'informacoes', loadComponent: () => import('@features/cliente/components/perfil-informacoes/perfil-informacoes.component') },
+      { path: 'enderecos', loadComponent: () => import('@features/cliente/components/perfil-enderecos/perfil-enderecos.component') },
+
+    ]
+  },
+  {
+    path: '',
+    loadComponent: () => import('@features/pedido/pages/vitrine/vitrine.page'),
+  },
+  {
+    path: 'produto/:id',
+    loadComponent: () => import('@features/pedido/pages/produto-detalhe/produto-detalhe.page')
   }
 ];

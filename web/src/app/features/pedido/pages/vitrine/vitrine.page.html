@@ -1,0 +1,22 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Processadores</h1>
+      <p class="mt-1 text-sm text-gray-500">Encontre a CPU ideal para o seu setup.</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+      <aside class="w-full lg:w-72 shrink-0">
+        <app-vitrine-filter (filtrosMudaram)="aplicarFiltros($event)"></app-vitrine-filter>
+      </aside>
+
+      <main class="flex-1">
+        <app-vitrine-list [filtros]="filtrosAtuais()"></app-vitrine-list>
+      </main>
+
+    </div>
+
+  </div>
+</div>

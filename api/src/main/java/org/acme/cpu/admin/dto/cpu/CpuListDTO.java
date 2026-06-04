@@ -13,3 +13,4 @@ public sealed interface CpuListDTO permits CpuTrayListDTO, CpuBoxListDTO {
     String tipo();
     Boolean emVenda();
 }
+

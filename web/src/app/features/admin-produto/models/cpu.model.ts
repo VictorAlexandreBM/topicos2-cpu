@@ -1,6 +1,7 @@
 import { ModeloCpuDetail } from '@features/admin-produto/models/modelo-cpu/modelo-cpu.model';
 
     interface CpuBase {
+  id: number;
   sku: string;
   preco: number;
   estoque: number;
@@ -58,3 +59,21 @@ export interface CpuBoxFormRequest extends CpuFormRequestBase {
 }
 
 export type CpuFormRequest = CpuTrayFormRequest | CpuBoxFormRequest;
+
+export interface CpuFilter {
+  marcaId?: number[];
+  socketId?: number[];
+  chipsetsId?: number[];
+  tecnologiasId?: number[];
+  tipoCPU?: 'BOX' | 'TRAY' | '';
+  nome?: string;
+  nomeModelo?: string;
+  minPreco?: number;
+  maxPreco?: number;
+  minCores?: number;
+  maxCores?: number;
+  minFreq?: number;
+  maxFreq?: number;
+  tdpBase?: number;
+  emVenda?: boolean;
+}

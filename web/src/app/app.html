@@ -8,7 +8,6 @@
       <mat-accordion multi="true" displayMode="flat">
         @for (secao of secoes(); track secao.label) {
           <mat-expansion-panel [expanded]="secao.aberta" class="!shadow-none !bg-transparent border-none">
-
             <mat-expansion-panel-header class="!px-4 hover:bg-gray-50 !h-12">
               <mat-panel-title class="flex items-center gap-3 text-gray-700 font-medium">
                 <mat-icon class="text-gray-400">{{ secao.icone }}</mat-icon>
@@ -25,7 +24,6 @@
                 </a>
               }
             </div>
-
           </mat-expansion-panel>
         }
       </mat-accordion>
@@ -42,13 +40,23 @@
 
       <div class="ml-auto">
         <button mat-button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2">
-          <mat-icon>account_circle</mat-icon> Administrador
+          <mat-icon>account_circle</mat-icon> {{ usuarioAtual()?.nome || 'Administrador' }}
         </button>
+
         <mat-menu #userMenu="matMenu">
+
+          <a mat-menu-item [routerLink]="['/usuario', usuarioAtual()?.id]" [disabled]="!usuarioAtual()?.id">
+            <mat-icon>person</mat-icon>
+            <span>Meu Perfil</span>
+          </a>
+
+          <mat-divider></mat-divider>
+
           <button mat-menu-item (click)="sair()">
             <mat-icon>logout</mat-icon>
             <span>Sair do Sistema</span>
           </button>
+
         </mat-menu>
       </div>
     </header>

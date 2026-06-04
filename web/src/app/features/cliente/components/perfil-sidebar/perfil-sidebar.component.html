@@ -1,0 +1,18 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+  <div class="p-4 border-b border-gray-100 bg-gray-50">
+    <h3 class="text-lg font-semibold text-gray-800">Minha Conta</h3>
+  </div>
+
+  <mat-nav-list class="!pt-0">
+    @for (item of menuItems; track item.rota) {
+      <a mat-list-item
+         [routerLink]="['/usuario', usuarioId(), item.rota]"
+         routerLinkActive="!bg-blue-50 !text-blue-700 !border-l-4 !border-blue-600 font-medium"
+         class="!text-gray-600 hover:!bg-gray-50 transition-colors !border-l-4 !border-transparent">
+        <mat-icon matListItemIcon [class.text-blue-600]="rla.isActive" class="text-gray-400">{{ item.icone }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+      <a [routerLink]="['/usuario', usuarioId(), item.rota]" routerLinkActive #rla="routerLinkActive" class="hidden"></a>
+    }
+  </mat-nav-list>
+</div>

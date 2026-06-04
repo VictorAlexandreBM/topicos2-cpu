@@ -75,9 +75,7 @@ public class UsuarioResource {
     @Path("/eu")
     public Response atualizar(UsuarioUpdateDTO dto) {
 
-        service.atualizar(dto);
-
-        return Response.noContent().build();
+        return Response.ok(service.atualizar(dto)).build();
     }
 
 }

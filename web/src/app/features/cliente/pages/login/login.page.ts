@@ -60,7 +60,7 @@ export default class LoginPage {
     this.authService.login(credenciais).subscribe({
       next: (usuarioDetalhe) => {
         this.estaCarregando.set(false);
-        this.snackbarService.alertar(`Bem-vindo de volta, ${usuarioDetalhe.nome}!`);
+        this.snackbarService.alertar(`Bem-vindo de volta, ${usuarioDetalhe.perfil.nome}!`);
 
         // Redireciona o usuário para o painel administrativo ou página inicial após o login.
         // Ajuste a rota '/admin' conforme a necessidade do seu projeto.

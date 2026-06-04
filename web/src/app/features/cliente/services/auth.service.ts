@@ -72,10 +72,12 @@ export class AuthService {
     this.#usuarioAtual.set(null);
   }
 
-  login(credenciais: UsuarioLoginRequest): Observable<UsuarioDetail> {
+  login(credenciais: UsuarioLoginRequest): Observable<UsuarioLogadoResponse> {
     return this.http.post<UsuarioLogadoResponse>(`${this.recurso}/login`, credenciais).pipe(
-      tap((res) => this.definirSessao(res)),
-      switchMap(() => this.carregarUsuarioAtual())
+      tap((res) => {
+        this.definirSessao(res);
+        this.#usuarioAtual.set(res.perfil); // Salva o perfil vindo junto com o token
+      })
     );
   }
 
@@ -132,8 +134,8 @@ export class AuthService {
   }
 
   atualizarPerfil(dados: UsuarioUpdateRequest): Observable<UsuarioDetail> {
-    return this.http.patch<void>(`${this.recurso}/eu`, dados).pipe(
-      switchMap(() => this.carregarUsuarioAtual())
+    return this.http.patch<UsuarioDetail>(`${this.recurso}/eu`, dados).pipe(
+      tap((usuarioAtualizado) => this.#usuarioAtual.set(usuarioAtualizado))
     );
   }
 

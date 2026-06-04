@@ -127,7 +127,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Transactional
     @Override
-    public void atualizar(UsuarioUpdateDTO dto) {
+    public UsuarioResponseDTO atualizar(UsuarioUpdateDTO dto) {
         Usuario usuario = getUsuarioLogado();
 
         usuario.setPrimeiroNome(dto.nome());
@@ -136,6 +136,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         LOG.infof("Cliente %s atualizou seus dados pessoais.", usuario.getEmail());
 
+        return new UsuarioResponseDTO(usuario);
     }
 
 //    @Transactional

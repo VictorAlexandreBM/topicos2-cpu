@@ -11,6 +11,7 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import { AuthService } from './features/cliente/services/auth.service';
+import {MatDivider} from '@angular/material/list';
 
 interface ItemMenuLateral {
   nome: string;
@@ -35,13 +36,17 @@ interface ItemMenuLateral {
     MatAccordion,
     MatExpansionPanel,
     MatExpansionPanelHeader,
-    MatExpansionPanelTitle
+    MatExpansionPanelTitle,
+    MatDivider
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   private readonly authService = inject(AuthService);
+
+  // Expõe o sinal do usuário atual para o template HTML ler o ID e o Nome
+  protected readonly usuarioAtual = this.authService.usuarioAtual;
 
   protected readonly title = signal('web');
   protected secoes = signal([

@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ParametrosListagem } from '@core/models/parametros-lista.model';
 import { RespostaPaginada } from '@core/models/resposta-paginada.model';
-import { CpuDetail, CpuFormRequest, CpuList } from '../models/cpu.model';
+import { CpuDetail, CpuFilter, CpuFormRequest, CpuList } from '../models/cpu.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +12,30 @@ export default class CpuService {
   protected readonly recurso = 'cpus';
   protected readonly http = inject(HttpClient);
 
-  listar(parametrosListagem?: ParametrosListagem): Observable<RespostaPaginada<CpuList[]>> {
-    const parametrosFiltrados = parametrosListagem ? Object.fromEntries(
-      Object.entries(parametrosListagem).filter(([_, v]) =>
-        (v !== undefined && v !== null && v !== '')
-      )
-    ) as { [key: string]: string | number | boolean } : {};
+  listar(parametros?: ParametrosListagem & CpuFilter): Observable<RespostaPaginada<CpuList[]>> {
+
+    let httpParams = new HttpParams();
+
+    if (parametros) {
+      Object.entries(parametros).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+
+          if (Array.isArray(value)) {
+            if (value.length > 0) {
+              value.forEach(item => {
+                httpParams = httpParams.append(key, item.toString());
+              });
+            }
+          } else {
+            httpParams = httpParams.append(key, value.toString());
+          }
+
+        }
+      });
+    }
 
     return this.http.get<RespostaPaginada<CpuList[]>>(this.recurso, {
-      params: parametrosFiltrados
+      params: httpParams
     });
   }
 
