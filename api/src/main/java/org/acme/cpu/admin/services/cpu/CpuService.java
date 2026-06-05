@@ -4,7 +4,8 @@ import org.acme.cpu.admin.dto.cpu.CpuDetailDTO;
 import org.acme.cpu.admin.dto.cpu.CpuFilterDTO;
 import org.acme.cpu.admin.dto.cpu.CpuListDTO;
 import org.acme.cpu.admin.dto.cpu.CpuRequestDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.ArquivoUploadFormDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 
 public interface CpuService {
     RespostaPaginadaDTO<CpuListDTO> listar(Integer pagina, Integer tamanho, CpuFilterDTO filtro, String campoOrdenacao, String direcao);
@@ -13,4 +14,5 @@ public interface CpuService {
     void atualizar(Long id, CpuRequestDTO dto);
     void deletar(Long id);
     void alterarEstadoVenda(Long id, Boolean estado);
+    void salvarImagem(Long id, ArquivoUploadFormDTO dto);
 }

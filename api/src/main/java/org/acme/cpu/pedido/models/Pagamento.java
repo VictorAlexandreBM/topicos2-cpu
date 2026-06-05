@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo")
+@DiscriminatorColumn(name = "forma")
 public abstract class Pagamento extends BaseEntity {
     @Column(nullable = false, precision = 19, scale = 2)
     @NotNull
@@ -20,4 +20,20 @@ public abstract class Pagamento extends BaseEntity {
     private BigDecimal valor;
 
     private StatusPagamento statusPagamento;
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = statusPagamento;
+    }
 }

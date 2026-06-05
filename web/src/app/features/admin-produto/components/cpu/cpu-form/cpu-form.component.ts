@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { NgIf, NgClass } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -52,12 +52,15 @@ export default class CpuFormComponent {
   public readonly id = input<string>();
   public readonly cpuEmEdicao = input<CpuDetail | null>(null);
 
-  // Carrega opções de modelos para o select
   protected readonly modelosResponse = toSignal(this.modeloCpuService.listar({ tamanho: 100, ativo: true }));
 
   readonly cpuCadastrada = output<CpuDetail>();
   readonly cpuAtualizada = output<{ id: number, dados: CpuFormRequest }>();
   readonly cadastroCancelado = output<void>();
+
+  // Controles de Imagem
+  protected arquivoImagemSelecionado: File | null = null;
+  protected imagemPreview = signal<string | null>(null);
 
   // Controles Base
   protected readonly tipoCtrl = this.fb.control<'BOX' | 'TRAY'>('BOX', [Validators.required]);
@@ -68,11 +71,9 @@ export default class CpuFormComponent {
   protected readonly nomeComercialCtrl = this.fb.control('');
   protected readonly emVendaCtrl = this.fb.control(true);
 
-  // Controles específicos de BOX
+  // Controles específicos
   protected readonly incluiCoolerCtrl = this.fb.control(true);
   protected readonly pesoEmbalagemGramasCtrl = this.fb.control('');
-
-  // Controles específicos de TRAY
   protected readonly loteFabricacaoCtrl = this.fb.control('');
 
   protected readonly cpuForm = this.fb.group({
@@ -93,7 +94,6 @@ export default class CpuFormComponent {
   }
 
   constructor() {
-    // Monitora o tipo para aplicar validações dinâmicas
     this.tipoCtrl.valueChanges.subscribe(tipo => this.ajustarValidadoresEspecificos(tipo));
 
     effect(() => {
@@ -128,6 +128,26 @@ export default class CpuFormComponent {
     this.loteFabricacaoCtrl.updateValueAndValidity();
   }
 
+  // Novo método para tratar a seleção do arquivo
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.snackbarService.alertar('Formato inválido. Selecione uma imagem JPG, PNG ou WEBP.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.snackbarService.alertar('A imagem excede o limite máximo de 5MB.');
+      return;
+    }
+
+    this.arquivoImagemSelecionado = file;
+    this.imagemPreview.set(URL.createObjectURL(file));
+  }
+
   salvar(acao: 'voltar' | 'continuar'): void {
     if (this.cpuForm.invalid) return;
 
@@ -142,13 +162,28 @@ export default class CpuFormComponent {
     const dados = this.tratarDados(this.cpuForm.getRawValue());
 
     this.service.cadastrar(dados).subscribe({
-      next: (m) => {
-        this.snackbarService.alertar('CPU cadastrada com sucesso!');
-        this.cpuCadastrada.emit(m);
-        acao === 'voltar' ? this.voltarParaListagem() : this.resetarFormulario();
+      next: (cpuCriada) => {
+        if (this.arquivoImagemSelecionado) {
+          // Engatilha o upload logo após criar a CPU
+          this.service.salvarImagem(cpuCriada.id, this.arquivoImagemSelecionado).subscribe({
+            next: () => this.finalizarCadastro(acao, cpuCriada),
+            error: () => {
+              this.snackbarService.alertar('CPU cadastrada, mas houve um erro ao enviar a imagem.');
+              this.finalizarCadastro(acao, cpuCriada);
+            }
+          });
+        } else {
+          this.finalizarCadastro(acao, cpuCriada);
+        }
       },
       error: (err: HttpErrorResponse) => this.tratarErros(err)
     });
+  }
+
+  private finalizarCadastro(acao: 'voltar' | 'continuar', cpuCriada: CpuDetail): void {
+    this.snackbarService.alertar('CPU salva com sucesso!');
+    this.cpuCadastrada.emit(cpuCriada);
+    acao === 'voltar' ? this.voltarParaListagem() : this.resetarFormulario();
   }
 
   private atualizar(acao: 'voltar' | 'continuar'): void {
@@ -157,12 +192,27 @@ export default class CpuFormComponent {
 
     this.service.atualizar(idAtual, dados).subscribe({
       next: () => {
-        this.snackbarService.alertar('CPU atualizada com sucesso!');
-        this.cpuAtualizada.emit({ id: idAtual, dados });
-        if (acao === 'voltar') this.voltarParaListagem();
+        if (this.arquivoImagemSelecionado) {
+          // Engatilha o upload logo após atualizar os dados
+          this.service.salvarImagem(idAtual, this.arquivoImagemSelecionado).subscribe({
+            next: () => this.finalizarAtualizacao(acao, idAtual, dados),
+            error: () => {
+              this.snackbarService.alertar('Dados atualizados, mas erro ao enviar a nova imagem.');
+              this.finalizarAtualizacao(acao, idAtual, dados);
+            }
+          });
+        } else {
+          this.finalizarAtualizacao(acao, idAtual, dados);
+        }
       },
       error: (err) => this.tratarErros(err)
     });
+  }
+
+  private finalizarAtualizacao(acao: 'voltar' | 'continuar', idAtual: number, dados: CpuFormRequest): void {
+    this.snackbarService.alertar('CPU atualizada com sucesso!');
+    this.cpuAtualizada.emit({ id: idAtual, dados });
+    if (acao === 'voltar') this.voltarParaListagem();
   }
 
   private tratarDados(values: any): CpuFormRequest {
@@ -214,6 +264,10 @@ export default class CpuFormComponent {
       });
     }
 
+    if (cpu.imagemUrl) {
+      this.imagemPreview.set(cpu.imagemUrl);
+    }
+
     this.tipoCtrl.disable();
   }
 
@@ -224,6 +278,8 @@ export default class CpuFormComponent {
   private resetarFormulario(): void {
     this.cpuForm.reset({ tipo: 'BOX', emVenda: true, incluiCooler: true });
     Object.keys(this.cpuForm.controls).forEach(k => this.cpuForm.get(k)?.setErrors(null));
+    this.arquivoImagemSelecionado = null;
+    this.imagemPreview.set(null);
   }
 
   private tratarErros(err: HttpErrorResponse): void {
@@ -239,5 +295,4 @@ export default class CpuFormComponent {
   public cancelar() {
     return this.id() ? this.voltarParaListagem() : this.cadastroCancelado.emit();
   }
-
 }

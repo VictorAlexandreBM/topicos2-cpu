@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.acme.cpu.admin.models.BaseInativavelEntity;
 import org.acme.cpu.cliente.models.enums.Perfil;
+import org.acme.cpu.pedido.models.Cartao;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ public class Usuario extends BaseInativavelEntity {
     @OneToMany(targetEntity = Endereco.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "usuario_id")
     private Set<Endereco> enderecos = new HashSet<>();
+
+    @OneToMany(targetEntity = Cartao.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "usuario_id")
+    private Set<Cartao> cartoes = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "usuario_id"))
@@ -124,5 +129,13 @@ public class Usuario extends BaseInativavelEntity {
 
     public String getNomeCompleto() {
         return primeiroNome + " " + sobrenome;
+    }
+
+    public Set<Cartao> getCartoes() {
+        return cartoes;
+    }
+
+    public void setCartoes(Set<Cartao> cartoes) {
+        this.cartoes = cartoes;
     }
 }

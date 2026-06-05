@@ -1,6 +1,5 @@
-package org.acme.cpu.core.dto.respostaPaginada;
+package org.acme.cpu.core.dtos.respostaPaginada;
 
-import java.util.Collection;
 import java.util.List;
 
 public record   RespostaPaginadaDTO<T>(

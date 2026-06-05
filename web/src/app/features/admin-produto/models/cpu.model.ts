@@ -6,6 +6,7 @@ import { ModeloCpuDetail } from '@features/admin-produto/models/modelo-cpu/model
   preco: number;
   estoque: number;
   nomeComercial?: string;
+  imagemUrl?: string;
 }
 
 export interface CpuTrayList extends CpuBase {
@@ -27,6 +28,7 @@ export interface CpuDetailBase extends CpuBase {
   dataInclusao: string;
   emVenda: boolean;
   modelo: ModeloCpuDetail;
+  imagemUrl?: string;
 }
 
 export interface CpuTrayDetail extends CpuDetailBase {

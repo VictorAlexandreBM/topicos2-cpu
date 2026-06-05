@@ -1,13 +1,15 @@
-import { Component, input } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {CpuDetail} from '@features/admin-produto/models/cpu.model';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CpuDetail } from '@features/admin-produto/models/cpu.model';
+import { CarrinhoService } from '@features/pedido/services/carrinho.service'; // Ajuste o path se necessário
 
 @Component({
   selector: 'app-produto-info',
   standalone: true,
-  imports: [CurrencyPipe, MatButtonModule, MatIconModule],
+  imports: [CurrencyPipe, MatButtonModule, MatIconModule, MatSnackBarModule],
   template: `
     <div class="flex flex-col h-full bg-white rounded-lg shadow-sm border border-gray-200 p-6">
 
@@ -28,7 +30,9 @@ import {CpuDetail} from '@features/admin-produto/models/cpu.model';
           }
         </div>
 
-        <button mat-flat-button color="primary" class="w-full !h-12 !text-lg" [disabled]="cpu().estoque <= 0">
+        <button mat-flat-button color="primary" class="w-full !h-12 !text-lg"
+                [disabled]="cpu().estoque <= 0"
+                (click)="adicionarAoCarrinho()">
           <mat-icon>shopping_cart</mat-icon> Adicionar ao Carrinho
         </button>
       </div>
@@ -38,4 +42,20 @@ import {CpuDetail} from '@features/admin-produto/models/cpu.model';
 })
 export class ProdutoInfoComponent {
   public readonly cpu = input.required<CpuDetail>();
+
+  // Injeções
+  private readonly carrinhoService = inject(CarrinhoService);
+  private readonly snackBar = inject(MatSnackBar);
+
+  protected adicionarAoCarrinho(): void {
+    // Adiciona 1 unidade ao carrinho
+    this.carrinhoService.adicionarItem(this.cpu(), 1);
+
+    // Exibe um alerta de sucesso no canto da tela
+    this.snackBar.open(`${this.cpu().nomeComercial} adicionado ao carrinho!`, 'Fechar', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom'
+    });
+  }
 }

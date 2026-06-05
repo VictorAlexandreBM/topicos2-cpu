@@ -6,7 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import org.acme.cpu.admin.dto.socket.SocketDTO;
 import org.acme.cpu.admin.dto.socket.SocketResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.core.exception.ValidationException;
 import org.acme.cpu.admin.models.Socket;
 import org.acme.cpu.admin.repositories.SocketRepository;

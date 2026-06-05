@@ -11,8 +11,8 @@ public record CpuBoxListDTO(
         String nomeComercial,
         String marca,
         Boolean emVenda,
+        String imagemUrl,
         String tipo
-
 ) implements CpuListDTO {
     @Override
     public String tipo() {

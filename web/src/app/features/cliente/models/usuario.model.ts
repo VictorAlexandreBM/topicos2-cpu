@@ -1,5 +1,6 @@
 import { TelefoneDetail, TelefoneFormRequest } from './telefone.model';
 import { EnderecoDetail } from './endereco.model';
+import {CartaoDetail} from '@features/cliente/models/cartao.model';
 
 export type PerfilUsuario = 'V' | 'C' | 'A';
 
@@ -28,6 +29,7 @@ export interface UsuarioDetail {
   sobrenome: string;
   telefones: TelefoneDetail[];
   enderecos: EnderecoDetail[];
+  cartoes: CartaoDetail[];
 }
 
 export interface UsuarioCadastroRequest {

@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum StatusPagamento {
-    EM_AGUARDO("Em Aguardo", 'A'),
-    PAGO("Pago", 'P'),
-    CANCELADO("Cancelado", 'C'),
-    ESTORNADO("Estornado", 'E');
+    PENDENTE("Pendente", 'P'),
+    APROVADO("Aprovado", 'A'),
+    RECUSADO("Recusado", 'R'),
+    ESTORNADO("Estornado", 'E'),
+    CANCELADO("Cancelado", 'C');
 
     private final String tipo;
     private final char sigla;

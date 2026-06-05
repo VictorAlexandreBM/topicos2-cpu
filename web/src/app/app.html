@@ -44,6 +44,13 @@
         </button>
 
         <mat-menu #userMenu="matMenu">
+          <button mat-icon-button routerLink="/carrinho" class="mr-4 text-gray-600">
+            <mat-icon [matBadge]="carrinhoService.quantidadeItensCarrinho()"
+                      [matBadgeHidden]="carrinhoService.quantidadeItensCarrinho() === 0"
+                      matBadgeColor="warn">
+              shopping_cart
+            </mat-icon>
+          </button>
 
           <a mat-menu-item [routerLink]="['/usuario', usuarioAtual()?.id]" [disabled]="!usuarioAtual()?.id">
             <mat-icon>person</mat-icon>

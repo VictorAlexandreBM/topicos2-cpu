@@ -10,6 +10,9 @@ export class EnderecoService {
   private readonly http = inject(HttpClient);
   private readonly recurso = 'enderecos';
 
+  listar(): Observable<EnderecoDetail[]> {
+    return this.http.get<EnderecoDetail[]>(this.recurso);
+  }
   criar(dados: EnderecoFormRequest): Observable<EnderecoDetail> {
     return this.http.post<EnderecoDetail>(this.recurso, dados);
   }

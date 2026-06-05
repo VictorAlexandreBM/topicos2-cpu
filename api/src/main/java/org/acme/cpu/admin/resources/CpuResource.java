@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.Response;
 import org.acme.cpu.admin.dto.cpu.CpuFilterDTO;
 import org.acme.cpu.admin.dto.cpu.CpuRequestDTO;
 import org.acme.cpu.admin.services.cpu.CpuService;
+import org.acme.cpu.core.dtos.ArquivoUploadFormDTO;
+import org.jboss.resteasy.reactive.MultipartForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.Map;
@@ -64,6 +66,14 @@ public class CpuResource {
         if (updates.containsKey("emVenda")) {
             service.alterarEstadoVenda(id, (Boolean) updates.get("emVenda"));
         }
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @Path("/{id}/imagem")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response fazerUploadImagem(@PathParam("id") Long id, @MultipartForm ArquivoUploadFormDTO dto) {
+        service.salvarImagem(id, dto);
         return Response.noContent().build();
     }
 }

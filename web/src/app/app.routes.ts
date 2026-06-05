@@ -71,7 +71,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'informacoes', pathMatch: 'full' },
       { path: 'informacoes', loadComponent: () => import('@features/cliente/components/perfil-informacoes/perfil-informacoes.component') },
       { path: 'enderecos', loadComponent: () => import('@features/cliente/components/perfil-enderecos/perfil-enderecos.component') },
-
+      { path: 'pagamentos', loadComponent: () => import('@features/cliente/components/perfil-cartoes/perfil-cartoes.component') }
     ]
   },
   {
@@ -81,5 +81,18 @@ export const routes: Routes = [
   {
     path: 'produto/:id',
     loadComponent: () => import('@features/pedido/pages/produto-detalhe/produto-detalhe.page')
-  }
+  },
+  {
+    path: 'carrinho',
+    loadComponent: () => import('@features/pedido/pages/carrinho/carrinho.page')
+  },
+  {
+    path: 'checkout',
+    loadComponent: () => import('@features/pedido/pages/checkout/checkout.page')
+  },
+  {
+    path: 'pedido/sucesso/:id',
+    loadComponent: () => import('@features/pedido/pages/pedido-sucesso/pedido-sucesso.page')
+  },
+
 ];

@@ -4,6 +4,8 @@ package org.acme.cpu.cliente.dtos.usuario;
 import org.acme.cpu.cliente.dtos.endereco.EnderecoResponseDTO;
 import org.acme.cpu.cliente.dtos.telefone.TelefoneResponseDTO;
 import org.acme.cpu.cliente.models.Usuario;
+import org.acme.cpu.pedido.dtos.cartao.CartaoResponseDTO;
+import org.acme.cpu.pedido.models.Cartao;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
@@ -26,7 +28,9 @@ public record UsuarioResponseDTO(
         List<TelefoneResponseDTO> telefones,
 
         @Schema(description = "Todos os endereços cadastrados (Entrega, Cobrança, etc)")
-        List<EnderecoResponseDTO> enderecos
+        List<EnderecoResponseDTO> enderecos,
+
+        List<CartaoResponseDTO> cartoes
 ) {
     public UsuarioResponseDTO(Usuario u) {
         this(
@@ -35,7 +39,8 @@ public record UsuarioResponseDTO(
                 u.getPrimeiroNome(),
                 u.getSobrenome(),
                 u.getTelefones().stream().map(TelefoneResponseDTO::new).toList(),
-                u.getEnderecos().stream().map(EnderecoResponseDTO::new).toList()
+                u.getEnderecos().stream().map(EnderecoResponseDTO::new).toList(),
+                u.getCartoes().stream().filter(Cartao::getAtivo).map(CartaoResponseDTO::new).toList()
         );
     }
 

@@ -13,7 +13,7 @@ import org.acme.cpu.admin.dto.modeloCpu.ModeloCpuRequestDTO;
 import org.acme.cpu.admin.dto.modeloCpu.fichaTecnica.FichaTecnicaRequestDTO;
 import org.acme.cpu.admin.models.*;
 import org.acme.cpu.admin.repositories.*;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.admin.dto.socket.SocketResponseDTO;
 import org.acme.cpu.admin.dto.tecnologia.TecnologiaResponseDTO;
 import org.acme.cpu.core.exception.ValidationException;

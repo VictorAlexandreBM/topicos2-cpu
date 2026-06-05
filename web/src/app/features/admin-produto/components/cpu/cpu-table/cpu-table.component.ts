@@ -57,7 +57,7 @@ export default class CpuTableComponent {
   private snackbarService = inject(SnackbarService);
   private dialogService = inject(ConfirmDialogService);
 
-  protected readonly colunas = ['acao', 'sku', 'nomeComercial', 'nomeModelo', 'marca', 'preco', 'estoque', 'tipo'];
+  protected readonly colunas = ['acao', 'imagem', 'sku', 'nomeComercial', 'nomeModelo', 'marca', 'preco', 'estoque', 'tipo'];
 
   protected async alterarEstadoVenda(cpu: CpuList, emVenda: boolean) {
     const titulo = emVenda ? 'Colocar à venda' : 'Retirar de venda';

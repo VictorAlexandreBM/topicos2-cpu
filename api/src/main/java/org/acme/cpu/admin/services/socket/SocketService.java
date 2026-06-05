@@ -2,7 +2,7 @@ package org.acme.cpu.admin.services.socket;
 
 import org.acme.cpu.admin.dto.socket.SocketDTO;
 import org.acme.cpu.admin.dto.socket.SocketResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.admin.models.Socket;
 
 public interface SocketService {

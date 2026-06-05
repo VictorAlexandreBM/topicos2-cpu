@@ -12,6 +12,8 @@ import {
 } from '@angular/material/expansion';
 import { AuthService } from './features/cliente/services/auth.service';
 import {MatDivider} from '@angular/material/list';
+import {CarrinhoService} from '@features/pedido/services/carrinho.service';
+import {MatBadge} from '@angular/material/badge';
 
 interface ItemMenuLateral {
   nome: string;
@@ -37,14 +39,15 @@ interface ItemMenuLateral {
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
-    MatDivider
+    MatDivider,
+    MatBadge
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   private readonly authService = inject(AuthService);
-
+  protected readonly carrinhoService = inject(CarrinhoService);
   // Expõe o sinal do usuário atual para o template HTML ler o ID e o Nome
   protected readonly usuarioAtual = this.authService.usuarioAtual;
 

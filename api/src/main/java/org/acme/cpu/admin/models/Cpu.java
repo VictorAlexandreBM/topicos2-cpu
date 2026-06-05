@@ -39,6 +39,9 @@ public abstract class Cpu extends BaseEntity {
     @NotNull
     private ModeloCpu modelo;
 
+    @Column(name = "imagem_url", length = 500)
+    private String imagemUrl;
+
     private String nomeComercial;
 
     public String getSku() {
@@ -95,5 +98,13 @@ public abstract class Cpu extends BaseEntity {
 
     public void setNomeComercial(String nomeComercial) {
         this.nomeComercial = nomeComercial;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }

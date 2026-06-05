@@ -2,7 +2,7 @@ package org.acme.cpu.admin.services.tecnologia;
 
 import org.acme.cpu.admin.dto.tecnologia.TecnologiaDTO;
 import org.acme.cpu.admin.dto.tecnologia.TecnologiaResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.admin.models.Tecnologia;
 
 public interface TecnologiaService {

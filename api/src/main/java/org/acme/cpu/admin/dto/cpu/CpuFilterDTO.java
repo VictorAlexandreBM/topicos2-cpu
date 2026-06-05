@@ -10,6 +10,7 @@ public record CpuFilterDTO(
         @RestQuery("chipsetsId") List<Long> chipsetsId,
         @RestQuery("tecnologiasId") List<Long> tecnologiasId,
         @RestQuery("tipoCPU") String tipoCPU,
+        @RestQuery("ordenacao") String ordenacao,
         @RestQuery("nome") String nome,
         @RestQuery("nomeModelo") String nomeModelo,
         @RestQuery("minPreco") BigDecimal minPreco,

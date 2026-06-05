@@ -11,7 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import MarcaService from '@features/admin-produto/services/marca.service';
 import SocketService from '@features/admin-produto/services/socket.service';
+import ChipsetService from '@features/admin-produto/services/chipset.service';
+import TecnologiaService from '@features/admin-produto/services/tecnologia.service';
 import {CpuFilter} from '@features/admin-produto/models/cpu.model';
+import {MatOption} from '@angular/material/core';
+import {MatSelect} from '@angular/material/select';
 
 
 @Component({
@@ -25,7 +29,9 @@ import {CpuFilter} from '@features/admin-produto/models/cpu.model';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatOption,
+    MatSelect
   ],
   templateUrl: './vitrine-filter.component.html'
 })
@@ -35,6 +41,8 @@ export class VitrineFilterComponent implements OnInit {
   // Injeta os serviços para popular as listas do filtro
   private readonly marcaService = inject(MarcaService);
   private readonly socketService = inject(SocketService);
+  private readonly chipsetService = inject(ChipsetService);
+  private readonly tecnologiaService = inject(TecnologiaService);
 
   // Emissor de eventos para o Angular 17+
   public readonly filtrosMudaram = output<CpuFilter>();
@@ -42,15 +50,27 @@ export class VitrineFilterComponent implements OnInit {
   // Armazena as opções de filtro vindas do backend
   protected readonly marcasDisponiveis = signal<any[]>([]);
   protected readonly socketsDisponiveis = signal<any[]>([]);
+  protected readonly chipsetsDisponiveis = signal<any[]>([]);
+  protected readonly tecnologiasDisponiveis = signal<any[]>([]);
 
   // Formulário Reativo contendo a estrutura exata do CpuFilter
   protected readonly filtroForm = this.fb.group({
     nome: [''],
+    nomeModelo: [''],
     tipoCPU: [''], // '' | 'BOX' | 'TRAY'
+    ordenacao: ['maisRecentes'], // 'maisRecentes' | 'precoCrescente' | 'precoDecrescente'
     marcaId: [[] as number[]],
     socketId: [[] as number[]],
+    chipsetsId: [[] as number[]],
+    tecnologiasId: [[] as number[]],
     minPreco: this.fb.control<number | null>(null),
-    maxPreco: this.fb.control<number | null>(null)
+    maxPreco: this.fb.control<number | null>(null),
+    minCores: this.fb.control<number | null>(null),
+    maxCores: this.fb.control<number | null>(null),
+    minFreq: this.fb.control<number | null>(null),
+    maxFreq: this.fb.control<number | null>(null),
+    tdpBase: this.fb.control<number | null>(null),
+    emVenda: this.fb.control<boolean | null>(null)
   });
 
   ngOnInit(): void {
@@ -61,7 +81,6 @@ export class VitrineFilterComponent implements OnInit {
   private carregarOpcoesDeFiltro(): void {
     this.marcaService.listar().subscribe({
       next: (res: any) => {
-        // Agora extrai o array corretamente de dentro de 'dados'
         this.marcasDisponiveis.set(res.dados || []);
       },
       error: () => this.marcasDisponiveis.set([])
@@ -69,10 +88,23 @@ export class VitrineFilterComponent implements OnInit {
 
     this.socketService.listar().subscribe({
       next: (res: any) => {
-        // Agora extrai o array corretamente de dentro de 'dados'
         this.socketsDisponiveis.set(res.dados || []);
       },
       error: () => this.socketsDisponiveis.set([])
+    });
+
+    this.chipsetService.listar().subscribe({
+      next: (res: any) => {
+        this.chipsetsDisponiveis.set(res.dados || []);
+      },
+      error: () => this.chipsetsDisponiveis.set([])
+    });
+
+    this.tecnologiaService.listar().subscribe({
+      next: (res: any) => {
+        this.tecnologiasDisponiveis.set(res.dados || []);
+      },
+      error: () => this.tecnologiasDisponiveis.set([])
     });
   }
 

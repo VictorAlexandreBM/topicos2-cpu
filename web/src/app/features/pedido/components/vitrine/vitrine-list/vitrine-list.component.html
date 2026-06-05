@@ -19,9 +19,13 @@
           <mat-card class="!shadow-sm !border !border-gray-200 hover:!shadow-md transition-shadow flex flex-col h-full rounded-xl overflow-hidden">
 
             <div class="h-48 bg-gray-50 flex items-center justify-center p-4 border-b border-gray-100">
-              <img src="https://ui-avatars.com/api/?name=CPU+{{ cpu.marca }}&background=e0e7ff&color=4338ca&size=200&font-size=0.3"
-                   [alt]="cpu.nomeComercial"
-                   class="max-h-full object-contain rounded-md shadow-sm" />
+              @if (cpu.imagemUrl) {
+                <img [src]="cpu.imagemUrl"
+                     [alt]="cpu.nomeComercial"
+                     class="max-h-full object-contain rounded-md shadow-sm mix-blend-darken transition-transform hover:scale-105" />
+              } @else {
+                <mat-icon class="!w-16 !h-16 !text-6xl text-gray-300">memory</mat-icon>
+              }
             </div>
 
             <mat-card-content class="flex-1 !pt-4 flex flex-col">

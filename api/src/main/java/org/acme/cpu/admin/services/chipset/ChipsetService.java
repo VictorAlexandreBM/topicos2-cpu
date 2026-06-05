@@ -2,7 +2,7 @@ package org.acme.cpu.admin.services.chipset;
 
 import org.acme.cpu.admin.dto.chipset.ChipsetDTO;
 import org.acme.cpu.admin.dto.chipset.ChipsetResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.admin.models.Chipset;
 
 public interface ChipsetService {

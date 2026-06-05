@@ -6,7 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import org.acme.cpu.admin.dto.tecnologia.TecnologiaDTO;
 import org.acme.cpu.admin.dto.tecnologia.TecnologiaResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.core.exception.ValidationException;
 import org.acme.cpu.admin.models.Tecnologia;
 import org.acme.cpu.admin.repositories.TecnologiaRepository;

@@ -1,6 +1,5 @@
 package org.acme.cpu.core.exception;
 
-import io.quarkus.arc.profile.IfBuildProfile;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
@@ -15,7 +14,6 @@ import java.time.OffsetDateTime;
 
 @Provider
 @ApplicationScoped
-@IfBuildProfile("prod")
 public class UncaughtExceptionMapper implements ExceptionMapper<Throwable> {
 
     @ConfigProperty(name = "problem.base-url")

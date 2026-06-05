@@ -36,6 +36,7 @@ public class CpuRepository implements PanacheRepository<Cpu> {
             String orderField = switch (campoOrdenacao.toLowerCase()) {
                 case "sku" -> "c.sku";
                 case "preco" -> "c.preco";
+                case "dataCriacao" -> "c.dataCriacao";
                 case "modelo" -> "m.nome";
                 default -> "c.id";
             };
@@ -185,14 +186,14 @@ public class CpuRepository implements PanacheRepository<Cpu> {
                     b.getId(), b.getSku(), b.getPreco(), b.getEstoque(),
                     b.getModelo().getNome(), b.getNomeComercial(),
                     b.getModelo().getMarca().getNome(),
-                    b.isEmVenda(), "BOX"
+                    b.isEmVenda(), b.getImagemUrl(),"BOX"
             );
         } else if (c instanceof CpuTray t) {
             return new CpuTrayListDTO(
                     t.getId(), t.getSku(), t.getPreco(), t.getEstoque(),
                     t.getModelo().getNome(), t.getNomeComercial(),
                     t.getModelo().getMarca().getNome(),
-                    t.isEmVenda(), "TRAY"
+                    t.isEmVenda(), t.getImagemUrl(), "TRAY"
             );
         }
         throw new IllegalStateException("Tipo de CPU desconhecido");

@@ -2,7 +2,7 @@ package org.acme.cpu.admin.services.marca;
 
 import org.acme.cpu.admin.dto.marca.MarcaDTO;
 import org.acme.cpu.admin.dto.marca.MarcaResponseDTO;
-import org.acme.cpu.core.dto.respostaPaginada.RespostaPaginadaDTO;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.admin.models.Marca;
 
 public interface MarcaService {

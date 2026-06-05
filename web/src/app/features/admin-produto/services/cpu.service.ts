@@ -13,13 +13,11 @@ export default class CpuService {
   protected readonly http = inject(HttpClient);
 
   listar(parametros?: ParametrosListagem & CpuFilter): Observable<RespostaPaginada<CpuList[]>> {
-
     let httpParams = new HttpParams();
 
     if (parametros) {
       Object.entries(parametros).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
-
           if (Array.isArray(value)) {
             if (value.length > 0) {
               value.forEach(item => {
@@ -29,7 +27,6 @@ export default class CpuService {
           } else {
             httpParams = httpParams.append(key, value.toString());
           }
-
         }
       });
     }
@@ -57,5 +54,12 @@ export default class CpuService {
 
   alterarEstadoVenda(id: number, emVenda: boolean): Observable<void> {
     return this.http.patch<void>(`${this.recurso}/${id}`, { emVenda });
+  }
+
+  salvarImagem(id: number, arquivo: File): Observable<void> {
+    const formData = new FormData();
+    formData.append('file', arquivo);
+
+    return this.http.patch<void>(`${this.recurso}/${id}/imagem`, formData);
   }
 }

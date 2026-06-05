@@ -13,5 +13,7 @@ public sealed interface CpuDetailDTO permits CpuBoxDetailDTO, CpuTrayDetailDTO {
     boolean emVenda();
     String nomeComercial();
     ModeloCpuDetailDTO modelo();
+    String imagemUrl();
+
     String tipo();
 }

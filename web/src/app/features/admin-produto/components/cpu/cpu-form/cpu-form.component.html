@@ -13,6 +13,43 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+      <div class="col-span-full md:col-span-2 mb-4 bg-gray-50 border border-dashed border-gray-300 rounded-lg p-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-4">Imagem Principal da CPU</h3>
+
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-32 h-32 rounded-lg border-2 border-gray-200 bg-white overflow-hidden flex-shrink-0 flex items-center justify-center relative group">
+            @if (imagemPreview()) {
+              <img [src]="imagemPreview()" alt="Preview da CPU" class="w-full h-full object-cover">
+            } @else {
+              <mat-icon class="text-gray-300 !w-12 !h-12 !text-5xl">image</mat-icon>
+            }
+          </div>
+
+          <div class="flex flex-col gap-2 flex-1 w-full text-center sm:text-left">
+            <input
+              type="file"
+              #fileInput
+              class="hidden"
+              accept="image/jpeg, image/png, image/webp"
+              (change)="onFileSelected($event)">
+
+            <div>
+              <button type="button" mat-flat-button color="primary" (click)="fileInput.click()">
+                <mat-icon>upload</mat-icon>
+                {{ imagemPreview() ? 'Trocar Imagem' : 'Selecionar Imagem' }}
+              </button>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-2">
+              @if (arquivoImagemSelecionado) {
+                Arquivo selecionado: <span class="font-medium text-gray-700">{{ arquivoImagemSelecionado.name }}</span>
+              } @else {
+                Formatos aceitos: JPG, PNG, WEBP. Tamanho máximo: 5MB.
+              }
+            </p>
+          </div>
+        </div>
+      </div>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Tipo de CPU</mat-label>
         <mat-select formControlName="tipo">

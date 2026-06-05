@@ -11,6 +11,7 @@ public sealed interface CpuListDTO permits CpuTrayListDTO, CpuBoxListDTO {
     String nomeComercial();
     String marca();
     String tipo();
+    String imagemUrl();
     Boolean emVenda();
 }
 

@@ -11,6 +11,7 @@ public record CpuTrayListDTO(
         String nomeComercial,
         String marca,
         Boolean emVenda,
+        String imagemUrl,
         String tipo
 ) implements CpuListDTO {
     @Override

@@ -85,4 +85,12 @@ public class Pedido extends BaseEntity {
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
     }
+
+    public StatusPedido getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
 }
