@@ -30,7 +30,9 @@ public record UsuarioResponseDTO(
         @Schema(description = "Todos os endereços cadastrados (Entrega, Cobrança, etc)")
         List<EnderecoResponseDTO> enderecos,
 
-        List<CartaoResponseDTO> cartoes
+        List<CartaoResponseDTO> cartoes,
+
+        char perfil
 ) {
     public UsuarioResponseDTO(Usuario u) {
         this(
@@ -40,7 +42,8 @@ public record UsuarioResponseDTO(
                 u.getSobrenome(),
                 u.getTelefones().stream().map(TelefoneResponseDTO::new).toList(),
                 u.getEnderecos().stream().map(EnderecoResponseDTO::new).toList(),
-                u.getCartoes().stream().filter(Cartao::getAtivo).map(CartaoResponseDTO::new).toList()
+                u.getCartoes().stream().filter(Cartao::getAtivo).map(CartaoResponseDTO::new).toList(),
+                u.getPerfil().getSigla()
         );
     }
 

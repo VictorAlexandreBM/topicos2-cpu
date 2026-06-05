@@ -101,24 +101,23 @@ export default class SocketPage {
     this.dialog.closeAll();
 
     const dialogRef = this.dialog.open(SocketFormComponent, {
-      position: { right: '0', top: '0', bottom: '0' },
-      height: '100vh',
-      width: '400px',
-      hasBackdrop: false,
-      disableClose: true,
-      panelClass: 'slide-over-panel',
+      width: '500px',
+      maxWidth: '95vw',
+      hasBackdrop: true,
+      disableClose: false,
       data: socket
     });
 
     const subCadastro = dialogRef.componentInstance.socketCadastrado.subscribe(() => {
       this.refreshSockets();
       this.socketEmEdicao.set(null);
+      dialogRef.close();
     });
 
     const subAtualizacao = dialogRef.componentInstance.socketAtualizado.subscribe(() => {
       this.refreshSockets();
       this.socketEmEdicao.set(null);
-      this.abrirFormulario();
+      dialogRef.close();
     });
 
     const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe(() => {
@@ -129,6 +128,7 @@ export default class SocketPage {
       subAtualizacao.unsubscribe();
       subCadastro.unsubscribe();
       subCancelado.unsubscribe();
+      this.socketEmEdicao.set(null);
     });
   }
 }

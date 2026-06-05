@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PedidoService } from '@features/pedido/services/pedido.service';
 import {PagamentoPixResponse, PagamentoResponse, PedidoResponse} from '@features/pedido/models/pedido.model';
+import {AuthService} from '@features/cliente/services/auth.service';
 
 @Component({
   selector: 'app-pedido-sucesso-page',
@@ -93,7 +94,7 @@ import {PagamentoPixResponse, PagamentoResponse, PedidoResponse} from '@features
               }
 
               <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8 pt-6 border-t border-gray-100">
-                <a mat-stroked-button class="!h-12 !text-base" [routerLink]="['/usuario', 'pedidos']"> Acompanhar Pedido
+                <a mat-stroked-button class="!h-12 !text-base" [routerLink]="['/usuario', this.usuarioAtual()?.id, 'pedidos']"> Acompanhar Pedido
                 </a>
                 <a mat-flat-button color="primary" class="!h-12 !text-base" routerLink="/vitrine">
                   Continuar Comprando
@@ -113,6 +114,9 @@ export default class PedidoSucessoPage {
 
   private readonly pedidoService = inject(PedidoService);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly authService = inject(AuthService);
+
+  protected readonly usuarioAtual = this.authService.usuarioAtual;
 
   protected readonly pedido = signal<PedidoResponse | null>(null);
   protected readonly carregando = signal(true);

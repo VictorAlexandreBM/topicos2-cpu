@@ -73,8 +73,8 @@ public class UsuarioResource {
 
     @PATCH
     @Path("/eu")
+    @Authenticated
     public Response atualizar(UsuarioUpdateDTO dto) {
-
         return Response.ok(service.atualizar(dto)).build();
     }
 

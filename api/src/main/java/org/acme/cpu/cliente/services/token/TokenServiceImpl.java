@@ -103,7 +103,7 @@ public class TokenServiceImpl implements TokenService {
         return Jwt.issuer("CPU")
                 .upn(usuario.getEmail())
                 .expiresAt(System.currentTimeMillis() / 1000 + 900) // 15 minutos
-                .groups(String.valueOf(usuario.getPerfil().getSigla()))
+                .groups(String.valueOf(usuario.getPerfil().getTipo()))
                 .sign();
     }
 

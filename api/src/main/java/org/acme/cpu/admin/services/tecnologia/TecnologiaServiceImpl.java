@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.services.tecnologia;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,10 +20,13 @@ public class TecnologiaServiceImpl implements TecnologiaService {
     @Inject
     TecnologiaRepository repository;
 
+    @Inject
+    SecurityIdentity securityIdentity;
+
     private Tecnologia getTecnologiaEntity(Long id) {
         Tecnologia tecnologia = repository.findById(id);
 
-        if (tecnologia == null) {
+        if (tecnologia == null || (!tecnologia.isAtivo() && !securityIdentity.hasRole("Administrador"))) {
             throw new NotFoundException("Tecnologia não encontrada");
         }
 
@@ -31,6 +35,11 @@ public class TecnologiaServiceImpl implements TecnologiaService {
 
     @Override
     public RespostaPaginadaDTO<TecnologiaResponseDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+
+        if (!securityIdentity.hasRole("Administrador")) {
+            ativo = true;
+        }
+
         List<TecnologiaResponseDTO> dados = repository.listar(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao)
                 .stream()
                 .map(TecnologiaResponseDTO::new)

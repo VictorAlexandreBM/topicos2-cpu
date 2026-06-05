@@ -29,11 +29,18 @@
   })
   export default class TecnologiaPage {
     private readonly service = inject(TecnologiaService)
-    private refreshTrigger = signal<ParametrosListagem>({pagina: 0, tamanho: 10, filtro: '', ativo: true, campoOrdenacao: 'nome', direcao: 'asc'});
+    private refreshTrigger = signal<ParametrosListagem>({
+      pagina: 0,
+      tamanho: 10,
+      filtro: '',
+      ativo: true,
+      campoOrdenacao: 'nome',
+      direcao: 'asc'
+    });
     private dialog = inject(MatDialog);
 
     protected estaCarregando = signal(false);
-    protected erroGerado = signal<HttpErrorResponse|null>(null);
+    protected erroGerado = signal<HttpErrorResponse | null>(null);
 
     private readonly tecnologiasResponse$ = toObservable(this.refreshTrigger).pipe(
       tap(() => {
@@ -105,35 +112,34 @@
       this.dialog.closeAll();
 
       const dialogRef = this.dialog.open(TecnologiaFormComponent, {
-        position: { right: '0', top: '0', bottom: '0' },
-        height: '100vh',
-        width: '400px',
-        hasBackdrop: false,
-        disableClose: true,
-        panelClass: 'slide-over-panel',
+        width: '500px',        // Largura confortável para formulários
+        maxWidth: '95vw',      // Evita vazar da tela em celulares
+        hasBackdrop: true,     // Liga o fundo escuro/cinza (padrão)
+        disableClose: false,   // Permite fechar clicando fora ou no ESC (opcional, ajustei para melhor UX)
         data: tecnologia
       });
 
       const subCadastro = dialogRef.componentInstance.tecnologiaCadastrada.subscribe(t => {
         this.refreshTecnologias();
         this.tecnologiaEmEdicao.set(null);
-      })
+        dialogRef.close(); // Fecha o modal após o sucesso
+      });
 
       const subAtualizacao = dialogRef.componentInstance.tecnologiaAtualizada.subscribe(t => {
         this.refreshTecnologias();
         this.tecnologiaEmEdicao.set(null);
+        dialogRef.close(); // Fecha o modal após o sucesso
+      });
 
-        this.abrirFormulario();
-      })
-
-      const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe( () => {
+      const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe(() => {
         this.tecnologiaEmEdicao.set(null);
-      })
+      });
 
-      dialogRef.afterClosed().subscribe( () => {
+      dialogRef.afterClosed().subscribe(() => {
         subAtualizacao.unsubscribe();
         subCadastro.unsubscribe();
         subCancelado.unsubscribe();
+        this.tecnologiaEmEdicao.set(null); // Garante que o estado limpe ao fechar
       });
     }
   }

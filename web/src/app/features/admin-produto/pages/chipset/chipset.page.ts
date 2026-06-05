@@ -101,24 +101,23 @@ export default class ChipsetPage {
     this.dialog.closeAll();
 
     const dialogRef = this.dialog.open(ChipsetFormComponent, {
-      position: { right: '0', top: '0', bottom: '0' },
-      height: '100vh',
-      width: '400px',
-      hasBackdrop: false,
-      disableClose: true,
-      panelClass: 'slide-over-panel',
+      width: '500px',
+      maxWidth: '95vw',
+      hasBackdrop: true,
+      disableClose: false,
       data: chipset
     });
 
     const subCadastro = dialogRef.componentInstance.chipsetCadastrado.subscribe(() => {
       this.refreshChipsets();
       this.chipsetEmEdicao.set(null);
+      dialogRef.close();
     });
 
     const subAtualizacao = dialogRef.componentInstance.chipsetAtualizado.subscribe(() => {
       this.refreshChipsets();
       this.chipsetEmEdicao.set(null);
-      this.abrirFormulario();
+      dialogRef.close();
     });
 
     const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe(() => {
@@ -129,6 +128,7 @@ export default class ChipsetPage {
       subAtualizacao.unsubscribe();
       subCadastro.unsubscribe();
       subCancelado.unsubscribe();
+      this.chipsetEmEdicao.set(null);
     });
   }
 }

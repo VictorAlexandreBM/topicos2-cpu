@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.services.cpu;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -35,12 +36,20 @@ public class CpuServiceImpl implements CpuService {
     @RestClient
     SeaweedFsClient seaweedFsClient;
 
+    @Inject
+    SecurityIdentity securityIdentity;
+
     private static final long MAX_TAMANHO_ARQUIVO = 5 * 1024 * 1024; // 5MB em bytes
     private static final List<String> TIPOS_PERMITIDOS = List.of("image/jpeg", "image/png", "image/webp");
 
     @Override
     public RespostaPaginadaDTO<CpuListDTO> listar(Integer pagina, Integer tamanho, CpuFilterDTO filtro, String campoOrdenacao, String direcao) {
         // Agora repassa o objeto DTO de filtro para o repositório
+
+        if (!securityIdentity.hasRole("Administrador")) {
+            filtro = filtro.withEmVenda(true);
+        }
+
         List<CpuListDTO> listaCpus = repository.listarResumido(pagina, tamanho, filtro, campoOrdenacao, direcao);
         Long quantidade = repository.countListar(filtro);
 
@@ -62,8 +71,12 @@ public class CpuServiceImpl implements CpuService {
 
     @Override
     public CpuDetailDTO get(Long id) {
+
         Cpu cpu = repository.findByIdWithDetails(id);
         if (cpu == null) throw new NotFoundException("CPU não encontrada");
+        if (securityIdentity.hasRole("Administrador") && !cpu.isEmVenda()) {
+            throw new NotFoundException("CPU não encontrada");
+        }
         return mapToDetailDto(cpu);
     }
 

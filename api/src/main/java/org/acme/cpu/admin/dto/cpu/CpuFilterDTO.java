@@ -21,4 +21,25 @@ public record CpuFilterDTO(
         @RestQuery("maxFreq") Double maxFreq,
         @RestQuery("tdpBase") Integer tdpBase,
         @RestQuery("emVenda") Boolean emVenda
-) {}
+) {
+    public CpuFilterDTO withEmVenda(Boolean emVenda) {
+        return new CpuFilterDTO(
+                marcaId,
+                socketId,
+                chipsetsId,
+                tecnologiasId,
+                tipoCPU,
+                ordenacao,
+                nome,
+                nomeModelo,
+                minPreco,
+                maxPreco,
+                minCores,
+                maxCores,
+                minFreq,
+                maxFreq,
+                tdpBase,
+                emVenda
+        );
+    }
+}

@@ -102,24 +102,23 @@ export default class MarcaPage {
     this.dialog.closeAll();
 
     const dialogRef = this.dialog.open(MarcaFormComponent, {
-      position: { right: '0', top: '0', bottom: '0' },
-      height: '100vh',
-      width: '400px',
-      hasBackdrop: false,
-      disableClose: true,
-      panelClass: 'slide-over-panel',
+      width: '500px',
+      maxWidth: '95vw',
+      hasBackdrop: true,
+      disableClose: false,
       data: marca
     });
 
     const subCadastro = dialogRef.componentInstance.marcaCadastrada.subscribe(() => {
       this.refreshMarcas();
       this.marcaEmEdicao.set(null);
+      dialogRef.close();
     });
 
     const subAtualizacao = dialogRef.componentInstance.marcaAtualizada.subscribe(() => {
       this.refreshMarcas();
       this.marcaEmEdicao.set(null);
-      this.abrirFormulario();
+      dialogRef.close();
     });
 
     const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe(() => {
@@ -130,6 +129,7 @@ export default class MarcaPage {
       subAtualizacao.unsubscribe();
       subCadastro.unsubscribe();
       subCancelado.unsubscribe();
+      this.marcaEmEdicao.set(null);
     });
   }
 }

@@ -1,5 +1,6 @@
 package org.acme.cpu.pedido.resources;
 
+import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -11,6 +12,7 @@ import org.acme.cpu.pedido.services.PedidoServiceImpl;
 @Path("/webhooks/pix")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class WebhookPixResource {
 
     @Inject

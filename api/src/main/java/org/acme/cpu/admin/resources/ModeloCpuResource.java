@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.resources;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Path("/modelos-cpu")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("Administrador")
 public class ModeloCpuResource {
 
     @Inject

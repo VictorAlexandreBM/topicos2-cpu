@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.services.chipset;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,10 +20,13 @@ public class ChipsetServiceImpl implements ChipsetService {
     @Inject
     ChipsetRepository repository;
 
+    @Inject
+    SecurityIdentity securityIdentity;
+
     private Chipset getChipsetEntity(Long id) {
         Chipset chipset = repository.findById(id);
 
-        if (chipset == null) {
+        if (chipset == null || (!chipset.isAtivo() && !securityIdentity.hasRole("Administrador"))) {
             throw new NotFoundException("Chipset não encontrado");
         }
 
@@ -31,6 +35,11 @@ public class ChipsetServiceImpl implements ChipsetService {
 
     @Override
     public RespostaPaginadaDTO<ChipsetResponseDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+
+        if (!securityIdentity.hasRole("Administrador")) {
+            ativo = true;
+        }
+
         List<ChipsetResponseDTO> dados = repository.listar(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao)
                 .stream()
                 .map(ChipsetResponseDTO::new)

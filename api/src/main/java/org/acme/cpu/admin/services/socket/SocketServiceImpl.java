@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.services.socket;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,10 +20,13 @@ public class SocketServiceImpl implements SocketService {
     @Inject
     SocketRepository repository;
 
+    @Inject
+    SecurityIdentity securityIdentity;
+
     private Socket getSocketEntity(Long id) {
         Socket socket = repository.findById(id);
 
-        if (socket == null) {
+        if (socket == null || (!socket.isAtivo() && !securityIdentity.hasRole("Administrador"))) {
             throw new NotFoundException("Socket não encontrado");
         }
 
@@ -31,6 +35,11 @@ public class SocketServiceImpl implements SocketService {
 
     @Override
     public RespostaPaginadaDTO<SocketResponseDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+
+        if (!securityIdentity.hasRole("Administrador")) {
+            ativo = true;
+        }
+
         List<SocketResponseDTO> dados = repository.listar(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao)
                 .stream()
                 .map(SocketResponseDTO::new)

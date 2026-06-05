@@ -12,7 +12,7 @@ import org.acme.cpu.pedido.services.PedidoServiceImpl;
 @Path("/admin/pedidos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RolesAllowed("ADMIN")
+@RolesAllowed("Administrador")
 public class PedidoAdminResource {
 
     @Inject

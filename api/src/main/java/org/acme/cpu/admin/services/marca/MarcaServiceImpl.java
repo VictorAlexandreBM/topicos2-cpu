@@ -1,5 +1,6 @@
 package org.acme.cpu.admin.services.marca;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,10 +20,13 @@ public class MarcaServiceImpl implements MarcaService {
     @Inject
     MarcaRepository repository;
 
+    @Inject
+    SecurityIdentity securityIdentity;
+
     private Marca getMarcaEntity(Long id) {
         Marca marca = repository.findById(id);
 
-        if (marca == null) {
+        if (marca == null || (!marca.isAtivo() && !securityIdentity.hasRole("Administrador"))) {
             throw new NotFoundException("Marca não encontrada");
         }
 
@@ -31,6 +35,11 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public RespostaPaginadaDTO<MarcaResponseDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+
+        if (!securityIdentity.hasRole("Administrador")) {
+            ativo = true;
+        }
+
         List<MarcaResponseDTO> dados = repository.listar(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao)
                 .stream()
                 .map(MarcaResponseDTO::new)

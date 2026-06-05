@@ -1,16 +1,13 @@
-<div class="flex flex-col h-full bg-white">
-
-  <div class="px-6 py-4 flex justify-between items-center sticky top-0 z-20">
-    <h2 class="text-xl font-semibold text-gray-800">
+<div class="flex flex-col bg-white rounded-lg overflow-hidden">
+  <div class="px-6 py-4 flex justify-between items-center border-b border-gray-100 bg-gray-50">
+    <h2 class="text-xl font-semibold text-gray-800 m-0">
       {{ chipsetEmEdicao ? "Atualizar Chipset" : "Cadastrar Chipset" }}
     </h2>
-    <button mat-icon-button type="button" (click)="fechar()">
+    <button mat-icon-button type="button" (click)="fechar()" class="text-gray-500 hover:bg-gray-200">
       <mat-icon>close</mat-icon>
     </button>
   </div>
-
-  <form (ngSubmit)="chipsetEmEdicao ? atualizar() : cadastrar()" [formGroup]="chipsetForm" class="flex flex-col flex-1 p-6">
-
+  <form (ngSubmit)="chipsetEmEdicao ? atualizar() : cadastrar()" [formGroup]="chipsetForm" class="flex flex-col p-6">
     <div class="flex flex-col gap-4">
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Tipo</mat-label>
@@ -18,14 +15,11 @@
         <mat-error>{{ tipoCtrl.errors | fieldError:tipoCtrl.touched }}</mat-error>
       </mat-form-field>
     </div>
-
-    <div class="flex justify-end gap-2 mt-auto pt-4 border-t border-gray-200">
-      <button type="button" (click)="fechar()" mat-stroked-button>Cancelar</button>
-
-      <button type="submit" mat-flat-button color="primary" [disabled]="chipsetForm.invalid">
+    <div class="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-100">
+      <button type="button" (click)="fechar()" mat-button class="text-gray-600">Cancelar</button>
+      <button type="submit" mat-flat-button color="primary" [disabled]="chipsetForm.invalid" class="px-6">
         {{ chipsetEmEdicao ? 'Atualizar' : 'Salvar' }}
       </button>
     </div>
-
   </form>
 </div>

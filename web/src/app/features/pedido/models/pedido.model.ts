@@ -67,10 +67,11 @@ export type PagamentoResponse =
 export interface ItemPedidoResponse {
   id: number;
   cpuId: number;
+  nomeComercial: string; // Adicionado
+  imagemUrl?: string;    // Adicionado
   quantidade: number;
   precoUnitario: number;
 }
-
 export interface PedidoResponse {
   id: number;
   // Assumindo que você formatou o StatusPedido do backend da mesma maneira

@@ -30,6 +30,7 @@ export interface UsuarioDetail {
   telefones: TelefoneDetail[];
   enderecos: EnderecoDetail[];
   cartoes: CartaoDetail[];
+  perfil: 'V' | 'C' | 'A';
 }
 
 export interface UsuarioCadastroRequest {

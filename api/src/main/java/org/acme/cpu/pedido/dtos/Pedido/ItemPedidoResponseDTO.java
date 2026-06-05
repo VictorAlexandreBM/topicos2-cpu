@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 public record ItemPedidoResponseDTO(
         Long id,
         Long cpuId,
+        String nomeComercial,
+        String imagemUrl,
         Integer quantidade,
         BigDecimal precoUnitario
 ) {
@@ -14,6 +16,8 @@ public record ItemPedidoResponseDTO(
         this(
                 item.getId(),
                 item.getCpu().getId(),
+                item.getCpu().getNomeComercial(),
+                item.getCpu().getImagemUrl(),
                 item.getQuantidade(),
                 item.getPrecoUnitario()
         );
