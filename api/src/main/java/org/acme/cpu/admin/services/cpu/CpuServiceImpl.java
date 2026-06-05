@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
-import org.acme.cpu.admin.clients.SeaweedFsClient;
+import org.acme.cpu.core.clients.SeaweedFsClient;
 import org.acme.cpu.admin.dto.cpu.*;
 import org.acme.cpu.admin.models.Cpu;
 import org.acme.cpu.admin.models.CpuBox;

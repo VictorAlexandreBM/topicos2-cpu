@@ -11,11 +11,11 @@ public record TelefoneDTO(
         @Schema(
                 description = "Número do telefone (apenas dígitos). Aceita celular (9 dígitos) ou fixo (8 dígitos).",
                 example = "984961810",
-                pattern = "^\\d{8,9}$",
+                pattern = "^\\d{10,11}$",
                 required = true
         )
         @NotBlank(message = "O número é obrigatório")
-        @Pattern(regexp = "^\\d{8,9}$", message = "O número deve conter 8 ou 9 dígitos numéricos")
+        @Pattern(regexp = "^\\d{10,11}$", message = "O número deve conter 8 ou 9 dígitos numéricos")
         String numero,
 
         Boolean principal

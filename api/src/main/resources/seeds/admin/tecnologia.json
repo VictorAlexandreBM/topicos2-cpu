@@ -1,0 +1,42 @@
+[
+  {
+    "nome": "Hyper-Threading",
+    "descricao": "Permite que um núcleo físico execute múltiplas threads simultaneamente."
+  },
+  {
+    "nome": "Turbo Boost",
+    "descricao": "Aumenta dinamicamente a frequência do processador quando necessário."
+  },
+  {
+    "nome": "Precision Boost",
+    "descricao": "Tecnologia da AMD para ajuste automático de frequência."
+  },
+  {
+    "nome": "Precision Boost Overdrive",
+    "descricao": "Expande os limites automáticos de desempenho dos processadores AMD."
+  },
+  {
+    "nome": "3D V-Cache",
+    "descricao": "Empilhamento vertical de cache para aumentar o desempenho em jogos."
+  },
+  {
+    "nome": "AVX2",
+    "descricao": "Conjunto avançado de instruções para processamento vetorial."
+  },
+  {
+    "nome": "DDR4 Support",
+    "descricao": "Compatibilidade com memórias DDR4."
+  },
+  {
+    "nome": "DDR5 Support",
+    "descricao": "Compatibilidade com memórias DDR5."
+  },
+  {
+    "nome": "PCI Express 4.0",
+    "descricao": "Suporte à quarta geração do barramento PCI Express."
+  },
+  {
+    "nome": "PCI Express 5.0",
+    "descricao": "Suporte à quinta geração do barramento PCI Express."
+  }
+]

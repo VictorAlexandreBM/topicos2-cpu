@@ -45,7 +45,7 @@ export default class PerfilInformacoesComponent implements OnInit {
 
   private criarLinhaTelefone(numero: string = '', principal: boolean = false) {
     return this.fb.group({
-      numero: [numero, [Validators.required, Validators.pattern('^\\d{8,9}$')]],
+      numero: [numero, [Validators.required, Validators.pattern('^\\d{10,11}$')]],
       principal: [principal]
     });
   }

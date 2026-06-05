@@ -1,0 +1,272 @@
+[
+  {
+    "nome": "AMD Ryzen 5 5600",
+    "marca": "AMD",
+    "socket": "AM4",
+    "chipsets": ["A520", "B550", "X570"],
+    "tecnologias": ["Precision Boost", "DDR4 Support", "PCI Express 4.0"],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador AMD Ryzen 5 para desktops gamers e uso geral.",
+      "tdpBaseW": 65,
+      "cacheL2MB": 3.0,
+      "cacheL3MB": 32.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 6,
+        "frequenciaBase": 3.5,
+        "frequenciaMaxima": 4.4
+      }
+    ]
+  },
+  {
+    "nome": "AMD Ryzen 7 5700X",
+    "marca": "AMD",
+    "socket": "AM4",
+    "chipsets": ["A520", "B550", "X570"],
+    "tecnologias": ["Precision Boost", "DDR4 Support", "PCI Express 4.0"],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador AMD Ryzen 7 com 8 núcleos para produtividade e jogos.",
+      "tdpBaseW": 65,
+      "cacheL2MB": 4.0,
+      "cacheL3MB": 32.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 8,
+        "frequenciaBase": 3.4,
+        "frequenciaMaxima": 4.6
+      }
+    ]
+  },
+  {
+    "nome": "AMD Ryzen 7 7800X3D",
+    "marca": "AMD",
+    "socket": "AM5",
+    "chipsets": ["B650", "X670"],
+    "tecnologias": [
+      "Precision Boost",
+      "Precision Boost Overdrive",
+      "3D V-Cache",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador AMD voltado para jogos com tecnologia 3D V-Cache.",
+      "tdpBaseW": 120,
+      "cacheL2MB": 8.0,
+      "cacheL3MB": 96.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 8,
+        "frequenciaBase": 4.2,
+        "frequenciaMaxima": 5.0
+      }
+    ]
+  },
+  {
+    "nome": "AMD Ryzen 9 7900X",
+    "marca": "AMD",
+    "socket": "AM5",
+    "chipsets": ["B650", "X670"],
+    "tecnologias": [
+      "Precision Boost",
+      "Precision Boost Overdrive",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador AMD Ryzen 9 para workloads profissionais e entusiastas.",
+      "tdpBaseW": 170,
+      "cacheL2MB": 12.0,
+      "cacheL3MB": 64.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 12,
+        "frequenciaBase": 4.7,
+        "frequenciaMaxima": 5.6
+      }
+    ]
+  },
+  {
+    "nome": "AMD Ryzen 9 9950X",
+    "marca": "AMD",
+    "socket": "AM5",
+    "chipsets": ["B650", "X670"],
+    "tecnologias": [
+      "Precision Boost",
+      "Precision Boost Overdrive",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador AMD Ryzen topo de linha para criação de conteúdo e alto desempenho.",
+      "tdpBaseW": 170,
+      "cacheL2MB": 16.0,
+      "cacheL3MB": 64.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 16,
+        "frequenciaBase": 4.3,
+        "frequenciaMaxima": 5.7
+      }
+    ]
+  },
+  {
+    "nome": "Intel Core i3-12100F",
+    "marca": "Intel",
+    "socket": "LGA1700",
+    "chipsets": ["H610", "B760"],
+    "tecnologias": [
+      "Hyper-Threading",
+      "Turbo Boost",
+      "DDR4 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador Intel Core i3 de entrada para desktops.",
+      "tdpBaseW": 58,
+      "cacheL2MB": 5.0,
+      "cacheL3MB": 12.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 4,
+        "frequenciaBase": 3.3,
+        "frequenciaMaxima": 4.3
+      }
+    ]
+  },
+  {
+    "nome": "Intel Core i5-12400F",
+    "marca": "Intel",
+    "socket": "LGA1700",
+    "chipsets": ["H610", "B760", "Z790"],
+    "tecnologias": [
+      "Hyper-Threading",
+      "Turbo Boost",
+      "DDR4 Support",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador Intel Core i5 de 12ª geração.",
+      "tdpBaseW": 65,
+      "cacheL2MB": 7.5,
+      "cacheL3MB": 18.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 6,
+        "frequenciaBase": 2.5,
+        "frequenciaMaxima": 4.4
+      }
+    ]
+  },
+  {
+    "nome": "Intel Core i5-14600K",
+    "marca": "Intel",
+    "socket": "LGA1700",
+    "chipsets": ["B760", "Z790"],
+    "tecnologias": [
+      "Hyper-Threading",
+      "Turbo Boost",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador Intel Core i5 de 14ª geração para gamers.",
+      "tdpBaseW": 125,
+      "cacheL2MB": 20.0,
+      "cacheL3MB": 24.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 6,
+        "frequenciaBase": 3.5,
+        "frequenciaMaxima": 5.3
+      },
+      {
+        "tipoNucleo": "EFICIENCIA",
+        "quantidadeNucleos": 8,
+        "frequenciaBase": 2.6,
+        "frequenciaMaxima": 4.0
+      }
+    ]
+  },
+  {
+    "nome": "Intel Core i7-14700K",
+    "marca": "Intel",
+    "socket": "LGA1700",
+    "chipsets": ["B760", "Z790"],
+    "tecnologias": [
+      "Hyper-Threading",
+      "Turbo Boost",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador Intel Core i7 para jogos e multitarefa pesada.",
+      "tdpBaseW": 125,
+      "cacheL2MB": 28.0,
+      "cacheL3MB": 33.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 8,
+        "frequenciaBase": 3.4,
+        "frequenciaMaxima": 5.6
+      },
+      {
+        "tipoNucleo": "EFICIENCIA",
+        "quantidadeNucleos": 12,
+        "frequenciaBase": 2.5,
+        "frequenciaMaxima": 4.3
+      }
+    ]
+  },
+  {
+    "nome": "Intel Core i9-14900K",
+    "marca": "Intel",
+    "socket": "LGA1700",
+    "chipsets": ["B760", "Z790"],
+    "tecnologias": [
+      "Hyper-Threading",
+      "Turbo Boost",
+      "DDR5 Support",
+      "PCI Express 5.0"
+    ],
+    "fichaTecnica": {
+      "descricaoComercial": "Processador Intel Core i9 topo de linha para entusiastas.",
+      "tdpBaseW": 125,
+      "cacheL2MB": 32.0,
+      "cacheL3MB": 36.0
+    },
+    "clustersNucleo": [
+      {
+        "tipoNucleo": "PERFORMANCE",
+        "quantidadeNucleos": 8,
+        "frequenciaBase": 3.2,
+        "frequenciaMaxima": 6.0
+      },
+      {
+        "tipoNucleo": "EFICIENCIA",
+        "quantidadeNucleos": 16,
+        "frequenciaBase": 2.4,
+        "frequenciaMaxima": 4.4
+      }
+    ]
+  }
+]

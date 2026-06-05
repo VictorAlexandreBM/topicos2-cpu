@@ -10,8 +10,8 @@ import org.acme.cpu.cliente.dtos.telefone.TelefoneDTO;
 @Embeddable
 public class Telefone {
 
-    @Column(nullable = false, length = 9)
-    @Pattern(regexp = "^\\d{8,9}$")
+    @Column(nullable = false, length = 11)
+    @Pattern(regexp = "^\\d{10,11}$")
     private String numero;
 
     @Column(nullable = false)
