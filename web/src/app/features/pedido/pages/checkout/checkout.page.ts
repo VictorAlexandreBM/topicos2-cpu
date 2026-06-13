@@ -67,9 +67,15 @@ import { CheckoutResumoComponent } from '@features/pedido/components/checkout/ch
             <div class="lg:col-span-4">
               <app-checkout-resumo
                 [quantidadeItens]="carrinhoService.quantidadeSelecionada()"
-                [valorTotal]="carrinhoService.valorTotalSelecionado()"
+                [valorSubtotal]="valorSubtotal()"
+                [valorDesconto]="valorDesconto()"
+                [valorTotal]="valorTotalFinal()"
                 [podeFinalizar]="podeFinalizar()"
                 [processando]="processandoPedido()"
+                [cupomAplicado]="codigoCupomAplicado()"
+                [processandoCupom]="processandoCupom()"
+                (aplicarCupom)="validarCupom($event)"
+                (removerCupom)="removerCupom()"
                 (confirmarPedido)="enviarPedido()">
               </app-checkout-resumo>
             </div>
@@ -82,7 +88,6 @@ import { CheckoutResumoComponent } from '@features/pedido/components/checkout/ch
   `
 })
 export default class CheckoutPage implements OnInit {
-  // Injeções
   protected readonly carrinhoService = inject(CarrinhoService);
   private readonly enderecoService = inject(EnderecoService);
   private readonly cartaoService = inject(CartaoService);
@@ -93,16 +98,27 @@ export default class CheckoutPage implements OnInit {
   // Estados de UI
   protected readonly carregandoDadosIniciais = signal(true);
   protected readonly processandoPedido = signal(false);
+  protected readonly processandoCupom = signal(false);
 
-  // Dados do Usuário
+  // Dados do Utilizador
   protected readonly enderecosUsuario = signal<EnderecoDetail[]>([]);
   protected readonly cartoesUsuario = signal<CartaoDetail[]>([]);
 
-  // Seleções do Usuário
+  // Seleções do Utilizador
   protected readonly enderecoSelecionadoId = signal<number | null>(null);
   protected readonly pagamentoSelecionado = signal<SelecaoPagamento | null>(null);
 
-  // Regra para habilitar o botão
+  protected readonly codigoCupomAplicado = signal<string | null>(null);
+  protected readonly valorDesconto = signal<number>(0);
+
+  // Cálculos Financeiros
+  protected readonly valorSubtotal = computed(() => this.carrinhoService.valorTotalSelecionado());
+
+  protected readonly valorTotalFinal = computed(() => {
+    const total = this.valorSubtotal() - this.valorDesconto();
+    return total > 0 ? total : 0;
+  });
+
   protected readonly podeFinalizar = computed(() => {
     return this.enderecoSelecionadoId() !== null &&
       this.pagamentoSelecionado() !== null &&
@@ -110,18 +126,14 @@ export default class CheckoutPage implements OnInit {
   });
 
   ngOnInit(): void {
-    // Redireciona de volta se tentar acessar o checkout com carrinho vazio
     if (this.carrinhoService.quantidadeSelecionada() === 0) {
       this.router.navigate(['/carrinho']);
       return;
     }
-
     this.carregarDadosDoUsuario();
   }
 
   private carregarDadosDoUsuario(): void {
-    // Busca endereços e cartões simultaneamente
-    // Em um cenário real mais robusto, você poderia usar forkJoin do RxJS aqui
     let carregados = 0;
     const checarCarregamento = () => {
       carregados++;
@@ -129,55 +141,68 @@ export default class CheckoutPage implements OnInit {
     };
 
     this.enderecoService.listar().subscribe({
-      next: (enderecos) => {
-        this.enderecosUsuario.set(enderecos);
-        checarCarregamento();
-      },
-      error: () => checarCarregamento() // Lide com o erro conforme sua arquitetura
+      next: (enderecos) => { this.enderecosUsuario.set(enderecos); checarCarregamento(); },
+      error: () => checarCarregamento()
     });
 
     this.cartaoService.listar().subscribe({
-      next: (cartoes) => {
-        this.cartoesUsuario.set(cartoes);
-        checarCarregamento();
-      },
+      next: (cartoes) => { this.cartoesUsuario.set(cartoes); checarCarregamento(); },
       error: () => checarCarregamento()
     });
   }
+
+  protected validarCupom(codigo: string): void {
+    this.processandoCupom.set(true);
+
+    this.pedidoService.validarCupom(codigo, this.valorSubtotal()).subscribe({
+      next: (resposta) => {
+        this.codigoCupomAplicado.set(codigo);
+        this.valorDesconto.set(resposta.desconto);
+        this.processandoCupom.set(false);
+        this.snackBar.open('Cupom aplicado com sucesso!', 'Fechar', { duration: 3000, panelClass: ['bg-green-600', 'text-white'] });
+      },
+      error: (err) => {
+        this.processandoCupom.set(false);
+        this.removerCupom(); // Garante que não fica lixo
+        const mensagem = err.error?.message || 'Cupom inválido ou expirado.';
+        this.snackBar.open(mensagem, 'Fechar', { duration: 4000, panelClass: ['bg-red-600', 'text-white'] });
+      }
+    });
+  }
+
+  protected removerCupom(): void {
+    this.codigoCupomAplicado.set(null);
+    this.valorDesconto.set(0);
+  }
+
+  // --- ENVIO DO PEDIDO --- //
 
   protected enviarPedido(): void {
     if (!this.podeFinalizar()) return;
 
     this.processandoPedido.set(true);
 
-    // 1. Mapeia os itens do carrinho para o formato do request
     const itensRequest: ItemPedidoRequest[] = this.carrinhoService.itens()
       .filter(i => i.selecionado)
-      .map(i => ({
-        cpuId: i.produto.id,
-        quantidade: i.quantidade
-      }));
+      .map(i => ({ cpuId: i.produto.id, quantidade: i.quantidade }));
 
-    // 2. Monta o payload final espelhando a estrutura do Quarkus
     const payload: PedidoFormRequest = {
       enderecoId: this.enderecoSelecionadoId()!,
       itens: itensRequest,
-      pagamento: this.pagamentoSelecionado() as any // O cast atende ao polimorfismo definido no model
+      pagamento: this.pagamentoSelecionado() as any,
+      codigoCupom: this.codigoCupomAplicado() || undefined
     };
 
-    // 3. Dispara para o backend
     this.pedidoService.realizarPedido(payload).subscribe({
       next: (resposta) => {
         this.processandoPedido.set(false);
 
-        // Remove do carrinho apenas os itens que foram comprados
         const itensComprados = this.carrinhoService.itens().filter(i => i.selecionado);
         for (const item of itensComprados) {
           this.carrinhoService.removerItem(item.produto.id);
         }
 
         this.snackBar.open('Pedido realizado com sucesso!', 'Fechar', { duration: 5000 });
-
         this.router.navigate(['/pedido/sucesso', resposta.id]);
       },
       error: (err) => {

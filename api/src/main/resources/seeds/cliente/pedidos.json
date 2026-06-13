@@ -1,0 +1,139 @@
+[
+  {
+    "emailCliente": "cliente@gmail.com",
+    "dataCriacao": "2025-11-15T14:30:00",
+    "statusPedido": "ENTREGUE",
+    "itens": [
+      { "skuCpu": "AMD-5600-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "APROVADO",
+      "txid": "TX123456789ABC",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  },
+  {
+    "emailCliente": "cliente@gmail.com",
+    "dataCriacao": "2025-12-05T09:15:00",
+    "statusPedido": "CANCELADO",
+    "itens": [
+      { "skuCpu": "INT-I9-14900K-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "CREDITO",
+      "statusPagamento": "RECUSADO",
+      "parcelas": 12
+    }
+  },
+  {
+    "emailCliente": "maria.oliveira@gmail.com",
+    "dataCriacao": "2026-01-20T16:45:00",
+    "statusPedido": "ENTREGUE",
+    "itens": [
+      { "skuCpu": "INT-I5-14600K-BOX", "quantidade": 1 },
+      { "skuCpu": "AMD-5600-TRAY", "quantidade": 2 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "APROVADO",
+      "txid": "TX987654321XYZ",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  },
+  {
+    "emailCliente": "carlos.souza@gmail.com",
+    "dataCriacao": "2026-02-10T11:20:00",
+    "statusPedido": "ENVIADO",
+    "itens": [
+      { "skuCpu": "AMD-7800X3D-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "APROVADO",
+      "txid": "TX555555555BBB",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  },
+  {
+    "emailCliente": "cliente@gmail.com",
+    "dataCriacao": "2026-03-01T20:10:00",
+    "statusPedido": "PAGO",
+    "itens": [
+      { "skuCpu": "INT-I3-12100F-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "DEBITO",
+      "statusPagamento": "APROVADO",
+      "autenticacao3DS": true
+    }
+  },
+  {
+    "emailCliente": "maria.oliveira@gmail.com",
+    "dataCriacao": "2026-04-12T10:05:00",
+    "statusPedido": "AGUARDANDO_PAGAMENTO",
+    "itens": [
+      { "skuCpu": "AMD-9950X-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "PENDENTE",
+      "txid": "TX777777777CCC",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  },
+  {
+    "emailCliente": "carlos.souza@gmail.com",
+    "dataCriacao": "2026-04-28T14:50:00",
+    "statusPedido": "ENTREGUE",
+    "itens": [
+      { "skuCpu": "INT-I7-14700K-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "APROVADO",
+      "txid": "TX888888888DDD",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  },
+  {
+    "emailCliente": "cliente@gmail.com",
+    "dataCriacao": "2026-05-15T08:30:00",
+    "statusPedido": "ENVIADO",
+    "itens": [
+      { "skuCpu": "AMD-7900X-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "CREDITO",
+      "statusPagamento": "APROVADO",
+      "parcelas": 10
+    }
+  },
+  {
+    "emailCliente": "maria.oliveira@gmail.com",
+    "dataCriacao": "2026-06-02T13:45:00",
+    "statusPedido": "PAGO",
+    "itens": [
+      { "skuCpu": "INT-I5-12400F-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "CREDITO",
+      "statusPagamento": "APROVADO",
+      "parcelas": 3
+    }
+  },
+  {
+    "emailCliente": "cliente@gmail.com",
+    "dataCriacao": "2026-06-05T17:00:00",
+    "statusPedido": "AGUARDANDO_PAGAMENTO",
+    "itens": [
+      { "skuCpu": "AMD-5700X-BOX", "quantidade": 1 }
+    ],
+    "pagamento": {
+      "forma": "PIX",
+      "statusPagamento": "PENDENTE",
+      "txid": "TX999999999EEE",
+      "codigoCopiaECola": "00020101021126580014br.gov.bcb.pix"
+    }
+  }
+]

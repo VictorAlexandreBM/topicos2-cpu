@@ -2,6 +2,7 @@ package org.acme.cpu.admin.repositories;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.cpu.admin.dto.modeloCpu.ModeloCpuFilterDTO;
 import org.acme.cpu.admin.dto.modeloCpu.ModeloCpuListDTO;
 import org.acme.cpu.admin.models.ModeloCpu;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 @ApplicationScoped
 public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
 
-    public List<ModeloCpuListDTO> listarResumido(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+    public List<ModeloCpuListDTO> listarResumido(Integer pagina, Integer tamanho, ModeloCpuFilterDTO filtro, String campoOrdenacao, String direcao) {
         StringBuilder q = new StringBuilder("""
                 SELECT new org.acme.cpu.admin.dto.modeloCpu.ModeloCpuListDTO(
                     m.id,
@@ -28,16 +29,12 @@ public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
                 LEFT JOIN m.marca ma
                 LEFT JOIN m.socket s
                 LEFT JOIN m.clustersNucleo cn
-                WHERE m.ativo = :ativo
+                WHERE 1=1
                 """);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("ativo", ativo != null ? ativo : true);
 
-        if (filtro != null && !filtro.isBlank()) {
-            q.append(" AND LOWER(m.nome) LIKE LOWER(:pesquisa) ");
-            params.put("pesquisa", "%" + filtro + "%");
-        }
+        aplicarCondicoesWhere(q, params, filtro);
 
         q.append(" GROUP BY m.id, m.nome, ma.nome, s.tipo, m.ativo ");
 
@@ -68,21 +65,59 @@ public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
         return query.getResultList();
     }
 
-    public List<ModeloCpuListDTO> listarResumido(Boolean ativo) {
-        return listarResumido(null, null, null, ativo, null, null);
-    }
-
-    public long countListar(String filtro, Boolean ativo) {
-        StringBuilder q = new StringBuilder("ativo = :ativo");
+    public long countListar(ModeloCpuFilterDTO filtro) {
+        // Para o count, só precisamos de joins se as condições exigirem,
+        // mas faremos o LEFT JOIN na marca e socket para garantir que o path do WHERE funcione.
+        StringBuilder q = new StringBuilder("SELECT COUNT(DISTINCT m) FROM ModeloCpu m LEFT JOIN m.marca ma LEFT JOIN m.socket s WHERE 1=1 ");
         Map<String, Object> params = new HashMap<>();
-        params.put("ativo", ativo != null ? ativo : true);
 
-        if (filtro != null && !filtro.isBlank()) {
-            q.append(" AND LOWER(nome) LIKE LOWER(:pesquisa)");
-            params.put("pesquisa", "%" + filtro + "%");
+        aplicarCondicoesWhere(q, params, filtro);
+
+        TypedQuery<Long> query = getEntityManager().createQuery(q.toString(), Long.class);
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
         }
 
-        return this.find(q.toString(), params).count();
+        return query.getSingleResult();
+    }
+
+    private void aplicarCondicoesWhere(StringBuilder q, Map<String, Object> params, ModeloCpuFilterDTO filtro) {
+        if (filtro == null) return;
+
+        if (filtro.ativo() != null) {
+            q.append(" AND m.ativo = :ativo ");
+            params.put("ativo", filtro.ativo());
+        }
+        if (filtro.nome() != null && !filtro.nome().isBlank()) {
+            q.append(" AND LOWER(m.nome) LIKE LOWER(:nome) ");
+            params.put("nome", "%" + filtro.nome() + "%");
+        }
+        if (filtro.marcaId() != null && !filtro.marcaId().isEmpty()) {
+            q.append(" AND ma.id IN (:marcaId) ");
+            params.put("marcaId", filtro.marcaId());
+        }
+        if (filtro.socketId() != null && !filtro.socketId().isEmpty()) {
+            q.append(" AND s.id IN (:socketId) ");
+            params.put("socketId", filtro.socketId());
+        }
+
+        // Subqueries para cálculos dos Clusters (evita duplicar agregação no GROUP BY principal)
+        if (filtro.minCores() != null) {
+            q.append(" AND (SELECT SUM(cn_sub.quantidadeNucleos) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn_sub WHERE m_sub = m) >= :minCores ");
+            params.put("minCores", filtro.minCores().longValue());
+        }
+        if (filtro.maxCores() != null) {
+            q.append(" AND (SELECT SUM(cn_sub.quantidadeNucleos) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn_sub WHERE m_sub = m) <= :maxCores ");
+            params.put("maxCores", filtro.maxCores().longValue());
+        }
+        if (filtro.minFreq() != null) {
+            q.append(" AND (SELECT MIN(cn_sub.frequenciaBase) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn_sub WHERE m_sub = m) >= :minFreq ");
+            params.put("minFreq", filtro.minFreq());
+        }
+        if (filtro.maxFreq() != null) {
+            q.append(" AND (SELECT MAX(cn_sub.frequenciaMaxima) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn_sub WHERE m_sub = m) <= :maxFreq ");
+            params.put("maxFreq", filtro.maxFreq());
+        }
     }
 
     public ModeloCpu findByIdWithDetails(Long id) {

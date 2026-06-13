@@ -1,19 +1,74 @@
-<div class="flex items-center gap-4 w-full">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
+  <mat-expansion-panel class="!shadow-none !rounded-lg" [expanded]="false">
 
-  <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
-    <mat-label>Pesquisar modelos</mat-label>
-    <input
-      matInput
-      type="text"
-      placeholder="Ex: Core i7-13700K, Ryzen 5 7600X"
-      (input)="aoDigitar($event)"
-      #filtroInput
-    >
-    <mat-icon matPrefix>search</mat-icon>
-  </mat-form-field>
+    <mat-expansion-panel-header class="hover:bg-gray-50 !h-16 border-b border-gray-100">
+      <mat-panel-title class="flex items-center gap-2 text-gray-800 font-semibold">
+        <mat-icon class="text-blue-600">filter_list</mat-icon> Filtros Avançados
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <mat-checkbox (change)="aoMudarInativos($event.checked)">
-    Mostrar Somente Inativos
-  </mat-checkbox>
+    <form [formGroup]="filtroForm" class="p-5 flex flex-col gap-4">
 
+      <div class="flex flex-col md:flex-row gap-4 items-center">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="flex-1 w-full">
+          <mat-label>Pesquisar nome do modelo</mat-label>
+          <input matInput formControlName="nome" placeholder="Ex: Core i7-13700K">
+          <mat-icon matSuffix class="text-gray-400">search</mat-icon>
+        </mat-form-field>
+
+        <mat-checkbox [formControl]="mostrarInativosCtrl" class="shrink-0 text-gray-700 font-medium">
+          Mostrar Somente Inativos
+        </mat-checkbox>
+
+        <button type="button" mat-stroked-button color="warn" (click)="limparTudo()" class="h-[48px]">
+          Limpar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2">
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Marca</mat-label>
+          <mat-select formControlName="marcaId" multiple>
+            @for (marca of marcasDisponiveis(); track marca.id) {
+              <mat-option [value]="marca.id">{{ marca.nome }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Socket</mat-label>
+          <mat-select formControlName="socketId" multiple>
+            @for (socket of socketsDisponiveis(); track socket.id) {
+              <mat-option [value]="socket.id">{{ socket.tipo }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="flex items-center gap-2">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Mín Núcleos</mat-label>
+            <input matInput type="number" formControlName="minCores" min="0">
+          </mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Máx Núcleos</mat-label>
+            <input matInput type="number" formControlName="maxCores" min="0">
+          </mat-form-field>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Freq. Mín (GHz)</mat-label>
+            <input matInput type="number" formControlName="minFreq" min="0" step="0.1">
+          </mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Freq. Máx (GHz)</mat-label>
+            <input matInput type="number" formControlName="maxFreq" min="0" step="0.1">
+          </mat-form-field>
+        </div>
+
+      </div>
+    </form>
+
+  </mat-expansion-panel>
 </div>

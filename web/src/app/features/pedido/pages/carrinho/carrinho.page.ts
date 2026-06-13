@@ -25,7 +25,7 @@ import {CarrinhoResumoComponent} from '@features/pedido/components/carrinho/carr
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="flex items-center gap-4 mb-8">
-          <a mat-icon-button routerLink="/vitrine" aria-label="Voltar para a loja">
+          <a mat-icon-button routerLink="/" aria-label="Voltar para a loja">
             <mat-icon>arrow_back</mat-icon>
           </a>
           <h1 class="text-3xl font-bold text-gray-900 m-0">Meu Carrinho</h1>

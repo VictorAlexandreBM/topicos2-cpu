@@ -7,16 +7,25 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+import org.acme.cpu.admin.dto.cpu.CpuBoxListDTO;
+import org.acme.cpu.admin.dto.cpu.CpuListDTO;
+import org.acme.cpu.admin.dto.cpu.CpuTrayListDTO;
+import org.acme.cpu.admin.models.Cpu;
+import org.acme.cpu.admin.models.CpuBox;
+import org.acme.cpu.admin.models.CpuTray;
+import org.acme.cpu.admin.repositories.CpuRepository;
 import org.acme.cpu.cliente.dtos.usuario.*;
 import org.acme.cpu.cliente.models.Telefone;
 import org.acme.cpu.cliente.models.Usuario;
 import org.acme.cpu.cliente.models.enums.Perfil;
 import org.acme.cpu.cliente.repositories.UsuarioRepository;
 import org.acme.cpu.cliente.services.token.TokenService;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.core.exception.ValidationException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -27,6 +36,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Inject
     UsuarioRepository repository;
+    @Inject
+    CpuRepository cpuRepository;
 
     @Inject
     TokenService tokenService;
@@ -130,6 +141,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO atualizar(UsuarioUpdateDTO dto) {
         Usuario usuario = getUsuarioLogado();
 
+        // 1. Validação de Segurança
+        if (!BcryptUtil.matches(dto.senhaAtual(), usuario.getSenha())) {
+            LOG.warnf("Tentativa de atualização de perfil negada. Senha incorreta para %s", usuario.getEmail());
+            throw ValidationException.of("senhaAtual", "Senha atual incorreta.");
+        }
+
+        // 2. Atualização dos Dados
         usuario.setPrimeiroNome(dto.nome());
         usuario.setSobrenome(dto.sobrenome());
         usuario.setTelefones(dto.telefones().stream().map(Telefone::fromDTO).collect(Collectors.toSet()));
@@ -137,6 +155,128 @@ public class UsuarioServiceImpl implements UsuarioService {
         LOG.infof("Cliente %s atualizou seus dados pessoais.", usuario.getEmail());
 
         return new UsuarioResponseDTO(usuario);
+    }
+
+    // ========================================================================
+    // MÉTODOS ADMINISTRATIVOS
+    // ========================================================================
+
+    @Override
+    public RespostaPaginadaDTO<UsuarioListDTO> listarUsuarios(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
+
+        List<UsuarioListDTO> dados = repository.listar(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao)
+                .stream()
+                .map(UsuarioListDTO::new)
+                .toList();
+
+        long total = repository.countListar(filtro, ativo);
+
+        return new RespostaPaginadaDTO<>(dados, total);
+    }
+
+    @Transactional
+    @Override
+    public void alterarStatus(Long id, boolean ativo) {
+        Usuario usuarioAlvo = repository.findById(id);
+        if (usuarioAlvo == null) {
+            throw new NotFoundException("Usuário não encontrado.");
+        }
+
+        // Trava de Segurança: Não permitir que o Admin desative a si mesmo
+        String emailLogado = jwt.getName();
+        if (usuarioAlvo.getEmail().equals(emailLogado) && !ativo) {
+            throw new ForbiddenException("Você não pode inativar sua própria conta.");
+        }
+
+        usuarioAlvo.setAtivo(ativo);
+        LOG.infof("Admin alterou o status do usuário %d para ativo=%b", id, ativo);
+    }
+
+    @Transactional
+    @Override
+    public void alterarPerfil(Long id, char siglaPerfil) {
+        Usuario usuarioAlvo = repository.findById(id);
+        if (usuarioAlvo == null) {
+            throw new NotFoundException("Usuário não encontrado.");
+        }
+
+        // Trava de Segurança: Não permitir que o Admin rebaixe seu próprio perfil
+        String emailLogado = jwt.getName();
+        if (usuarioAlvo.getEmail().equals(emailLogado) && siglaPerfil != 'A') {
+            throw new ForbiddenException("Você não pode alterar o próprio perfil administrativo.");
+        }
+
+        Perfil novoPerfil = Perfil.fromSigla(siglaPerfil);
+        usuarioAlvo.setPerfil(novoPerfil);
+
+        LOG.infof("Admin alterou o perfil do usuário %d para %s", id, novoPerfil.getTipo());
+    }
+
+    @Transactional
+    @Override
+    public void adicionarFavorito(Long cpuId) {
+        Usuario usuario = getUsuarioLogado();
+        org.acme.cpu.admin.models.Cpu cpu = cpuRepository.findById(cpuId);
+
+        if (cpu == null) {
+            throw new NotFoundException("Processador não encontrado");
+        }
+
+        usuario.getListaDesejos().add(cpu);
+    }
+
+    @Transactional
+    @Override
+    public void removerFavorito(Long cpuId) {
+        Usuario usuario = getUsuarioLogado();
+        org.acme.cpu.admin.models.Cpu cpu = cpuRepository.findById(cpuId);
+
+        if (cpu == null) {
+            throw new NotFoundException("Processador não encontrado");
+        }
+
+        usuario.getListaDesejos().remove(cpu);
+    }
+
+    @Override
+    public List<CpuListDTO> listarFavoritos() {
+        Usuario usuario = getUsuarioLogado();
+
+        return usuario.getListaDesejos().stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+
+    private CpuListDTO mapToDto(Cpu c) {
+        if (c instanceof CpuBox box) {
+            return new CpuBoxListDTO(
+                    box.getId(),
+                    box.getSku(),
+                    box.getPreco(),
+                    box.getEstoque(),
+                    box.getModelo().getNome(),
+                    box.getNomeComercial(),
+                    box.getModelo().getMarca().getNome(),
+                    box.isEmVenda(),
+                    box.getImagemUrl(),
+                    "BOX"
+            );
+        } else if (c instanceof CpuTray tray) {
+            return new CpuTrayListDTO(
+                    tray.getId(),
+                    tray.getSku(),
+                    tray.getPreco(),
+                    tray.getEstoque(),
+                    tray.getModelo().getNome(),
+                    tray.getNomeComercial(),
+                    tray.getModelo().getMarca().getNome(),
+                    tray.isEmVenda(),
+                    tray.getImagemUrl(),
+                    "TRAY"
+            );
+        }
+        throw new IllegalArgumentException("Tipo de CPU desconhecido: " + c.getClass().getName());
     }
 
 //    @Transactional

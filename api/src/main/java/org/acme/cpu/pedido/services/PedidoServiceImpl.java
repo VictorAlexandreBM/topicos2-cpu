@@ -12,6 +12,7 @@ import org.acme.cpu.cliente.models.Endereco;
 import org.acme.cpu.cliente.models.Usuario;
 import org.acme.cpu.cliente.repositories.EnderecoRepository;
 import org.acme.cpu.cliente.repositories.UsuarioRepository;
+import org.acme.cpu.core.dtos.respostaPaginada.RespostaPaginadaDTO;
 import org.acme.cpu.pedido.dtos.Pagamento.PagamentoDTO;
 import org.acme.cpu.pedido.dtos.Pagamento.PagamentoPixDTO;
 import org.acme.cpu.pedido.dtos.Pagamento.PagamentoCreditoDTO;
@@ -20,15 +21,19 @@ import org.acme.cpu.pedido.dtos.Pagamento.PagamentoDebitoDTO;
 import org.acme.cpu.pedido.dtos.Pedido.ItemPedidoDTO;
 import org.acme.cpu.pedido.dtos.Pedido.PedidoDTO;
 import org.acme.cpu.pedido.dtos.Pedido.PedidoResponseDTO;
+import org.acme.cpu.pedido.dtos.Pedido.PedidoResumoResponseDTO;
 import org.acme.cpu.pedido.models.*;
 import org.acme.cpu.pedido.models.enums.StatusPagamento;
 import org.acme.cpu.pedido.models.enums.StatusPedido;
+import org.acme.cpu.pedido.models.enums.TipoDesconto;
 import org.acme.cpu.pedido.repository.CartaoRepository;
+import org.acme.cpu.pedido.repository.CupomRepository;
 import org.acme.cpu.pedido.repository.PedidoRepository;
 import org.acme.cpu.pedido.services.gatewayPagamento.GatewayPagamento;
 
 import io.quarkus.scheduler.Scheduled;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +55,9 @@ public class PedidoServiceImpl {
 
     @Inject
     CartaoRepository cartaoRepository;
+
+    @Inject
+    CupomRepository cupomRepository;
 
     @Inject
     GatewayPagamento gatewayPagamento;
@@ -108,6 +116,44 @@ public class PedidoServiceImpl {
         for (var i : itens) {
             total = total.add(i.getPrecoUnitario().multiply(new BigDecimal(i.getQuantidade())));
         }
+
+        BigDecimal valorDesconto = BigDecimal.ZERO;
+        if (dto.codigoCupom() != null && !dto.codigoCupom().isBlank()) {
+            Cupom cupom = cupomRepository.findByCodigo(dto.codigoCupom());
+
+            if (cupom == null || !cupom.isAtivo() || cupom.getDataValidade().isBefore(LocalDateTime.now())) {
+                throw new BadRequestException("Cupom inválido, inativo ou expirado.");
+            }
+
+            if (cupom.getValorMinimoPedido() != null && total.compareTo(cupom.getValorMinimoPedido()) < 0) {
+                throw new BadRequestException("O valor do pedido não atinge o mínimo para este cupom.");
+            }
+
+            // Calcula o desconto dependendo do tipo
+            if (cupom.getTipo() == TipoDesconto.PERCENTUAL) {
+                valorDesconto = total.multiply(cupom.getValor().divide(new BigDecimal("100")));
+            } else {
+                valorDesconto = cupom.getValor();
+            }
+
+            // Garante que o desconto não seja maior que o total do pedido
+            if (valorDesconto.compareTo(total) > 0) {
+                valorDesconto = total;
+            }
+
+            // Atualiza contagem de usos (se houver limite)
+            if (cupom.getLimiteUsos() != null) {
+                if (cupom.getLimiteUsos() <= 0) {
+                    throw new BadRequestException("O limite de usos para este cupom já foi atingido.");
+                }
+                cupom.setLimiteUsos(cupom.getLimiteUsos() - 1);
+            }
+
+            total = total.subtract(valorDesconto);
+            pedido.setCupom(cupom);
+            pedido.setDescontoAplicado(valorDesconto);
+        }
+
         pedido.setTotal(total);
         Pagamento pagamento = criarPagamento(dto.pagamento(), total);
         pedido.setPagamento(pagamento);
@@ -302,6 +348,72 @@ public class PedidoServiceImpl {
         pedido.getPagamento().setStatusPagamento(StatusPagamento.APROVADO);
         pedido.setStatus(StatusPedido.PAGO);
 
+        return new PedidoResponseDTO(pedido);
+    }
+
+    public java.math.BigDecimal validarCupom(String codigo, java.math.BigDecimal totalCarrinho) {
+        if (codigo == null || codigo.isBlank()) {
+            return java.math.BigDecimal.ZERO;
+        }
+
+        Cupom cupom = cupomRepository.findByCodigo(codigo);
+
+        if (cupom == null || !cupom.isAtivo() || cupom.getDataValidade().isBefore(LocalDateTime.now())) {
+            throw new BadRequestException("Cupom inválido, inativo ou expirado.");
+        }
+
+        if (cupom.getLimiteUsos() != null && cupom.getLimiteUsos() <= 0) {
+            throw new BadRequestException("O limite de usos para este cupom já foi atingido.");
+        }
+
+        if (cupom.getValorMinimoPedido() != null && totalCarrinho.compareTo(cupom.getValorMinimoPedido()) < 0) {
+            throw new BadRequestException("O valor do pedido não atinge o mínimo de " + cupom.getValorMinimoPedido() + " para este cupom.");
+        }
+
+        BigDecimal valorDesconto = BigDecimal.ZERO;
+        if (cupom.getTipo() == TipoDesconto.PERCENTUAL) {
+            valorDesconto = totalCarrinho.multiply(cupom.getValor().divide(new BigDecimal("100"), 2));
+        } else {
+            valorDesconto = cupom.getValor();
+        }
+
+        if (valorDesconto.compareTo(totalCarrinho) > 0) {
+            valorDesconto = totalCarrinho;
+        }
+
+        return valorDesconto;
+    }
+
+    public List<PedidoResponseDTO> listarPorUsuarioId(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId);
+        if (usuario == null) {
+            throw new NotFoundException("Usuário não encontrado");
+        }
+
+        List<Pedido> pedidos = repository.findByUsuario(usuario);
+
+        return pedidos.stream()
+                .map(PedidoResponseDTO::new)
+                .toList();
+    }
+
+    public RespostaPaginadaDTO<PedidoResumoResponseDTO> listarAdmin(
+            Integer pagina, Integer tamanho, String filtro, StatusPedido status,
+            LocalDate dataInicio, LocalDate dataFim, String campoOrdenacao, String direcao) {
+
+        List<PedidoResumoResponseDTO> dados = repository.listar(pagina, tamanho, filtro, status, dataInicio, dataFim, campoOrdenacao, direcao)
+                .stream()
+                .map(PedidoResumoResponseDTO::new)
+                .toList();
+
+        long total = repository.countListar(filtro, status, dataInicio, dataFim);
+
+        return new RespostaPaginadaDTO<>(dados, total);
+    }
+
+
+    public PedidoResponseDTO getPedidoAdmin(Long id) {
+        Pedido pedido = getPedidoEntity(id);
         return new PedidoResponseDTO(pedido);
     }
 

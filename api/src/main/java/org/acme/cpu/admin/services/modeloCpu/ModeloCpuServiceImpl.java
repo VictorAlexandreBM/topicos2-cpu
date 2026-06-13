@@ -37,9 +37,9 @@ public class ModeloCpuServiceImpl implements ModeloCpuService {
     TecnologiaRepository tecnologiaRepository;
 
     @Override
-    public RespostaPaginadaDTO<ModeloCpuListDTO> listar(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
-        List<ModeloCpuListDTO> listaModelos = repository.listarResumido(pagina, tamanho, filtro, ativo, campoOrdenacao, direcao);
-        Long quantidade = repository.countListar(filtro, ativo);
+    public RespostaPaginadaDTO<ModeloCpuListDTO> listar(Integer pagina, Integer tamanho, org.acme.cpu.admin.dto.modeloCpu.ModeloCpuFilterDTO filtro, String campoOrdenacao, String direcao) {
+        List<ModeloCpuListDTO> listaModelos = repository.listarResumido(pagina, tamanho, filtro, campoOrdenacao, direcao);
+        Long quantidade = repository.countListar(filtro);
 
         return new RespostaPaginadaDTO<>(listaModelos, quantidade);
     }

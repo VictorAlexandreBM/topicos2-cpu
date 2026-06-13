@@ -24,7 +24,10 @@ public record UsuarioUpdateDTO(
                 nullable = true
         )
         @Valid
-        List<TelefoneDTO> telefones
-){
+        List<TelefoneDTO> telefones,
 
+        @Schema(description = "Senha atual para confirmação da alteração")
+        @NotBlank(message = "A senha atual é obrigatória para confirmar as alterações")
+        String senhaAtual
+){
 }

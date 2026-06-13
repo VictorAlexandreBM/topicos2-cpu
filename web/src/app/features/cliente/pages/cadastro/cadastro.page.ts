@@ -60,7 +60,7 @@ export default class CadastroPage {
 
   private criarLinhaTelefone() {
     return this.fb.group({
-      numero: ['', [Validators.required, Validators.pattern('^\\d{8,9}$')]],
+      numero: ['', [Validators.required, Validators.pattern('^\\d{10,11}$')]],
       principal: [false]
     });
   }

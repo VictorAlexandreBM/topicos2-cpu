@@ -28,20 +28,13 @@ import { CarrinhoService } from '@features/pedido/services/carrinho.service';
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div class="flex justify-between items-center h-16 gap-4">
 
-            <a routerLink="/" class="flex items-center gap-2 shrink-0 group">
+            <a routerLink="/home" class="flex items-center gap-2 shrink-0 group">
               <div class="bg-blue-600 text-white p-1.5 rounded-lg group-hover:bg-blue-700 transition-colors">
                 <mat-icon class="!w-6 !h-6 !text-[24px]">memory</mat-icon>
               </div>
-              <span class="font-bold text-xl tracking-tight text-gray-900 hidden sm:block">ACME<span class="text-blue-600">CPU</span></span>
+              <span class="font-bold text-xl tracking-tight text-gray-900 hidden sm:block"><span class="text-orange-600">Ca</span><span class="text-blue-600">BuM</span></span>
             </a>
 
-            <div class="flex-1 max-w-3xl hidden md:flex items-center px-4">
-              <div class="w-full relative">
-                <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 !text-xl !w-5 !h-5">search</mat-icon>
-                <input type="text" placeholder="Buscar processadores..."
-                       class="w-full bg-gray-100 border-transparent focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-full py-2 pl-10 pr-4 text-sm outline-none transition-all">
-              </div>
-            </div>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
 
@@ -116,7 +109,7 @@ import { CarrinhoService } from '@features/pedido/services/carrinho.service';
 
       <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-sm text-gray-500">
-          <p>© 2026 ACME CPU. Todos os direitos reservados.</p>
+          <p>© 2026 CaBum. Todos os direitos reservados.</p>
         </div>
       </footer>
 

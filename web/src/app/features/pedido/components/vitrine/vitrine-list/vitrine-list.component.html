@@ -17,6 +17,12 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         @for (cpu of cpus(); track cpu.id) {
           <mat-card class="!shadow-sm !border !border-gray-200 hover:!shadow-md transition-shadow flex flex-col h-full rounded-xl overflow-hidden">
+            <button mat-icon-button
+                    class="!absolute !top-2 !right-2 z-10 bg-white/80 backdrop-blur-sm shadow-sm"
+                    (click)="toggleFavorito(cpu.id, $event)"
+                    [color]="isFavorito(cpu.id) ? 'warn' : ''">
+              <mat-icon>{{ isFavorito(cpu.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
 
             <div class="h-48 bg-gray-50 flex items-center justify-center p-4 border-b border-gray-100">
               @if (cpu.imagemUrl) {
@@ -37,7 +43,7 @@
                 {{ cpu.nomeComercial }}
               </h3>
 
-              <div class="mt-4 flex flex-col items-start gap-1">
+              <div class="mt-4 flex flex-col items-start gap-1 mb-4">
                 @if (cpu.estoque > 0) {
                   <span class="text-2xl font-bold text-blue-600">{{ cpu.preco | currency:'BRL' }}</span>
                   <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full font-medium border border-green-200">
@@ -52,7 +58,7 @@
               </div>
             </mat-card-content>
 
-            <mat-card-actions class="!p-4 !pt-0 mt-auto bg-white">
+            <mat-card-actions class="!p-4 !mt-2 !pt-0 bg-white">
               <a mat-flat-button color="primary" class="w-full !rounded-lg !h-10" [routerLink]="['/produto', cpu.id]">
                 <mat-icon>visibility</mat-icon> Ver Detalhes
               </a>

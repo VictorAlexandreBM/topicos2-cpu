@@ -1,22 +1,17 @@
 <div class="p-6 h-full flex flex-col">
 
-  <div class="mb-6 pb-4 border-b border-gray-200">
-    <h1 class="text-2xl font-bold text-gray-900">Gerência de Modelos de CPU</h1>
-    <p class="text-sm text-gray-500 mt-1">Liste e gerencie os modelos de processadores.</p>
-  </div>
+  <div class="mb-6 pb-4 border-b border-gray-200 flex justify-between items-start flex-wrap gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Gerência de Modelos de CPU</h1>
+      <p class="text-sm text-gray-500 mt-1">Liste e gerencie os modelos de processadores com filtros avançados.</p>
+    </div>
 
-  <div class="flex items-center gap-4 mb-4">
-    <app-modelo-cpu-filtro
-      class="w-[550px]"
-      (filtroAlterado)="handlePesquisa($event)"
-      (mostrarInativos)="handleMostrarInativos($event)"/>
-  </div>
-
-  <div class="flex items-center gap-4 mb-4">
     <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="novoModelo()">
       <mat-icon>add</mat-icon> Adicionar Modelo
     </button>
   </div>
+
+  <app-modelo-cpu-filtro (filtrosMudaram)="handleFiltros($event)" />
 
   <app-modelo-cpu-table
     [modelos]="modelosResponse()?.dados ?? []"

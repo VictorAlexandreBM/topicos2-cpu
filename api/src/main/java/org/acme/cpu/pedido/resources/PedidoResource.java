@@ -61,4 +61,14 @@ public class PedidoResource {
     public Response cancelar(@PathParam("id") Long id) {
         return Response.ok(service.cancelarPedido(id, getUsuarioAutenticado())).build();
     }
+
+    @GET
+    @Path("/validar-cupom")
+    public Response validarCupom(
+            @QueryParam("codigo") String codigo,
+            @QueryParam("total") java.math.BigDecimal total
+    ) {
+        java.math.BigDecimal desconto = service.validarCupom(codigo, total);
+        return Response.ok(java.util.Map.of("desconto", desconto)).build();
+    }
 }

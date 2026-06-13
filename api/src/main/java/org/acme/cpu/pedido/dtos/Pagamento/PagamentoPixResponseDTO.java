@@ -11,7 +11,8 @@ public record PagamentoPixResponseDTO(
         BigDecimal valor,
         String forma,
 
-        String codigoCopiaECola
+        String codigoCopiaECola,
+        String txid
 
 ) implements PagamentoResponseDTO {
     public PagamentoPixResponseDTO(PagamentoPix p) {
@@ -20,7 +21,8 @@ public record PagamentoPixResponseDTO(
                 p.getStatusPagamento().getTipo(),
                 p.getValor(),
                 "Pix",
-                p.getCodigoCopiaECola()
+                p.getCodigoCopiaECola(),
+                p.getTxid()
         );
     }
 }

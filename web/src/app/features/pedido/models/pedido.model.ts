@@ -3,6 +3,8 @@ import { CartaoDetail } from '@features/cliente/models/cartao.model';
 
 // --- REQUESTS (Envio para o Backend) ---
 
+export type StatusPedido = 'Aguardando Pagamento' | 'Pago' | 'Enviado' | 'Entregue' | 'Cancelado';
+
 export interface ItemPedidoRequest {
   cpuId: number;
   quantidade: number;
@@ -29,6 +31,7 @@ export interface PedidoFormRequest {
   enderecoId: number;
   itens: ItemPedidoRequest[];
   pagamento: PagamentoRequest;
+  codigoCupom?: string;
 }
 
 // --- RESPONSES CORRIGIDAS ---
@@ -72,13 +75,22 @@ export interface ItemPedidoResponse {
   quantidade: number;
   precoUnitario: number;
 }
+
 export interface PedidoResponse {
   id: number;
-  // Assumindo que você formatou o StatusPedido do backend da mesma maneira
-  status: 'Aguardando Pagamento' | 'Pago' | 'Enviado' | 'Entregue' | 'Cancelado';
+  status: StatusPedido;
   total: number;
+  descontoAplicado?: number;
   dataCriacao: string;
   enderecoEntrega: EnderecoDetail;
   itens: ItemPedidoResponse[];
   pagamento: PagamentoResponse;
+}
+
+export interface PedidoResumoResponse {
+  id: number;
+  status: StatusPedido;
+  total: number;
+  dataCriacao: string;
+  itens: ItemPedidoResponse[];
 }

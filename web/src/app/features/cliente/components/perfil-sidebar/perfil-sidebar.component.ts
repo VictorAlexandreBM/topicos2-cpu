@@ -19,6 +19,5 @@ export class PerfilSidebarComponent {
     { label: 'Lista de Desejos', icone: 'favorite', rota: 'desejos' },
     { label: 'Meus Pedidos', icone: 'local_shipping', rota: 'pedidos' },
     { label: 'Formas de Pagamento', icone: 'credit_card', rota: 'pagamentos' }, // Adição estratégica para e-commerce
-    { label: 'Segurança', icone: 'lock', rota: 'seguranca' }
   ];
 }

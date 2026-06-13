@@ -35,20 +35,21 @@ export default class PerfilInformacoesComponent implements OnInit {
   private readonly snackbarService = inject(SnackbarService);
 
   protected estaCarregando = signal(false);
+  protected ocultaSenha = signal(true);
 
   // E-mail configurado nativamente como desabilitado
   protected readonly emailCtrl = this.fb.control({ value: '', disabled: true });
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(50)]);
   protected readonly sobrenomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(100)]);
-
-
   private criarLinhaTelefone(numero: string = '', principal: boolean = false) {
     return this.fb.group({
       numero: [numero, [Validators.required, Validators.pattern('^\\d{10,11}$')]],
       principal: [principal]
     });
   }
+
+  protected readonly senhaAtualCtrl = this.fb.control('', [Validators.required]);
 
   protected readonly telefonesArray = this.fb.array(
     [this.criarLinhaTelefone()],
@@ -58,7 +59,8 @@ export default class PerfilInformacoesComponent implements OnInit {
   protected readonly perfilForm = this.fb.group({
     nome: this.nomeCtrl,
     sobrenome: this.sobrenomeCtrl,
-    telefones: this.telefonesArray
+    telefones: this.telefonesArray,
+    senhaAtual: this.senhaAtualCtrl // <-- Novo
   });
 
   ngOnInit(): void {
@@ -104,13 +106,15 @@ export default class PerfilInformacoesComponent implements OnInit {
     const request: UsuarioUpdateRequest = {
       nome: this.nomeCtrl.value.trim(),
       sobrenome: this.sobrenomeCtrl.value.trim(),
-      telefones: this.telefonesArray.getRawValue() as TelefoneFormRequest[]
+      telefones: this.telefonesArray.getRawValue() as TelefoneFormRequest[],
+      senhaAtual: this.senhaAtualCtrl.value // <-- Novo
     };
 
     this.authService.atualizarPerfil(request).subscribe({
       next: () => {
         this.estaCarregando.set(false);
-        this.perfilForm.markAsPristine(); // Reseta o estado "Dirty" do form (desabilita o botão Salvar)
+        this.senhaAtualCtrl.reset(); // <-- Limpa a senha após sucesso
+        this.perfilForm.markAsPristine();
         this.snackbarService.alertar('Informações atualizadas com sucesso!');
       },
       error: (err: HttpErrorResponse) => {

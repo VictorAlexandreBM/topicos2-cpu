@@ -47,4 +47,15 @@ export interface UsuarioUpdateRequest {
   nome: string;
   sobrenome: string;
   telefones: TelefoneFormRequest[];
+  senhaAtual: string;
+}
+
+export interface UsuarioListDTO {
+  id: number;
+  email: string;
+  nome: string;
+  sobrenome: string
+  telefones: TelefoneDetail[]
+  perfil: PerfilUsuario
+  ativo: boolean
 }

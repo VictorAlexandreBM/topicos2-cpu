@@ -1,19 +1,109 @@
-<div class="flex items-center gap-4 w-full">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
+  <mat-expansion-panel class="!shadow-none !rounded-lg" [expanded]="false">
 
-  <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
-    <mat-label>Pesquisar CPUs</mat-label>
-    <input
-      matInput
-      type="text"
-      placeholder="Ex: SKU (BX8071513700K) ou Nome Comercial"
-      (input)="aoDigitar($event)"
-      #filtroInput
-    >
-    <mat-icon matPrefix>search</mat-icon>
-  </mat-form-field>
+    <mat-expansion-panel-header class="hover:bg-gray-50 !h-16 border-b border-gray-100">
+      <mat-panel-title class="flex items-center gap-2 text-gray-800 font-semibold">
+        <mat-icon class="text-blue-600">filter_list</mat-icon> Filtros Avançados de CPU
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <mat-checkbox (change)="aoMudarIndisponiveis($event.checked)">
-    Mostrar Somente Indisponíveis
-  </mat-checkbox>
+    <form [formGroup]="filtroForm" class="p-5 flex flex-col gap-4">
 
+      <div class="flex flex-col md:flex-row gap-4 items-center">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="flex-1 w-full">
+          <mat-label>Pesquisar nome ou SKU</mat-label>
+          <input matInput formControlName="nome" placeholder="Ex: BX8071513700K ou Core i7">
+          <mat-icon matSuffix class="text-gray-400">search</mat-icon>
+        </mat-form-field>
+
+        <mat-checkbox [formControl]="mostrarIndisponiveisCtrl" class="shrink-0 text-gray-700 font-medium">
+          Mostrar Somente Indisponíveis
+        </mat-checkbox>
+
+        <button type="button" mat-stroked-button color="warn" (click)="limparTudo()" class="h-[48px]">
+          Limpar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Marca</mat-label>
+          <mat-select formControlName="marcaId" multiple>
+            @for (marca of marcasDisponiveis(); track marca.id) { <mat-option [value]="marca.id">{{ marca.nome }}</mat-option> }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Socket</mat-label>
+          <mat-select formControlName="socketId" multiple>
+            @for (socket of socketsDisponiveis(); track socket.id) { <mat-option [value]="socket.id">{{ socket.tipo }}</mat-option> }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Chipset</mat-label>
+          <mat-select formControlName="chipsetsId" multiple>
+            @for (chipset of chipsetsDisponiveis(); track chipset.id) { <mat-option [value]="chipset.id">{{ chipset.tipo }}</mat-option> }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Tecnologia</mat-label>
+          <mat-select formControlName="tecnologiasId" multiple>
+            @for (tec of tecnologiasDisponiveis(); track tec.id) { <mat-option [value]="tec.id">{{ tec.nome }}</mat-option> }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2 bg-gray-50 p-4 rounded-lg border border-gray-100">
+
+        <div class="flex flex-col gap-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase">Formato</span>
+          <mat-radio-group formControlName="tipoCPU" class="flex gap-4">
+            <mat-radio-button value="">Ambos</mat-radio-button>
+            <mat-radio-button value="BOX">BOX</mat-radio-button>
+            <mat-radio-button value="TRAY">TRAY</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase">Preço (R$)</span>
+          <div class="flex items-center gap-2">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Mín</mat-label><input matInput type="number" formControlName="minPreco">
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Máx</mat-label><input matInput type="number" formControlName="maxPreco">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase">Núcleos</span>
+          <div class="flex items-center gap-2">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Mín</mat-label><input matInput type="number" formControlName="minCores">
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Máx</mat-label><input matInput type="number" formControlName="maxCores">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <span class="text-xs font-semibold text-gray-500 uppercase">Frequência (GHz)</span>
+          <div class="flex items-center gap-2">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Mín</mat-label><input matInput type="number" formControlName="minFreq" step="0.1">
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+              <mat-label>Máx</mat-label><input matInput type="number" formControlName="maxFreq" step="0.1">
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </mat-expansion-panel>
 </div>

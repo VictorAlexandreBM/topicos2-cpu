@@ -32,6 +32,10 @@ export const routes: Routes = [
     loadComponent: () => import('@core/layouts/loja-layout/loja-layout.component').then(m => m.LojaLayoutComponent),
     children: [
       {
+        path: 'home', // Vitrine é a página inicial
+        loadComponent: () => import('@features/cliente/pages/home/home.page')
+      },
+      {
         path: '', // Vitrine é a página inicial
         loadComponent: () => import('@features/pedido/pages/vitrine/vitrine.page')
       },
@@ -63,7 +67,8 @@ export const routes: Routes = [
           { path: 'informacoes', loadComponent: () => import('@features/cliente/components/perfil-informacoes/perfil-informacoes.component') },
           { path: 'enderecos', loadComponent: () => import('@features/cliente/components/perfil-enderecos/perfil-enderecos.component') },
           { path: 'pagamentos', loadComponent: () => import('@features/cliente/components/perfil-cartoes/perfil-cartoes.component') },
-          { path: 'pedidos', loadComponent: () => import('@features/cliente/components/perfil-pedidos/perfil-pedidos.component') }
+          { path: 'pedidos', loadComponent: () => import('@features/cliente/components/perfil-pedidos/perfil-pedidos.component') },
+          { path: 'desejos', loadComponent: () => import('@features/cliente/components/perfil-lista-desejos/perfil-lista-desejos.component')}
         ]
       }
     ]
@@ -130,6 +135,18 @@ export const routes: Routes = [
             loadComponent: () => import('@features/admin-produto/components/cpu/cpu-form/cpu-form.component')
           }
         ]
+      },
+      {
+        path: 'usuario',
+        loadComponent: () => import('./features/admin-produto/pages/usuario/usuario.page')
+      },
+      {
+        path: 'pedido',
+        loadComponent: () => import('./features/admin-produto/pages/pedido/pedido.page')
+      },
+      {
+        path: 'cupom',
+        loadComponent: () => import('./features/admin-produto/pages/cupom/cupom.page')
       }
     ]
   },
@@ -137,5 +154,5 @@ export const routes: Routes = [
   // ---------------------------------------------------------
   // ROTA DE FALLBACK (Se digitar URL errada)
   // ---------------------------------------------------------
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'home' }
 ];

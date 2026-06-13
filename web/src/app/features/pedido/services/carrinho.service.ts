@@ -6,7 +6,7 @@ import { CpuDetail } from '@features/admin-produto/models/cpu.model';
   providedIn: 'root'
 })
 export class CarrinhoService {
-  private readonly STORAGE_KEY = 'acme_cpu_carrinho';
+  private readonly STORAGE_KEY = 'cabum_carrinho';
 
   // 1. O Estado Principal (Signal)
   public readonly itens = signal<ItemCarrinho[]>(this.carregarDoStorage());

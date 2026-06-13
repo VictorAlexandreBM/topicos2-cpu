@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PedidoFormRequest, PedidoResponse } from '../models/pedido.model';
 
@@ -24,5 +24,17 @@ export class PedidoService {
 
   cancelar(id: number): Observable<PedidoResponse> {
     return this.http.patch<PedidoResponse>(`${this.recurso}/${id}/cancelar`, {});
+  }
+
+  simularWebhookPix(txid: string): Observable<void> {
+    return this.http.post<void>(`webhooks/pix/${txid}/confirmar`, {});
+  }
+
+  validarCupom(codigo: string, total: number): Observable<{ desconto: number }> {
+    const params = new HttpParams()
+      .set('codigo', codigo)
+      .set('total', total.toString());
+
+    return this.http.get<{ desconto: number }>(`${this.recurso}/validar-cupom`, { params });
   }
 }

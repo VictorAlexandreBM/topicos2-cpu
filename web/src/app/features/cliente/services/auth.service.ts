@@ -9,6 +9,7 @@ import {
   UsuarioLoginRequest,
   UsuarioUpdateRequest
 } from '../models/usuario.model';
+import {CpuList} from '@features/admin-produto/models/cpu.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,10 +27,12 @@ export class AuthService {
   #refreshToken = signal<string | null>(null);
   #emailLogado = signal<string | null>(null);
   #usuarioAtual = signal<UsuarioDetail | null>(null);
+  #favoritosIds = signal<Set<number>>(new Set());
 
   public readonly accessToken = this.#accessToken.asReadonly();
   public readonly usuarioAtual = this.#usuarioAtual.asReadonly();
   public readonly estaAutenticado = computed(() => !!this.#accessToken());
+  public readonly favoritosIds = this.#favoritosIds.asReadonly();
 
   constructor() {
     // Executa a limpeza preventiva no boot da aplicação se o token estiver expirado
@@ -70,13 +73,41 @@ export class AuthService {
     this.#refreshToken.set(null);
     this.#emailLogado.set(null);
     this.#usuarioAtual.set(null);
+    this.#favoritosIds.set(new Set());
+  }
+
+  carregarFavoritos(): Observable<CpuList[]> {
+    return this.http.get<CpuList[]>(`${this.recurso}/eu/favoritos`).pipe(
+      tap(cpus => this.#favoritosIds.set(new Set(cpus.map(c => c.id))))
+    );
+  }
+
+  toggleFavorito(cpuId: number, isFavorito: boolean): Observable<void> {
+    if (isFavorito) {
+      return this.http.delete<void>(`${this.recurso}/eu/favoritos/${cpuId}`).pipe(
+        tap(() => {
+          const current = new Set(this.#favoritosIds());
+          current.delete(cpuId);
+          this.#favoritosIds.set(current);
+        })
+      );
+    } else {
+      return this.http.post<void>(`${this.recurso}/eu/favoritos/${cpuId}`, {}).pipe(
+        tap(() => {
+          const current = new Set(this.#favoritosIds());
+          current.add(cpuId);
+          this.#favoritosIds.set(current);
+        })
+      );
+    }
   }
 
   login(credenciais: UsuarioLoginRequest): Observable<UsuarioLogadoResponse> {
     return this.http.post<UsuarioLogadoResponse>(`${this.recurso}/login`, credenciais).pipe(
       tap((res) => {
         this.definirSessao(res);
-        this.#usuarioAtual.set(res.perfil); // Salva o perfil vindo junto com o token
+        this.#usuarioAtual.set(res.perfil);
+        this.carregarFavoritos().subscribe();
       })
     );
   }
@@ -115,7 +146,10 @@ export class AuthService {
 
   carregarUsuarioAtual(): Observable<UsuarioDetail> {
     return this.http.get<UsuarioDetail>(`${this.recurso}/eu`).pipe(
-      tap((usuario) => this.#usuarioAtual.set(usuario))
+      tap((usuario) => {
+        this.#usuarioAtual.set(usuario);
+        this.carregarFavoritos().subscribe(); // Carrega os favoritos silenciosamente
+      })
     );
   }
 

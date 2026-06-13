@@ -105,7 +105,7 @@
         <mat-selection-list formControlName="chipsetsId">
           @for (chipset of chipsetsDisponiveis(); track chipset.id) {
             <mat-list-option [value]="chipset.id" class="text-gray-700">
-              {{ chipset.nome }}
+              {{ chipset.tipo }}
             </mat-list-option>
           }
         </mat-selection-list>

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.acme.cpu.admin.models.BaseInativavelEntity;
+import org.acme.cpu.admin.models.Cpu;
 import org.acme.cpu.cliente.models.enums.Perfil;
 import org.acme.cpu.pedido.models.Cartao;
 
@@ -54,6 +55,22 @@ public class Usuario extends BaseInativavelEntity {
 
     @Column(name = "refresh_token_expiration")
     private LocalDateTime refreshTokenExpiration;
+
+    @ManyToMany(targetEntity = Cpu.class, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "usuario_lista_desejos",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "cpu_id")
+    )
+    private Set<Cpu> listaDesejos = new HashSet<>();
+
+    public Set<Cpu> getListaDesejos() {
+        return listaDesejos;
+    }
+
+    public void setListaDesejos(Set<Cpu> listaDesejos) {
+        this.listaDesejos = listaDesejos;
+    }
 
     public String getEmail() {
         return email;

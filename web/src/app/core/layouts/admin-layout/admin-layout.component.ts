@@ -37,7 +37,7 @@ import { AuthService } from '@features/cliente/services/auth.service';
         <nav class="px-3 flex flex-col h-full">
           <div class="h-16 pt-2 flex items-center justify-center border-b border-gray-100 mb-2">
             <span class="text-xl font-bold tracking-tight text-gray-800">
-              ACME<span class="text-blue-600">Admin</span>
+              <span class="text-orange-600">Ca</span><span class="text-blue-600">BuM</span>Admin
             </span>
           </div>
 
@@ -140,7 +140,17 @@ export class AdminLayoutComponent {
         { label: 'Modelos de CPU', rota: 'modelo-cpu' },
         { label: 'Processadores', rota: 'cpu' }
       ]
-    }
+    },
+    {
+      label: 'Administração',
+      icone: 'manage_accounts',
+      aberta: false,
+      subItens: [
+        { label: 'Usuários', rota: 'usuario' },
+        { label: 'Pedidos', rota: 'pedido' },
+        { label: 'Cupons', rota: 'cupom' }
+      ]
+    },
   ]);
 
   protected sair(): void {

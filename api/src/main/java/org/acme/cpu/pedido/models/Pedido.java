@@ -46,6 +46,31 @@ public class Pedido extends BaseEntity {
     @Valid
     private List<ItemPedido> itens = new ArrayList<>();
 
+    // Adicione estes atributos na classe Pedido
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cupom_id", nullable = true)
+    private Cupom cupom;
+
+    @Column(nullable = false)
+    private BigDecimal descontoAplicado = BigDecimal.ZERO;
+
+    public Cupom getCupom() {
+        return cupom;
+    }
+
+    public void setCupom(Cupom cupom) {
+        this.cupom = cupom;
+    }
+
+    public BigDecimal getDescontoAplicado() {
+        return descontoAplicado;
+    }
+
+    public void setDescontoAplicado(BigDecimal descontoAplicado) {
+        this.descontoAplicado = descontoAplicado;
+    }
+
     public BigDecimal getTotal() {
         return total;
     }

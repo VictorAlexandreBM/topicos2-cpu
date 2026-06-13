@@ -60,6 +60,19 @@
       </div>
     </div>
 
+    <div class="border-t border-gray-200 pt-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Confirmação de Segurança</h3>
+      <p class="text-sm text-gray-500 mb-4">Para aplicar as alterações, digite sua senha atual.</p>
+
+      <mat-form-field appearance="outline" class="w-full sm:w-1/2" subscriptSizing="dynamic">
+        <mat-label>Senha Atual</mat-label>
+        <input matInput [type]="ocultaSenha() ? 'password' : 'text'" [formControl]="senhaAtualCtrl" placeholder="Digite sua senha">
+        <button mat-icon-button matSuffix (click)="ocultaSenha.set(!ocultaSenha())" type="button" tabindex="-1">
+          <mat-icon>{{ ocultaSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error>{{ senhaAtualCtrl.errors | fieldError:senhaAtualCtrl.touched }}</mat-error>
+      </mat-form-field>
+    </div>
     <div class="flex justify-end pt-4 border-t border-gray-200">
       <button type="submit" mat-flat-button color="primary" class="w-full sm:w-auto px-8" [disabled]="perfilForm.invalid || estaCarregando() || !perfilForm.dirty">
         @if (estaCarregando()) {

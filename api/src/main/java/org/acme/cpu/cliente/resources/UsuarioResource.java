@@ -35,7 +35,6 @@ public class UsuarioResource {
         return Response.ok(authInfo).build();
     }
 
-
     @POST
     @Path("/refresh")
     @Authenticated
@@ -76,6 +75,29 @@ public class UsuarioResource {
     @Authenticated
     public Response atualizar(UsuarioUpdateDTO dto) {
         return Response.ok(service.atualizar(dto)).build();
+    }
+
+    @POST
+    @Path("/eu/favoritos/{cpuId}")
+    @Authenticated
+    public Response adicionarFavorito(@PathParam("cpuId") Long cpuId) {
+        service.adicionarFavorito(cpuId);
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("/eu/favoritos/{cpuId}")
+    @Authenticated
+    public Response removerFavorito(@PathParam("cpuId") Long cpuId) {
+        service.removerFavorito(cpuId);
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/eu/favoritos")
+    @Authenticated
+    public Response listarFavoritos() {
+        return Response.ok(service.listarFavoritos()).build();
     }
 
 }

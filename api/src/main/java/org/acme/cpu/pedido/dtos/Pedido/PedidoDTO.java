@@ -19,6 +19,8 @@ public record PedidoDTO(
 
         @NotNull
         @Valid
-        List<ItemPedidoDTO> itens
+        List<ItemPedidoDTO> itens,
+
+        String codigoCupom
 ) {
 }

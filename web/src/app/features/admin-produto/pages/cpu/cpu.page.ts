@@ -2,16 +2,19 @@ import { Component, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, finalize, switchMap, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 
 import CpuService from '../../services/cpu.service';
 import { ParametrosListagem } from '@core/models/parametros-lista.model';
+import { CpuFilter } from '@features/admin-produto/models/cpu.model';
 import CpuTableComponent from '../../components/cpu/cpu-table/cpu-table.component';
 import { CpuFiltroComponent } from '../../components/cpu/cpu-filtro/cpu-filtro.component';
+
+export interface CpuFilterParams extends ParametrosListagem, CpuFilter {}
 
 @Component({
   selector: 'app-cpu-page',
@@ -20,15 +23,15 @@ import { CpuFiltroComponent } from '../../components/cpu/cpu-filtro/cpu-filtro.c
   imports: [
     CpuTableComponent,
     CpuFiltroComponent,
-    MatIcon,
-    MatButton
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export default class CpuPage {
   private readonly service = inject(CpuService);
   private readonly router = inject(Router);
 
-  private refreshTrigger = signal<ParametrosListagem>({
+  private refreshTrigger = signal<CpuFilterParams>({
     pagina: 0,
     tamanho: 10,
     emVenda: true,
@@ -67,12 +70,18 @@ export default class CpuPage {
     this.refreshTrigger.update(r => ({ ...r, pagina: 0, campoOrdenacao: event.active, direcao: event.direction }));
   }
 
-  handlePesquisa(filtro: string) {
-    this.refreshTrigger.update(r => ({ ...r, pagina: 0, filtro }));
-  }
-
-  handleMostrarIndisponiveis(indisponiveis: boolean) {
-    this.refreshTrigger.update(r => ({ ...r, pagina: 0, emVenda: !indisponiveis }));
+  handleFiltros(filtros: CpuFilter) {
+    this.refreshTrigger.update(r => ({
+      ...r,
+      pagina: 0,
+      // Limpa os filtros atuais
+      nome: undefined, nomeModelo: undefined, tipoCPU: undefined, marcaId: undefined,
+      socketId: undefined, chipsetsId: undefined, tecnologiasId: undefined,
+      minPreco: undefined, maxPreco: undefined, minCores: undefined, maxCores: undefined,
+      minFreq: undefined, maxFreq: undefined, tdpBase: undefined,
+      // Aplica os novos
+      ...filtros
+    }));
   }
 
   novoCpu() {

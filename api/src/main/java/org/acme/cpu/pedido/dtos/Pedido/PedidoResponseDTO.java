@@ -16,8 +16,8 @@ public record PedidoResponseDTO(
         String status,
         BigDecimal total,
         PagamentoResponseDTO pagamento,
-        LocalDateTime dataCriacao
-
+        LocalDateTime dataCriacao,
+        BigDecimal descontoAplicado
 ) {
     public PedidoResponseDTO(Pedido p) {
         this(
@@ -27,7 +27,8 @@ public record PedidoResponseDTO(
                 p.getStatus().getTipo(),
                 p.getTotal(),
                 PagamentoResponseDTO.fromEntity(p.getPagamento()),
-                p.getDataCriacao()
+                p.getDataCriacao(),
+                p.getDescontoAplicado()
         );
     }
 }

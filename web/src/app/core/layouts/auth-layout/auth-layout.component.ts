@@ -15,7 +15,7 @@ import { RouterOutlet } from '@angular/router';
           </svg>
         </div>
         <h2 class="mt-4 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
-          ACME CPU
+          <span class="text-orange-600">Ca</span><span class="text-blue-600">BuM</span>
         </h2>
       </div>
 
