@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask'; // Usando lib de máscara comum no Angular
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 import { SnackbarService } from '@core/services/snackbar.service';
 import { ConfirmDialogService } from '@core/services/confirm-dialog.service';
@@ -41,15 +41,13 @@ export default class PerfilCartoesComponent {
   private readonly snackbarService = inject(SnackbarService);
   private readonly confirmService = inject(ConfirmDialogService);
 
-  // Lê os cartões ativos do usuário
   protected readonly cartoes = computed(() => this.authService.usuarioAtual()?.cartoes || []);
 
   protected mostrandoForm = signal(false);
   protected estaCarregando = signal(false);
 
-  // Controles do Formulário Visual (Simulando o input real do usuário)
   protected readonly numeroCtrl = this.fb.control('', [Validators.required, Validators.minLength(16)]);
-  protected readonly validadeCtrl = this.fb.control('', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])[0-9]{2}$')]); // Formato MMAA
+  protected readonly validadeCtrl = this.fb.control('', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])[0-9]{2}$')]);
   protected readonly cvvCtrl = this.fb.control('', [Validators.required, Validators.minLength(3)]);
   protected readonly titularCtrl = this.fb.control('', [Validators.required]);
 
@@ -76,11 +74,9 @@ export default class PerfilCartoesComponent {
 
     const dadosForm = this.cartaoForm.getRawValue();
 
-    // 1. Lógica de Simulação de Gateway
     const numeroLimpo = dadosForm.numero.replace(/\D/g, '');
     const ultimos4 = numeroLimpo.slice(-4);
 
-    // Simula detecção simples de bandeira pelo primeiro dígito
     let bandeira = 'Outra';
     if (numeroLimpo.startsWith('4')) bandeira = 'Visa';
     else if (numeroLimpo.startsWith('5')) bandeira = 'Mastercard';
@@ -89,9 +85,8 @@ export default class PerfilCartoesComponent {
     const mesStr = dadosForm.validade.substring(0, 2);
     const anoStr = dadosForm.validade.substring(2, 4);
 
-    // 2. Monta o DTO de envio seguro para o backend
     const request: CartaoFormRequest = {
-      gatewayToken: `sim_tok_${Math.random().toString(36).substring(2, 15)}`, // Token simulado
+      gatewayToken: `sim_tok_${Math.random().toString(36).substring(2, 15)}`,
       ultimos4: ultimos4,
       bandeira: bandeira,
       mesExpiracao: parseInt(mesStr, 10),

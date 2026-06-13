@@ -24,7 +24,7 @@ public class MarcaResource {
     MarcaService service;
 
     @GET
-    @PermitAll // Abre exceção apenas para a listagem (público)
+    @PermitAll
     public Response listar(
             @QueryParam("pagina") Integer pagina,
             @QueryParam("tamanho") Integer tamanho,

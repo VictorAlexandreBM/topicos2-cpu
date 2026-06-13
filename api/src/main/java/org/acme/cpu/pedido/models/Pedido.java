@@ -46,7 +46,6 @@ public class Pedido extends BaseEntity {
     @Valid
     private List<ItemPedido> itens = new ArrayList<>();
 
-    // Adicione estes atributos na classe Pedido
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cupom_id", nullable = true)

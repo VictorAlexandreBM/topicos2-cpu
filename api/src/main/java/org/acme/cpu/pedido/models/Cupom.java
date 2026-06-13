@@ -31,16 +31,14 @@ public class Cupom extends BaseInativavelEntity {
     @NotNull
     private LocalDateTime dataValidade;
 
-    // Travas opcionais, mas recomendadas para robustez
     @Column(nullable = true)
     @Positive
-    private Integer limiteUsos; // Se nulo, uso ilimitado até a validade
+    private Integer limiteUsos;
 
     @Column(nullable = true)
     @Positive
-    private BigDecimal valorMinimoPedido; // Se nulo, aplica a qualquer pedido
+    private BigDecimal valorMinimoPedido;
 
-    // Getters e Setters
     public String getCodigo() { return codigo; }
     public void setCodigo(String codigo) { this.codigo = codigo != null ? codigo.toUpperCase() : null; }
 

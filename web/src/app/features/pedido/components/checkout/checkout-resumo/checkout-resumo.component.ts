@@ -114,7 +114,7 @@ export class CheckoutResumoComponent {
   protected tentarAplicarCupom(): void {
     if (this.codigoInput.trim()) {
       this.aplicarCupom.emit(this.codigoInput.trim());
-      this.codigoInput = ''; // Limpa o input após enviar
+      this.codigoInput = '';
     }
   }
 }

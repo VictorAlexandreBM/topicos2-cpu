@@ -19,7 +19,7 @@ import AdminPedidoService, {ParametrosListagemPedido} from '@features/admin-prod
 @Component({
   selector: 'app-pedido-page',
   standalone: true,
-  providers: [provideNativeDateAdapter()], // Necessário para o MatDatepicker funcionar
+  providers: [provideNativeDateAdapter()],
   imports: [
     PedidoTableComponent,
     MatFormFieldModule,
@@ -84,7 +84,6 @@ import AdminPedidoService, {ParametrosListagemPedido} from '@features/admin-prod
 export default class PedidoPage implements OnDestroy {
   private readonly service = inject(AdminPedidoService);
 
-  // Sinais auxiliares para limpar visualmente os inputs
   protected filtroTexto = signal<string>('');
   protected statusAtual = signal<string | null>(null);
   protected dataInicioAtual = signal<Date | null>(null);
@@ -127,7 +126,6 @@ export default class PedidoPage implements OnDestroy {
     });
   }
 
-  // --- Funções de formatação e eventos ---
 
   private formatarDataParaBackend(data: Date | null): string | null {
     if (!data) return null;
@@ -166,7 +164,6 @@ export default class PedidoPage implements OnDestroy {
     this.dataInicioAtual.set(null);
     this.dataFimAtual.set(null);
 
-    // Dispara a limpa no subject para não conflitar caso o usuário digite a mesma coisa depois
     this.filtroSubject.next('');
 
     this.refreshTrigger.update(r => ({
@@ -179,7 +176,6 @@ export default class PedidoPage implements OnDestroy {
     }));
   }
 
-  // --- Funções de Tabela ---
 
   refresh() {
     this.refreshTrigger.update(r => ({ ...r }));

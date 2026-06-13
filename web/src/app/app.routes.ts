@@ -4,10 +4,6 @@ import {adminGuard} from '@core/guards/admin.guard';
 
 export const routes: Routes = [
 
-  // ---------------------------------------------------------
-  // 1. ÁREA DE AUTENTICAÇÃO (Login / Cadastro)
-  // Utiliza o AuthLayoutComponent (Fundo liso, tela centralizada)
-  // ---------------------------------------------------------
   {
     path: 'login',
     loadComponent: () => import('@core/layouts/auth-layout/auth-layout.component').then(m => m.AuthLayoutComponent),
@@ -23,20 +19,16 @@ export const routes: Routes = [
     ]
   },
 
-  // ---------------------------------------------------------
-  // 2. ÁREA DA LOJA (Vitrine, Produto, Carrinho, Usuário)
-  // Utiliza o LojaLayoutComponent (Navbar superior, sem Sidenav)
-  // ---------------------------------------------------------
   {
     path: '',
     loadComponent: () => import('@core/layouts/loja-layout/loja-layout.component').then(m => m.LojaLayoutComponent),
     children: [
       {
-        path: 'home', // Vitrine é a página inicial
+        path: 'home',
         loadComponent: () => import('@features/cliente/pages/home/home.page')
       },
       {
-        path: '', // Vitrine é a página inicial
+        path: '',
         loadComponent: () => import('@features/pedido/pages/vitrine/vitrine.page')
       },
       {
@@ -74,16 +66,11 @@ export const routes: Routes = [
     ]
   },
 
-  // ---------------------------------------------------------
-  // 3. ÁREA ADMINISTRATIVA
-  // Utiliza o AdminLayoutComponent (Sidenav lateral)
-  // ---------------------------------------------------------
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
     loadComponent: () => import('@core/layouts/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     children: [
-      // Se acessar /admin direto, redireciona para alguma aba útil (ex: cpu)
       { path: '', redirectTo: 'cpu', pathMatch: 'full' },
 
       {
@@ -151,8 +138,5 @@ export const routes: Routes = [
     ]
   },
 
-  // ---------------------------------------------------------
-  // ROTA DE FALLBACK (Se digitar URL errada)
-  // ---------------------------------------------------------
   { path: '**', redirectTo: 'home' }
 ];

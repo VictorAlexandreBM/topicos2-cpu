@@ -42,12 +42,10 @@ import { BackendError } from '@core/models/backend-error.model';
   ]
 })
 export default class CpuTableComponent {
-  // Inputs usando signals conforme o padrão ModeloCpu
   public cpus = input.required<CpuList[]>();
   public total = input.required<number>();
   public estaCarregando = input.required<boolean>();
 
-  // Outputs
   public mudancaPagina = output<PageEvent>();
   public mudancaOrdem = output<Sort>();
   public cpuDeletado = output<CpuList>();

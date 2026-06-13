@@ -23,7 +23,6 @@ public class CpuRepository implements PanacheRepository<Cpu> {
         q.append("JOIN FETCH c.modelo m ");
         q.append("JOIN FETCH m.marca ma ");
 
-        // Aplica os JOINs extras apenas se necessário pelos filtros, sem FETCH para evitar problemas de paginação
         aplicarJoinsDinamicos(q, filtro);
 
         q.append("WHERE 1=1 ");
@@ -88,7 +87,7 @@ public class CpuRepository implements PanacheRepository<Cpu> {
             q.append("JOIN m.socket s ");
         }
         if (filtro.chipsetsId() != null && !filtro.chipsetsId().isEmpty()) {
-            q.append("JOIN m.chipsets chip "); // Atenção: Ajuste nome se for chipsetsCompativeis
+            q.append("JOIN m.chipsets chip ");
         }
         if (filtro.tecnologiasId() != null && !filtro.tecnologiasId().isEmpty()) {
             q.append("JOIN m.tecnologias tec ");
@@ -147,7 +146,7 @@ public class CpuRepository implements PanacheRepository<Cpu> {
 
         if (filtro.minCores() != null) {
             q.append(" AND (SELECT SUM(cn.quantidadeNucleos) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn WHERE m_sub = m) >= :minCores ");
-            params.put("minCores", filtro.minCores().longValue()); // SUM no JPA retorna Long
+            params.put("minCores", filtro.minCores().longValue());
         }
         if (filtro.maxCores() != null) {
             q.append(" AND (SELECT SUM(cn.quantidadeNucleos) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn WHERE m_sub = m) <= :maxCores ");
@@ -159,7 +158,6 @@ public class CpuRepository implements PanacheRepository<Cpu> {
             params.put("minFreq", filtro.minFreq());
         }
         if (filtro.maxFreq() != null) {
-            // A sua regra: freq máxima é a MAIOR freq máxima encontrada entre os clusters
             q.append(" AND (SELECT MAX(cn.frequenciaMaxima) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn WHERE m_sub = m) <= :maxFreq ");
             params.put("maxFreq", filtro.maxFreq());
         }

@@ -12,11 +12,9 @@ import { ParametrosListagem } from '@core/models/parametros-lista.model';
 export default class CupomService extends BaseCrudService<CupomResponse, CupomFormRequest> {
   protected readonly recurso = 'cupons';
 
-  // Injetamos o HttpClient localmente para o override
   private readonly httpClient = inject(HttpClient);
 
   override listar(parametros?: ParametrosListagem): Observable<RespostaPaginada<CupomResponse[]>> {
-    // Busca o array puro do backend e adapta para o formato { dados, total }
     return this.httpClient.get<CupomResponse[]>(this.recurso).pipe(
       map(cupons => ({
         dados: cupons,

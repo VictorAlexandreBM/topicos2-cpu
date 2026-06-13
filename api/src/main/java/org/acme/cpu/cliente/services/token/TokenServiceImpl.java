@@ -86,7 +86,7 @@ public class TokenServiceImpl implements TokenService {
         Usuario usuario = repository.findByRefreshToken(refreshToken);
 
         if (usuario != null) {
-            String email = usuario.getEmail(); // Guarda o email antes de limpar
+            String email = usuario.getEmail();
             usuario.setRefreshToken(null);
             usuario.setRefreshTokenExpiration(null);
 

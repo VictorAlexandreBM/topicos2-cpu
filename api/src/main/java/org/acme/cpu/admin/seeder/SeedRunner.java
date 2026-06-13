@@ -90,7 +90,6 @@ public class SeedRunner {
             for (JsonNode cidadeNode : node.get("cidades")) {
                 Cidade cidade = new Cidade();
 
-                // Ignora o id do JSON
                 cidade.setNome(cidadeNode.get("nome").asText());
 
                 cidade.setEstado(estado);

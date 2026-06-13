@@ -48,7 +48,6 @@ import { EnderecoDetail } from '@features/cliente/models/endereco.model';
 export class CheckoutEnderecoComponent {
   public readonly enderecos = input.required<EnderecoDetail[]>();
 
-  // Emite o ID do endereço selecionado para o componente pai
   public readonly enderecoSelecionado = output<number>();
 
   protected readonly selecionado = signal<number | null>(null);

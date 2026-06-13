@@ -38,7 +38,6 @@ export class ModeloCpuFiltroComponent implements OnInit {
   protected readonly marcasDisponiveis = signal<any[]>([]);
   protected readonly socketsDisponiveis = signal<any[]>([]);
 
-  // O formulário contém exatamente a estrutura do ModeloCpuFilterDTO
   protected readonly filtroForm = this.fb.group({
     nome: [''],
     marcaId: [[] as number[]],
@@ -47,10 +46,9 @@ export class ModeloCpuFiltroComponent implements OnInit {
     maxCores: this.fb.control<number | null>(null),
     minFreq: this.fb.control<number | null>(null),
     maxFreq: this.fb.control<number | null>(null),
-    ativo: this.fb.control<boolean>(true) // Por padrão, busca apenas modelos ativos
+    ativo: this.fb.control<boolean>(true)
   });
 
-  // Controle isolado para a checkbox da UI, sincronizado com o campo 'ativo'
   protected mostrarInativosCtrl = this.fb.control(false);
 
   ngOnInit(): void {

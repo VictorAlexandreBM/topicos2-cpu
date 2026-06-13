@@ -12,10 +12,7 @@ import java.io.InputStream;
 @RegisterRestClient(configKey = "seaweedfs-api")
 public interface SeaweedFsClient {
 
-    /**
-     * Faz o upload do arquivo para o Filer do SeaweedFS.
-     * O caminho final será algo como: http://localhost:8888/{diretorio}/{nomeArquivo}
-     */
+
     @POST
     @Path("/{diretorio}/{nomeArquivo}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)

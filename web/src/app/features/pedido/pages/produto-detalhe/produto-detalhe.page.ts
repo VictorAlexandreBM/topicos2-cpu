@@ -26,7 +26,6 @@ import {CpuDetail} from '@features/admin-produto/models/cpu.model';
   templateUrl: './produto-detalhe.page.html'
 })
 export default class ProdutoDetalhePage {
-  // Recebe o ID da rota via Input Binding (ex: /produto/5)
   public readonly id = input<string>();
 
   private readonly cpuService = inject(CpuService);

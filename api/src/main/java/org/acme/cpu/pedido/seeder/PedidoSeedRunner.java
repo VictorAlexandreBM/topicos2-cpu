@@ -35,7 +35,6 @@ public class PedidoSeedRunner {
 
     @Transactional
     public void onStart(@Observes @Priority(3) StartupEvent ev) {
-        // Aguarda os outros Seeders. Só executa se houver usuários e CPUs, e se não houver pedidos.
         if (usuarioRepository.count() == 0 || cpuRepository.count() == 0) return;
         if (pedidoRepository.count() > 0) {
             LOG.info("[PedidoSeedRunner] Banco de pedidos já populado. Pulando Seeder.");
@@ -61,27 +60,21 @@ public class PedidoSeedRunner {
         for (JsonNode node : root) {
             Pedido pedido = new Pedido();
 
-            // 1. Vincula Usuário
             String email = node.get("emailCliente").asText();
             Usuario usuario = usuarioRepository.find("email", email).firstResult();
             if (usuario == null) continue;
             pedido.setUsuario(usuario);
 
-            // 2. Vincula Endereço de Entrega (Pega o 1º do cliente)
             if (!usuario.getEnderecos().isEmpty()) {
                 pedido.setEnderecoEntrega(EnderecoEntrega.fromEndereco(usuario.getEnderecos().iterator().next()));
             } else {
-                continue; // Pula se o cliente não tiver endereço
+                continue;
             }
 
-            // 3. Status e Data Retroativa
             pedido.setStatus(StatusPedido.valueOf(node.get("statusPedido").asText()));
-            // ATENÇÃO: Se BaseEntity tiver @PrePersist sobrescrevendo a data, isso não terá efeito no BD,
-            // mas tentaremos setar de qualquer forma.
             LocalDateTime dataHistorica = LocalDateTime.parse(node.get("dataCriacao").asText());
             pedido.setDataCriacao(dataHistorica);
 
-            // 4. Processa Itens e Soma Total (SEM deduzir estoque)
             List<ItemPedido> itens = new ArrayList<>();
             BigDecimal total = BigDecimal.ZERO;
 
@@ -101,7 +94,6 @@ public class PedidoSeedRunner {
             pedido.setItens(itens);
             pedido.setTotal(total);
 
-            // 5. Instancia Subclasse de Pagamento
             JsonNode pagNode = node.get("pagamento");
             String forma = pagNode.get("forma").asText();
             Pagamento pagamento;

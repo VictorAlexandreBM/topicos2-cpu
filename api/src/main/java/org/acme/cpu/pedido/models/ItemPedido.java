@@ -34,7 +34,6 @@ public class ItemPedido extends BaseEntity {
     @NotNull
     private Pedido pedido;
 
-    // Getters e Setters
 
     public Cpu getCpu() {
         return cpu;

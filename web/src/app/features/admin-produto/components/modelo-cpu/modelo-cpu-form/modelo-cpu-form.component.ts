@@ -80,14 +80,12 @@ export default class ModeloCpuFormComponent {
   readonly modeloAtualizado = output<{ id: number, dados: ModeloCpuFormRequest }>();
   readonly cadastroCancelado = output<void>();
 
-  // Controles do formulário
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(200)]);
   protected readonly marcaIdCtrl = this.fb.control<number | null>(null, [Validators.required]);
   protected readonly socketIdCtrl = this.fb.control<number | null>(null, [Validators.min(0)]);
   protected readonly chipsetIdsCtrl = this.fb.control<number[] | null>(null);
   protected readonly tecnologiaIdsCtrl = this.fb.control<number[] | null>(null);
 
-  // Ficha Técnica
   protected readonly descricaoComercialCtrl = this.fb.control<string | null>(null, [Validators.maxLength(1000)]);
   protected readonly tdpBaseWCtrl = this.fb.control<number | null>(null, [Validators.min(0), Validators.pattern('^[0-9]*$')]);
   protected readonly cacheL2MBCtrl = this.fb.control<number | null>(null, [Validators.min(0), Validators.pattern('^[0-9]*[.,]?[0-9]+$')]);
@@ -100,7 +98,6 @@ export default class ModeloCpuFormComponent {
     cacheL3MB: this.cacheL3MBCtrl,
   });
 
-  // Clusters de Núcleo
   protected novaLinhaCluster() {
     return this.fb.group({
       frequenciaBase: this.fb.control<number | null>(null, [Validators.required, Validators.min(0), Validators.pattern('^[0-9]*[.,]?[0-9]+$')]),
@@ -227,7 +224,6 @@ export default class ModeloCpuFormComponent {
     this.clustersArray.clear();
     this.adicionarCluster();
 
-    // Força reset de campos que dependem de erro visual após submissão
     Object.keys(this.modeloForm.controls).forEach(key => {
       const control = this.modeloForm.get(key);
       control?.setErrors(null);

@@ -29,7 +29,6 @@ export default class SocketPage {
   private readonly service = inject(SocketService);
   private dialog = inject(MatDialog);
 
-  // Ordenação padrão alterada para 'tipo'
   private refreshTrigger = signal<ParametrosListagem>({ pagina: 0, tamanho: 10, filtro: '', ativo: true, campoOrdenacao: 'tipo', direcao: 'asc' });
 
   protected estaCarregando = signal(false);

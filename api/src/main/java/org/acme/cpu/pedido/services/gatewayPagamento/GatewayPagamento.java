@@ -12,7 +12,6 @@ public interface GatewayPagamento {
 
     GatewayPixResult gerarPix(BigDecimal valor);
 
-    // Records aninhados para os retornos do Gateway
     record GatewayCreditoResult(StatusPagamento status, String mensagem) {}
     record GatewayDebitoResult(StatusPagamento status, String mensagem, Boolean exige3DS) {}
     record GatewayPixResult(String txid, String codigoCopiaECola) {}

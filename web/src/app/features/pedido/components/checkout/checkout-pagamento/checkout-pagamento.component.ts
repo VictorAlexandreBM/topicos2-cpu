@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { CartaoDetail } from '@features/cliente/models/cartao.model';
 import {UpperCasePipe} from '@angular/common';
 
-// Tipagem do que será emitido para a página orquestradora
 export type FormaPagamento = 'PIX' | 'CREDITO' | 'DEBITO';
 
 export interface SelecaoPagamento {
@@ -86,20 +85,16 @@ export interface SelecaoPagamento {
   `
 })
 export class CheckoutPagamentoComponent {
-  // Entradas
   public readonly cartoes = input.required<CartaoDetail[]>();
 
-  // Saída contínua: emite os dados validados ou null se estiver incompleto
   public readonly pagamentoSelecionado = output<SelecaoPagamento | null>();
 
-  // Estados Internos
   protected readonly metodo = signal<FormaPagamento>('PIX');
   protected readonly cartaoIdSelecionado = signal<number | null>(null);
   protected readonly parcelasSelecionadas = signal<number>(1);
   protected readonly opcoesParcelamento = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   constructor() {
-    // Sincroniza a emissão sempre que os estados internos mudam
     effect(() => {
       this.emitirEstadoValido();
     });
@@ -107,7 +102,6 @@ export class CheckoutPagamentoComponent {
 
   protected mudarMetodo(novoMetodo: FormaPagamento): void {
     this.metodo.set(novoMetodo);
-    // Reseta as seleções dependentes
     this.cartaoIdSelecionado.set(null);
     this.parcelasSelecionadas.set(1);
   }

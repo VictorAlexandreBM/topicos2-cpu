@@ -182,11 +182,11 @@ export default class PedidoTableComponent {
       next: (pedidoCompleto) => {
         this.dialog.open(PedidoDetalheModalComponent, {
           data: pedidoCompleto,
-          width: '1100px',      // Aumentado de 800px para 1100px
-          maxWidth: '95vw',     // Garante que não quebre em telas menores que 1100px
-          maxHeight: '90vh',    // Limita a altura para habilitar scroll interno se necessário
+          width: '1100px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
           autoFocus: false,
-          panelClass: 'custom-order-modal' // Opcional: para estilos globais extras
+          panelClass: 'custom-order-modal'
         });
       },
       error: (err: HttpErrorResponse) => {

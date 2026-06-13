@@ -157,7 +157,6 @@ export default class HomePage implements OnInit, OnDestroy {
   private carregarDestaques(): void {
     this.carregando.set(true);
 
-    // Solicita apenas a primeira página com 4 elementos ativos para a montagem da Home
     this.cpuService.listar({ pagina: 0, tamanho: 4, emVenda: true }).subscribe({
       next: (resposta) => {
         this.cpus.set(resposta.dados);
@@ -171,7 +170,6 @@ export default class HomePage implements OnInit, OnDestroy {
   }
 
   private inicializarCronometro(): void {
-    // Cria uma contagem decrescente falsa com base no final do dia atual
     const agora = new Date();
     const fimDoDia = new Date();
     fimDoDia.setHours(23, 59, 59, 999);

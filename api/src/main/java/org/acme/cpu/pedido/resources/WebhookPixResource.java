@@ -23,8 +23,6 @@ public class WebhookPixResource {
     public Response confirmarPagamento(@PathParam("txid") String txid) {
         service.confirmarPagamentoPix(txid);
 
-        // Em webhooks, o padrão é retornar 200 OK genérico e sem payload,
-        // apenas para notificar a origem de que o sinal foi processado com sucesso.
         return Response.ok().build();
     }
 }

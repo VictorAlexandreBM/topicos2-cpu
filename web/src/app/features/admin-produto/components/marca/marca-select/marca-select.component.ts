@@ -20,11 +20,9 @@ import { Marca } from '@features/admin-produto/models/marca.model';
   templateUrl: './marca-select.component.html',
 })
 export class MarcaSelectComponent {
-  // Inputs
   public readonly control = input.required<FormControl<number | null>>();
   public readonly marcas = input.required<Marca[]>();
 
-  // Lógica interna de filtro
   protected readonly filtroCtrl = new FormControl('');
 
   private readonly filtroSignal = toSignal(this.filtroCtrl.valueChanges, {

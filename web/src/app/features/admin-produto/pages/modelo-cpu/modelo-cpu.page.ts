@@ -82,10 +82,8 @@ export default class ModeloCpuPage {
     this.refreshTrigger.update(r => ({
       ...r,
       pagina: 0,
-      // Limpa chaves antigas caso tenham sido apagadas na UI
       nome: undefined, marcaId: undefined, socketId: undefined,
       minCores: undefined, maxCores: undefined, minFreq: undefined, maxFreq: undefined,
-      // Espalha as novas propriedades
       ...filtros
     }));
   }

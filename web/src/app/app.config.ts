@@ -16,8 +16,8 @@ import { AuthService } from './features/cliente/services/auth.service';
 // Função fábrica que o Angular executará antes de montar a interface
 export function inicializarAuth(authService: AuthService) {
   return () => authService.verificarAutenticacao().pipe(
-    defaultIfEmpty(true), // Evita erro caso o verificarAutenticacao retorne EMPTY (sem token)
-    catchError(() => of(true)) // Ignora erros (ex: backend fora do ar) para não quebrar o boot do site
+    defaultIfEmpty(true),
+    catchError(() => of(true))
   );
 }
 

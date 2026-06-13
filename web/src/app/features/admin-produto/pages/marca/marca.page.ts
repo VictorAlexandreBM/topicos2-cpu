@@ -30,7 +30,6 @@ export default class MarcaPage {
   private readonly service = inject(MarcaService);
   private dialog = inject(MatDialog);
 
-  // Ordenação padrão ajustada para 'nome'
   private refreshTrigger = signal<ParametrosListagem>({ pagina: 0, tamanho: 10, filtro: '', ativo: true, campoOrdenacao: 'nome', direcao: 'asc' });
 
   protected estaCarregando = signal(false);

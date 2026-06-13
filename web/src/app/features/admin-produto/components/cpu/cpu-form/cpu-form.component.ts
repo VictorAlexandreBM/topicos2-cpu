@@ -58,11 +58,9 @@ export default class CpuFormComponent {
   readonly cpuAtualizada = output<{ id: number, dados: CpuFormRequest }>();
   readonly cadastroCancelado = output<void>();
 
-  // Controles de Imagem
   protected arquivoImagemSelecionado: File | null = null;
   protected imagemPreview = signal<string | null>(null);
 
-  // Controles Base
   protected readonly tipoCtrl = this.fb.control<'BOX' | 'TRAY'>('BOX', [Validators.required]);
   protected readonly skuCtrl = this.fb.control('', [Validators.required, Validators.maxLength(20)]);
   protected readonly precoCtrl = this.fb.control('', [Validators.required]);
@@ -71,7 +69,6 @@ export default class CpuFormComponent {
   protected readonly nomeComercialCtrl = this.fb.control('');
   protected readonly emVendaCtrl = this.fb.control(true);
 
-  // Controles específicos
   protected readonly incluiCoolerCtrl = this.fb.control(true);
   protected readonly pesoEmbalagemGramasCtrl = this.fb.control('');
   protected readonly loteFabricacaoCtrl = this.fb.control('');
@@ -128,7 +125,6 @@ export default class CpuFormComponent {
     this.loteFabricacaoCtrl.updateValueAndValidity();
   }
 
-  // Novo método para tratar a seleção do arquivo
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -164,7 +160,6 @@ export default class CpuFormComponent {
     this.service.cadastrar(dados).subscribe({
       next: (cpuCriada) => {
         if (this.arquivoImagemSelecionado) {
-          // Engatilha o upload logo após criar a CPU
           this.service.salvarImagem(cpuCriada.id, this.arquivoImagemSelecionado).subscribe({
             next: () => this.finalizarCadastro(acao, cpuCriada),
             error: () => {
@@ -193,7 +188,6 @@ export default class CpuFormComponent {
     this.service.atualizar(idAtual, dados).subscribe({
       next: () => {
         if (this.arquivoImagemSelecionado) {
-          // Engatilha o upload logo após atualizar os dados
           this.service.salvarImagem(idAtual, this.arquivoImagemSelecionado).subscribe({
             next: () => this.finalizarAtualizacao(acao, idAtual, dados),
             error: () => {

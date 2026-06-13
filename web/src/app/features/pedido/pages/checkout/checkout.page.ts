@@ -5,18 +5,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-// Serviços
 import { CarrinhoService } from '@features/pedido/services/carrinho.service';
 import { EnderecoService } from '@features/cliente/services/endereco.service';
 import { CartaoService } from '@features/cliente/services/cartao.service';
 import { PedidoService } from '@features/pedido/services/pedido.service';
 
-// Modelos
 import { EnderecoDetail } from '@features/cliente/models/endereco.model';
 import { CartaoDetail } from '@features/cliente/models/cartao.model';
 import { PedidoFormRequest, ItemPedidoRequest } from '@features/pedido/models/pedido.model';
 
-// Componentes
 import { CheckoutEnderecoComponent } from '@features/pedido/components/checkout/checkout-endereco/checkout-endereco.component';
 import { CheckoutPagamentoComponent, SelecaoPagamento } from '@features/pedido/components/checkout/checkout-pagamento/checkout-pagamento.component';
 import { CheckoutResumoComponent } from '@features/pedido/components/checkout/checkout-resumo/checkout-resumo.component';
@@ -95,23 +92,19 @@ export default class CheckoutPage implements OnInit {
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
 
-  // Estados de UI
   protected readonly carregandoDadosIniciais = signal(true);
   protected readonly processandoPedido = signal(false);
   protected readonly processandoCupom = signal(false);
 
-  // Dados do Utilizador
   protected readonly enderecosUsuario = signal<EnderecoDetail[]>([]);
   protected readonly cartoesUsuario = signal<CartaoDetail[]>([]);
 
-  // Seleções do Utilizador
   protected readonly enderecoSelecionadoId = signal<number | null>(null);
   protected readonly pagamentoSelecionado = signal<SelecaoPagamento | null>(null);
 
   protected readonly codigoCupomAplicado = signal<string | null>(null);
   protected readonly valorDesconto = signal<number>(0);
 
-  // Cálculos Financeiros
   protected readonly valorSubtotal = computed(() => this.carrinhoService.valorTotalSelecionado());
 
   protected readonly valorTotalFinal = computed(() => {
@@ -163,7 +156,7 @@ export default class CheckoutPage implements OnInit {
       },
       error: (err) => {
         this.processandoCupom.set(false);
-        this.removerCupom(); // Garante que não fica lixo
+        this.removerCupom();
         const mensagem = err.error?.message || 'Cupom inválido ou expirado.';
         this.snackBar.open(mensagem, 'Fechar', { duration: 4000, panelClass: ['bg-red-600', 'text-white'] });
       }
@@ -175,7 +168,6 @@ export default class CheckoutPage implements OnInit {
     this.valorDesconto.set(0);
   }
 
-  // --- ENVIO DO PEDIDO --- //
 
   protected enviarPedido(): void {
     if (!this.podeFinalizar()) return;

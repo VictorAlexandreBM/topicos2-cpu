@@ -91,17 +91,14 @@ import { ItemCarrinho } from '@features/pedido/models/carrinho.model';
   `
 })
 export class CarrinhoListaComponent {
-  // Entradas
   public readonly itens = input.required<ItemCarrinho[]>();
   public readonly todosSelecionados = input.required<boolean>();
 
-  // Helper para o visual do checkbox pai
   protected algumMasNaoTodosSelecionados(): boolean {
     const selecionados = this.itens().filter(i => i.selecionado).length;
     return selecionados > 0 && selecionados < this.itens().length;
   }
 
-  // Saídas (Eventos)
   public readonly alternarTodos = output<boolean>();
   public readonly alternarItem = output<number>();
   public readonly atualizarQtd = output<{id: number, qtd: number}>();

@@ -38,22 +38,18 @@ import {MatSelect} from '@angular/material/select';
 export class VitrineFilterComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  // Injeta os serviços para popular as listas do filtro
   private readonly marcaService = inject(MarcaService);
   private readonly socketService = inject(SocketService);
   private readonly chipsetService = inject(ChipsetService);
   private readonly tecnologiaService = inject(TecnologiaService);
 
-  // Emissor de eventos para o Angular 17+
   public readonly filtrosMudaram = output<CpuFilter>();
 
-  // Armazena as opções de filtro vindas do backend
   protected readonly marcasDisponiveis = signal<any[]>([]);
   protected readonly socketsDisponiveis = signal<any[]>([]);
   protected readonly chipsetsDisponiveis = signal<any[]>([]);
   protected readonly tecnologiasDisponiveis = signal<any[]>([]);
 
-  // Formulário Reativo contendo a estrutura exata do CpuFilter
   protected readonly filtroForm = this.fb.group({
     nome: [''],
     nomeModelo: [''],
@@ -109,7 +105,6 @@ export class VitrineFilterComponent implements OnInit {
   }
 
   private monitorarMudancas(): void {
-    // Escuta mudanças no formulário, aguarda 400ms após o usuário parar de digitar/clicar, e emite.
     this.filtroForm.valueChanges
       .pipe(debounceTime(400))
       .subscribe((valores) => {

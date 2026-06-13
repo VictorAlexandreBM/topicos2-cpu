@@ -6,11 +6,10 @@ export interface ItemCarrinho {
   selecionado: boolean;
 }
 
-// Interface auxiliar para o payload que enviaremos ao backend futuramente
 export interface PedidoRequest {
   enderecoId: number;
   itens: ItemPedidoRequest[];
-  pagamento: any; // Tiparemos o pagamento quando chegarmos na etapa de checkout
+  pagamento: any;
 }
 
 export interface ItemPedidoRequest {

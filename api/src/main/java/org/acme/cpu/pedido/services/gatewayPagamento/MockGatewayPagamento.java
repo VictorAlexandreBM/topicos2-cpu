@@ -10,7 +10,6 @@ import java.util.UUID;
 @ApplicationScoped
 public class MockGatewayPagamento implements GatewayPagamento {
 
-    // Regra de simulação: Falha se o valor terminar em .99
     private boolean simularFalha(BigDecimal valor) {
         return valor.remainder(BigDecimal.ONE).compareTo(new BigDecimal("0.99")) == 0;
     }
@@ -28,7 +27,6 @@ public class MockGatewayPagamento implements GatewayPagamento {
         if (simularFalha(valor)) {
             return new GatewayDebitoResult(StatusPagamento.RECUSADO, "Transação negada pelo emissor.", false);
         }
-        // Simula que transações de débito acima de 5000 exigem autenticação 3DS
         boolean exige3DS = valor.compareTo(new BigDecimal("5000.00")) > 0;
         return new GatewayDebitoResult(StatusPagamento.APROVADO, "Transação de débito aprovada.", exige3DS);
     }

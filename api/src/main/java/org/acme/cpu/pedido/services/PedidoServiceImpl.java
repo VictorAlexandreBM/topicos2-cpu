@@ -129,19 +129,16 @@ public class PedidoServiceImpl {
                 throw new BadRequestException("O valor do pedido não atinge o mínimo para este cupom.");
             }
 
-            // Calcula o desconto dependendo do tipo
             if (cupom.getTipo() == TipoDesconto.PERCENTUAL) {
                 valorDesconto = total.multiply(cupom.getValor().divide(new BigDecimal("100")));
             } else {
                 valorDesconto = cupom.getValor();
             }
 
-            // Garante que o desconto não seja maior que o total do pedido
             if (valorDesconto.compareTo(total) > 0) {
                 valorDesconto = total;
             }
 
-            // Atualiza contagem de usos (se houver limite)
             if (cupom.getLimiteUsos() != null) {
                 if (cupom.getLimiteUsos() <= 0) {
                     throw new BadRequestException("O limite de usos para este cupom já foi atingido.");
@@ -256,7 +253,7 @@ public class PedidoServiceImpl {
         validarPropriedadePedido(pedido, usuario);
         validarStatusCancelamento(pedido);
 
-        cancelarPedidoInterno(pedido); // Reaproveita a lógica de estado e estoque
+        cancelarPedidoInterno(pedido);
 
         return new PedidoResponseDTO(pedido);
     }
@@ -278,12 +275,8 @@ public class PedidoServiceImpl {
     @Transactional
     @Scheduled(every = "15m")
     public void cancelarPedidosPendentesExpirados() {
-        // Define o tempo limite (ex: pedidos criados há mais de 30 minutos)
         LocalDateTime tempoLimite = LocalDateTime.now().minusMinutes(30);
 
-        // Busca pedidos pendentes criados antes do tempo limite.
-        // Assumo que sua BaseEntity possui um campo de data de criação chamado 'dataCriacao'.
-        // Ajuste o nome do campo na query se for diferente (ex: createdAt, dataInclusao).
         List<Pedido> pedidosExpirados = repository.find(
                 "status = ?1 and dataCriacao < ?2",
                 StatusPedido.AGUARDANDO_PAGAMENTO,

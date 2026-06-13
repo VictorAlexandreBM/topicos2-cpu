@@ -54,7 +54,7 @@ public class PedidoRepository implements PanacheRepository<Pedido> {
 
         Direction direcaoFinal = "asc".equalsIgnoreCase(direcao) ? Direction.Ascending : Direction.Descending;
         String campoOrdenacaoFinal = (campoOrdenacao != null && CAMPOS_ORDENAVEIS.contains(campoOrdenacao))
-                ? campoOrdenacao : "dataCriacao"; // Ordenação padrão: mais recentes primeiro
+                ? campoOrdenacao : "dataCriacao";
 
         return this.find(q.toString(), Sort.by(campoOrdenacaoFinal, direcaoFinal), mapaParametros);
     }

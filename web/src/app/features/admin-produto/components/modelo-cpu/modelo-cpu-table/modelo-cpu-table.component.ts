@@ -57,7 +57,7 @@ export default class ModeloCpuTableComponent {
   public mudancaPagina = output<PageEvent>();
   public mudancaOrdem = output<Sort>();
   public modeloDeletado = output<ModeloCpuList>();
-  public modeloAlteradoEstado = output<ModeloCpuList>(); // Novo Output
+  public modeloAlteradoEstado = output<ModeloCpuList>();
 
   private service = inject(ModeloCpuService);
   private snackbarService = inject(SnackbarService);

@@ -1,7 +1,6 @@
 import { EnderecoDetail } from '@features/cliente/models/endereco.model';
 import { CartaoDetail } from '@features/cliente/models/cartao.model';
 
-// --- REQUESTS (Envio para o Backend) ---
 
 export type StatusPedido = 'Aguardando Pagamento' | 'Pago' | 'Enviado' | 'Entregue' | 'Cancelado';
 
@@ -34,7 +33,6 @@ export interface PedidoFormRequest {
   codigoCupom?: string;
 }
 
-// --- RESPONSES CORRIGIDAS ---
 
 interface PagamentoBase {
   id: number;
@@ -61,7 +59,6 @@ export interface PagamentoCreditoResponse extends PagamentoBase {
   jurosAplicados: number;
 }
 
-// Mude aqui para uma união pura
 export type PagamentoResponse =
   PagamentoPixResponse |
   PagamentoCreditoResponse |
@@ -70,8 +67,8 @@ export type PagamentoResponse =
 export interface ItemPedidoResponse {
   id: number;
   cpuId: number;
-  nomeComercial: string; // Adicionado
-  imagemUrl?: string;    // Adicionado
+  nomeComercial: string;
+  imagemUrl?: string;
   quantidade: number;
   precoUnitario: number;
 }

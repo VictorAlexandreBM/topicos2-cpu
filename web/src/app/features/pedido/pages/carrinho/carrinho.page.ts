@@ -59,12 +59,10 @@ import {CarrinhoResumoComponent} from '@features/pedido/components/carrinho/carr
   `
 })
 export default class CarrinhoPage {
-  // Injeção direta no template e na classe
   protected readonly carrinhoService = inject(CarrinhoService);
   private readonly router = inject(Router);
 
   protected irParaCheckout(): void {
-    // Aqui você navegará para a página onde o usuário escolhe endereço e tipo de pagamento
     this.router.navigate(['/checkout']);
   }
 }

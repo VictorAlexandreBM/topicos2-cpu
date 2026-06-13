@@ -10,7 +10,6 @@ import { MatListModule } from '@angular/material/list';
   templateUrl: './perfil-sidebar.component.html'
 })
 export class PerfilSidebarComponent {
-  // Recebe o ID do usuário via input para montar as rotas dinamicamente
   public readonly usuarioId = input.required<string>();
 
   protected readonly menuItems = [
@@ -18,6 +17,6 @@ export class PerfilSidebarComponent {
     { label: 'Meus Endereços', icone: 'location_on', rota: 'enderecos' },
     { label: 'Lista de Desejos', icone: 'favorite', rota: 'desejos' },
     { label: 'Meus Pedidos', icone: 'local_shipping', rota: 'pedidos' },
-    { label: 'Formas de Pagamento', icone: 'credit_card', rota: 'pagamentos' }, // Adição estratégica para e-commerce
+    { label: 'Formas de Pagamento', icone: 'credit_card', rota: 'pagamentos' },
   ];
 }

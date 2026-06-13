@@ -66,8 +66,6 @@ public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
     }
 
     public long countListar(ModeloCpuFilterDTO filtro) {
-        // Para o count, só precisamos de joins se as condições exigirem,
-        // mas faremos o LEFT JOIN na marca e socket para garantir que o path do WHERE funcione.
         StringBuilder q = new StringBuilder("SELECT COUNT(DISTINCT m) FROM ModeloCpu m LEFT JOIN m.marca ma LEFT JOIN m.socket s WHERE 1=1 ");
         Map<String, Object> params = new HashMap<>();
 
@@ -101,7 +99,6 @@ public class ModeloCpuRepository implements PanacheRepository<ModeloCpu> {
             params.put("socketId", filtro.socketId());
         }
 
-        // Subqueries para cálculos dos Clusters (evita duplicar agregação no GROUP BY principal)
         if (filtro.minCores() != null) {
             q.append(" AND (SELECT SUM(cn_sub.quantidadeNucleos) FROM ModeloCpu m_sub JOIN m_sub.clustersNucleo cn_sub WHERE m_sub = m) >= :minCores ");
             params.put("minCores", filtro.minCores().longValue());

@@ -27,7 +27,7 @@ public record EnderecoEntregaResponseDTO(
         @Schema(
                 description = "Complemento (se houver)",
                 example = "Bloco C, Apto 402",
-                nullable = true // Importante avisar que pode vir null
+                nullable = true
         )
         String complemento,
 

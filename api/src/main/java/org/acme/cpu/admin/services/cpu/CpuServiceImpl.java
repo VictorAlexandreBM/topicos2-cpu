@@ -44,7 +44,6 @@ public class CpuServiceImpl implements CpuService {
 
     @Override
     public RespostaPaginadaDTO<CpuListDTO> listar(Integer pagina, Integer tamanho, CpuFilterDTO filtro, String campoOrdenacao, String direcao) {
-        // Agora repassa o objeto DTO de filtro para o repositório
 
         if (!securityIdentity.hasRole("Administrador")) {
             filtro = filtro.withEmVenda(true);
@@ -99,13 +98,11 @@ public class CpuServiceImpl implements CpuService {
         Cpu cpu = repository.findById(id);
         if (cpu == null) throw new NotFoundException("CPU não encontrada");
 
-        // Extrai o nome do arquivo da URL para excluir no SeaweedFS
         if (cpu.getImagemUrl() != null && cpu.getImagemUrl().contains("/cpus/")) {
             String nomeArquivo = cpu.getImagemUrl().substring(cpu.getImagemUrl().lastIndexOf("/") + 1);
             try {
                 seaweedFsClient.deletarArquivo("cpus", nomeArquivo);
             } catch (Exception e) {
-                // Apenas loga o erro, não impede a exclusão no banco se o Filer estiver fora do ar
                 System.err.println("Aviso: Falha ao excluir arquivo físico no SeaweedFS: " + nomeArquivo);
             }
         }
@@ -177,18 +174,15 @@ public class CpuServiceImpl implements CpuService {
             throw ValidationException.of("arquivo", "O arquivo de imagem é obrigatório.");
         }
 
-        // 1. Validação de Tamanho
         if (dto.arquivo.size() > MAX_TAMANHO_ARQUIVO) {
             throw ValidationException.of("arquivo", "O arquivo excede o limite máximo permitido de 5MB.");
         }
 
-        // 2. Validação de Formato (MIME Type)
         String mimeType = dto.arquivo.contentType();
         if (!TIPOS_PERMITIDOS.contains(mimeType)) {
             throw ValidationException.of("arquivo", "Formato inválido. Apenas imagens JPG, PNG e WEBP são permitidas.");
         }
 
-        // 3. Processamento e Envio
         String extensao = obterExtensao(dto.arquivo.fileName());
         String nomeArquivoGerado = "cpu-" + id + "-" + UUID.randomUUID().toString().substring(0, 8) + extensao;
 
@@ -200,7 +194,6 @@ public class CpuServiceImpl implements CpuService {
             throw new RuntimeException("Erro de comunicação com o servidor SeaweedFS.", e);
         }
 
-        // 4. Atualização do Banco
         String urlAcesso = "http://localhost:8888/cpus/" + nomeArquivoGerado;
         cpu.setImagemUrl(urlAcesso);
     }

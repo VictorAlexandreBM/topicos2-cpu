@@ -43,7 +43,7 @@ public class CartaoServiceImpl implements CartaoService {
         Usuario usuario = getUsuarioLogado();
 
         return usuario.getCartoes().stream()
-                .filter(Cartao::getAtivo) // Apenas cartões que não sofreram soft delete
+                .filter(Cartao::getAtivo)
                 .map(CartaoResponseDTO::new)
                 .collect(Collectors.toList());
     }
@@ -76,8 +76,7 @@ public class CartaoServiceImpl implements CartaoService {
         Cartao cartao = repository.findById(id);
         validarPertencimento(cartao);
 
-        // Soft Delete: Inativa o cartão para que não apareça mais na listagem,
-        // mas mantém a integridade dos pagamentos atrelados a pedidos antigos.
+
         cartao.setAtivo(false);
     }
 

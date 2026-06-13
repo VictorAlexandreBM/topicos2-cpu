@@ -20,11 +20,9 @@ import { Socket } from '@features/admin-produto/models/socket.model';
   templateUrl: './socket-select.component.html',
 })
 export class SocketSelectComponent {
-  // Inputs
   public readonly control = input.required<FormControl<number | null>>();
   public readonly sockets = input.required<Socket[]>();
 
-  // Lógica interna de filtro
   protected readonly filtroCtrl = new FormControl('');
 
   private readonly filtroSignal = toSignal(this.filtroCtrl.valueChanges, {

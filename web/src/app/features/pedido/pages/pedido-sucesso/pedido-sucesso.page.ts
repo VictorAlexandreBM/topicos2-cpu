@@ -195,8 +195,6 @@ export default class PedidoSucessoPage {
     if (!pagamento || !this.isPagamentoPix(pagamento)) return;
     console.log("È pagamento pix");
 
-    // Assumindo que a interface PagamentoPixResponse tem a propriedade txid.
-    // Caso contrário, é utilizado $any para contornar a tipagem nesta simulação.
     const txid = (pagamento as any).txid;
     if (!txid) return;
     this.simulandoPix.set(true);

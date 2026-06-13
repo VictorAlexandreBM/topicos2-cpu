@@ -6,7 +6,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CpuDetail } from '@features/admin-produto/models/cpu.model';
 import { CarrinhoService } from '@features/pedido/services/carrinho.service';
 import {AuthService} from '@features/cliente/services/auth.service';
-import {Router} from '@angular/router'; // Ajuste o path se necessário
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-produto-info',
@@ -54,17 +54,14 @@ import {Router} from '@angular/router'; // Ajuste o path se necessário
 export class ProdutoInfoComponent {
   public readonly cpu = input.required<CpuDetail>();
 
-  // Injeções
   private readonly carrinhoService = inject(CarrinhoService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   protected adicionarAoCarrinho(): void {
-    // Adiciona 1 unidade ao carrinho
     this.carrinhoService.adicionarItem(this.cpu(), 1);
 
-    // Exibe um alerta de sucesso no canto da tela
     this.snackBar.open(`${this.cpu().nomeComercial} adicionado ao carrinho!`, 'Fechar', {
       duration: 3000,
       horizontalPosition: 'end',

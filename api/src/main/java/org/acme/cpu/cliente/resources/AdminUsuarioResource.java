@@ -22,7 +22,7 @@ public class AdminUsuarioResource {
     UsuarioService service;
 
     @Inject
-    PedidoServiceImpl pedidoService; // Injeção do serviço de pedidos
+    PedidoServiceImpl pedidoService;
 
     @GET
     public Response listar(

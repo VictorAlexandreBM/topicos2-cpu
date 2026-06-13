@@ -112,23 +112,23 @@
       this.dialog.closeAll();
 
       const dialogRef = this.dialog.open(TecnologiaFormComponent, {
-        width: '500px',        // Largura confortável para formulários
-        maxWidth: '95vw',      // Evita vazar da tela em celulares
-        hasBackdrop: true,     // Liga o fundo escuro/cinza (padrão)
-        disableClose: false,   // Permite fechar clicando fora ou no ESC (opcional, ajustei para melhor UX)
+        width: '500px',
+        maxWidth: '95vw',
+        hasBackdrop: true,
+        disableClose: false,
         data: tecnologia
       });
 
       const subCadastro = dialogRef.componentInstance.tecnologiaCadastrada.subscribe(t => {
         this.refreshTecnologias();
         this.tecnologiaEmEdicao.set(null);
-        dialogRef.close(); // Fecha o modal após o sucesso
+        dialogRef.close();
       });
 
       const subAtualizacao = dialogRef.componentInstance.tecnologiaAtualizada.subscribe(t => {
         this.refreshTecnologias();
         this.tecnologiaEmEdicao.set(null);
-        dialogRef.close(); // Fecha o modal após o sucesso
+        dialogRef.close();
       });
 
       const subCancelado = dialogRef.componentInstance.cadastroCancelado.subscribe(() => {
@@ -139,7 +139,7 @@
         subAtualizacao.unsubscribe();
         subCadastro.unsubscribe();
         subCancelado.unsubscribe();
-        this.tecnologiaEmEdicao.set(null); // Garante que o estado limpe ao fechar
+        this.tecnologiaEmEdicao.set(null);
       });
     }
   }

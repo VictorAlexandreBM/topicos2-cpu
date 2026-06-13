@@ -35,12 +35,10 @@ export class AuthService {
   public readonly favoritosIds = this.#favoritosIds.asReadonly();
 
   constructor() {
-    // Executa a limpeza preventiva no boot da aplicação se o token estiver expirado
     const tokenSalvo = localStorage.getItem(this.ACCESS_TOKEN_KEY);
     if (tokenSalvo && this.isTokenExpirado(tokenSalvo)) {
       this.limparSessaoLocal();
     } else {
-      // Se estiver válido, inicializa os signals com os valores do storage
       this.#accessToken.set(tokenSalvo);
       this.#refreshToken.set(localStorage.getItem(this.REFRESH_TOKEN_KEY));
       this.#emailLogado.set(localStorage.getItem(this.USER_EMAIL_KEY));
@@ -57,13 +55,10 @@ export class AuthService {
       const tempoAtual = Math.floor(Date.now() / 1000);
       return tempoAtual >= payload.exp;
     } catch {
-      return true; // Se o token estiver corrompido, considera expirado
+      return true;
     }
   }
 
-  /**
-   * Tornei PÚBLICO para que interceptores de Erro (401) possam limpar o estado de qualquer lugar
-   */
   public limparSessaoLocal(): void {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
@@ -148,7 +143,7 @@ export class AuthService {
     return this.http.get<UsuarioDetail>(`${this.recurso}/eu`).pipe(
       tap((usuario) => {
         this.#usuarioAtual.set(usuario);
-        this.carregarFavoritos().subscribe(); // Carrega os favoritos silenciosamente
+        this.carregarFavoritos().subscribe();
       })
     );
   }

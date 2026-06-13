@@ -141,13 +141,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO atualizar(UsuarioUpdateDTO dto) {
         Usuario usuario = getUsuarioLogado();
 
-        // 1. Validação de Segurança
         if (!BcryptUtil.matches(dto.senhaAtual(), usuario.getSenha())) {
             LOG.warnf("Tentativa de atualização de perfil negada. Senha incorreta para %s", usuario.getEmail());
             throw ValidationException.of("senhaAtual", "Senha atual incorreta.");
         }
 
-        // 2. Atualização dos Dados
         usuario.setPrimeiroNome(dto.nome());
         usuario.setSobrenome(dto.sobrenome());
         usuario.setTelefones(dto.telefones().stream().map(Telefone::fromDTO).collect(Collectors.toSet()));
@@ -157,9 +155,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioResponseDTO(usuario);
     }
 
-    // ========================================================================
-    // MÉTODOS ADMINISTRATIVOS
-    // ========================================================================
 
     @Override
     public RespostaPaginadaDTO<UsuarioListDTO> listarUsuarios(Integer pagina, Integer tamanho, String filtro, Boolean ativo, String campoOrdenacao, String direcao) {
@@ -182,7 +177,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new NotFoundException("Usuário não encontrado.");
         }
 
-        // Trava de Segurança: Não permitir que o Admin desative a si mesmo
         String emailLogado = jwt.getName();
         if (usuarioAlvo.getEmail().equals(emailLogado) && !ativo) {
             throw new ForbiddenException("Você não pode inativar sua própria conta.");
@@ -200,7 +194,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new NotFoundException("Usuário não encontrado.");
         }
 
-        // Trava de Segurança: Não permitir que o Admin rebaixe seu próprio perfil
         String emailLogado = jwt.getName();
         if (usuarioAlvo.getEmail().equals(emailLogado) && siglaPerfil != 'A') {
             throw new ForbiddenException("Você não pode alterar o próprio perfil administrativo.");
@@ -283,7 +276,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 //    @Override
 //    public void trocarPropriaSenha(UsuarioResetPropriaSenhaDTO dto) {
 //
-//        Usuario usuario = getUsuarioLogado(); // você define como buscar
+//        Usuario usuario = getUsuarioLogado();
 //
 //        if (!BcryptUtil.matches(dto.senhaAntiga(), usuario.getSenha())) {
 //            LOG.warnf("Senha antiga incorreta ao trocar senha de %s.", usuario.getEmail());

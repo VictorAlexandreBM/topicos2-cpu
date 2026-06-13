@@ -37,7 +37,6 @@ export default class PerfilInformacoesComponent implements OnInit {
   protected estaCarregando = signal(false);
   protected ocultaSenha = signal(true);
 
-  // E-mail configurado nativamente como desabilitado
   protected readonly emailCtrl = this.fb.control({ value: '', disabled: true });
 
   protected readonly nomeCtrl = this.fb.control('', [Validators.required, Validators.maxLength(50)]);
@@ -60,7 +59,7 @@ export default class PerfilInformacoesComponent implements OnInit {
     nome: this.nomeCtrl,
     sobrenome: this.sobrenomeCtrl,
     telefones: this.telefonesArray,
-    senhaAtual: this.senhaAtualCtrl // <-- Novo
+    senhaAtual: this.senhaAtualCtrl
   });
 
   ngOnInit(): void {
@@ -88,7 +87,7 @@ export default class PerfilInformacoesComponent implements OnInit {
 
   protected adicionarTelefone(): void {
     this.telefonesArray.push(this.criarLinhaTelefone());
-    this.perfilForm.markAsDirty(); // Força a liberação do botão Salvar
+    this.perfilForm.markAsDirty();
   }
 
   protected removerTelefone(index: number): void {
@@ -107,13 +106,13 @@ export default class PerfilInformacoesComponent implements OnInit {
       nome: this.nomeCtrl.value.trim(),
       sobrenome: this.sobrenomeCtrl.value.trim(),
       telefones: this.telefonesArray.getRawValue() as TelefoneFormRequest[],
-      senhaAtual: this.senhaAtualCtrl.value // <-- Novo
+      senhaAtual: this.senhaAtualCtrl.value
     };
 
     this.authService.atualizarPerfil(request).subscribe({
       next: () => {
         this.estaCarregando.set(false);
-        this.senhaAtualCtrl.reset(); // <-- Limpa a senha após sucesso
+        this.senhaAtualCtrl.reset();
         this.perfilForm.markAsPristine();
         this.snackbarService.alertar('Informações atualizadas com sucesso!');
       },

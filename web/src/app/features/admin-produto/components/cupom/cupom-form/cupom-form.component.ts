@@ -59,7 +59,6 @@ export class CupomFormComponent {
 
   constructor() {
     if (this.cupomEmEdicao) {
-      // Ajusta o valor da data para o formato que o Datepicker entende
       this.cupomForm.patchValue({
         ...this.cupomEmEdicao,
         dataValidade: new Date(this.cupomEmEdicao.dataValidade)
@@ -89,7 +88,6 @@ export class CupomFormComponent {
   }
 
   private tratarDados(valores: any): CupomFormRequest {
-    // Converte a data do JS para o formato ISO que o Java (LocalDateTime) espera
     return {
       ...valores,
       codigo: valores.codigo.toUpperCase(),
@@ -110,6 +108,5 @@ export class CupomFormComponent {
     }
   }
 
-  // Getters para os controles para facilitar o uso do pipe de erro no HTML
   get ctrl() { return this.cupomForm.controls; }
 }

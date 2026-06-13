@@ -120,7 +120,7 @@ export default class UsuarioTableComponent {
   private service = inject(AdminUsuarioService);
   private snackbarService = inject(SnackbarService);
   private dialogService = inject(ConfirmDialogService);
-  private dialog = inject(MatDialog); // INCLUSÃO
+  private dialog = inject(MatDialog);
 
   protected readonly colunas = ['acao', 'nome', 'email', 'perfil'];
 

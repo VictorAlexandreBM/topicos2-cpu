@@ -8,17 +8,12 @@ import { CpuDetail } from '@features/admin-produto/models/cpu.model';
 export class CarrinhoService {
   private readonly STORAGE_KEY = 'cabum_carrinho';
 
-  // 1. O Estado Principal (Signal)
   public readonly itens = signal<ItemCarrinho[]>(this.carregarDoStorage());
 
-  // 2. Estados Derivados Reativos (Computed Signals)
-
-  // Total geral para mostrar no ícone (Header) - Ignora se está selecionado ou não
   public readonly quantidadeItensCarrinho = computed(() =>
     this.itens().reduce((acc, item) => acc + item.quantidade, 0)
   );
 
-  // Totais apenas para os itens selecionados (Resumo do Pedido)
   public readonly quantidadeSelecionada = computed(() =>
     this.itens()
       .filter(i => i.selecionado)
@@ -31,7 +26,6 @@ export class CarrinhoService {
       .reduce((acc, item) => acc + (item.produto.preco * item.quantidade), 0)
   );
 
-  // Computado para controlar o checkbox "Selecionar Todos" na interface
   public readonly todosSelecionados = computed(() =>
     this.itens().length > 0 && this.itens().every(i => i.selecionado)
   );
@@ -56,8 +50,6 @@ export class CarrinhoService {
     }
   }
 
-  // --- MÉTODOS DE AÇÃO ---
-
   public adicionarItem(produto: CpuDetail, quantidadeAdicionada: number = 1): void {
     this.itens.update(itensAtuais => {
       const indexExistente = itensAtuais.findIndex(i => i.produto.id === produto.id);
@@ -72,14 +64,12 @@ export class CarrinhoService {
         }
 
         return itensAtuais.map((item, index) =>
-          // Se o item já existia, atualizamos a quantidade e garantimos que ele fique selecionado
           index === indexExistente ? { ...item, quantidade: novaQuantidade, selecionado: true } : item
         );
       }
 
       if (quantidadeAdicionada > produto.estoque) return itensAtuais;
 
-      // Item novo entra com selecionado: true
       return [...itensAtuais, { produto, quantidade: quantidadeAdicionada, selecionado: true }];
     });
   }

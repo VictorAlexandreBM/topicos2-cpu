@@ -29,7 +29,6 @@ export default class ChipsetPage {
   private readonly service = inject(ChipsetService);
   private dialog = inject(MatDialog);
 
-  // Ordenação padrão ajustada para 'tipo'
   private refreshTrigger = signal<ParametrosListagem>({ pagina: 0, tamanho: 10, filtro: '', ativo: true, campoOrdenacao: 'tipo', direcao: 'asc' });
 
   protected estaCarregando = signal(false);

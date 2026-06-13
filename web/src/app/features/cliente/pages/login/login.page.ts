@@ -38,7 +38,6 @@ export default class LoginPage {
   protected estaCarregando = signal(false);
   protected mostrarSenha = false;
 
-  // Declaração de controles isolados para evitar erros no strict mode do template
   protected readonly emailCtrl = this.fb.control('', [Validators.required, Validators.email]);
   protected readonly senhaCtrl = this.fb.control('', [Validators.required]);
 
@@ -62,8 +61,6 @@ export default class LoginPage {
         this.estaCarregando.set(false);
         this.snackbarService.alertar(`Bem-vindo de volta, ${usuarioDetalhe.perfil.nome}!`);
 
-        // Redireciona o usuário para o painel administrativo ou página inicial após o login.
-        // Ajuste a rota '/admin' conforme a necessidade do seu projeto.
         void this.router.navigate(['/']);
       },
       error: (err: HttpErrorResponse) => {
@@ -74,7 +71,6 @@ export default class LoginPage {
   }
 
   private tratarErros(err: HttpErrorResponse): void {
-    // Caso a API retorne erros específicos de campo (ex: validação)
     if (err.error?.errors) {
       err.error.errors.forEach((e: any) => {
         const control = this.loginForm.get(e.field);
@@ -83,10 +79,8 @@ export default class LoginPage {
         }
       });
     } else {
-      // Caso seja um erro de "Não Autorizado / Not Found" geral
       const erro = err.error as BackendError;
 
-      // Limpamos a senha para o usuário tentar novamente
       this.senhaCtrl.reset();
 
       this.snackbarService.alertar(erro?.detail || 'E-mail ou senha incorretos.');

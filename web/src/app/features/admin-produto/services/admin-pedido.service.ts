@@ -7,8 +7,8 @@ import { PedidoResumoResponse, PedidoResponse, StatusPedido } from '@features/pe
 
 export interface ParametrosListagemPedido extends ParametrosListagem {
   status?: StatusPedido | string | null;
-  dataInicio?: string | null; // Formato esperado pelo Quarkus: YYYY-MM-DD
-  dataFim?: string | null;    // Formato esperado pelo Quarkus: YYYY-MM-DD
+  dataInicio?: string | null;
+  dataFim?: string | null;
 }
 
 @Injectable({
@@ -21,7 +21,7 @@ export default class AdminPedidoService {
   get(id: number): Observable<PedidoResponse> {
     return this.http.get<PedidoResponse>(`${this.recurso}/${id}`);
   }
-  
+
   listar(parametrosListagem?: ParametrosListagemPedido): Observable<RespostaPaginada<PedidoResumoResponse[]>> {
     const parametrosFiltrados = parametrosListagem ? Object.fromEntries(
       Object.entries(parametrosListagem).filter(([_, v]) =>

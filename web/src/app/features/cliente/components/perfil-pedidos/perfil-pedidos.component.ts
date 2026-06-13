@@ -37,7 +37,6 @@ export default class PerfilPedidosComponent implements OnInit {
   private carregarPedidos(): void {
     this.pedidoService.listar().subscribe({
       next: (dados) => {
-        // Ordena para exibir o pedido mais recente primeiro no acordeão
         const ordenados = dados.sort((a, b) => new Date(b.dataCriacao).getTime() - new Date(a.dataCriacao).getTime());
         this.pedidos.set(ordenados);
         this.estaCarregando.set(false);

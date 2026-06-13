@@ -74,12 +74,10 @@ export default class CpuPage {
     this.refreshTrigger.update(r => ({
       ...r,
       pagina: 0,
-      // Limpa os filtros atuais
       nome: undefined, nomeModelo: undefined, tipoCPU: undefined, marcaId: undefined,
       socketId: undefined, chipsetsId: undefined, tecnologiasId: undefined,
       minPreco: undefined, maxPreco: undefined, minCores: undefined, maxCores: undefined,
       minFreq: undefined, maxFreq: undefined, tdpBase: undefined,
-      // Aplica os novos
       ...filtros
     }));
   }
