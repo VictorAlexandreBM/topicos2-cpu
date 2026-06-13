@@ -139,6 +139,15 @@ class FichaTecnica {
     - cacheL3MB: Double
 }
 
+class Cupom {
+    - codigo: String
+    - valor: BigDecimal
+    - tipo: TipoDesconto
+    - dataValidade: LocalDateTime
+    - limiteUsos: Integer
+    - valorMinimoPedido: BigDecimal
+}
+
 Cpu "*" --> "1" ModeloCpu
 Cpu <|-- CpuBox
 Cpu <|-- CpuTray
@@ -154,10 +163,12 @@ Usuario "1" *--> "1" Perfil
 Usuario "1" *--> "*" Endereco
 Usuario "1" *--> "*" Telefone
 Usuario "1" o--> "*" Cartao
+Usuario "*" --> "*" Cpu : deseja
 
 Usuario "1" --> "*" Pedido
 Endereco "1" *--> "1" Pedido
 Pedido "1" *--> "*" ItemPedido
+Pedido "*" --> "1" Cupom
 ItemPedido "*" --> "1" Cpu
 
 Pedido "1" --> "1..*" Pagamento
