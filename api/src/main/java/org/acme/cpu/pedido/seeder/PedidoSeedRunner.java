@@ -3,6 +3,7 @@ package org.acme.cpu.pedido.seeder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.runtime.StartupEvent;
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -33,7 +34,7 @@ public class PedidoSeedRunner {
     @Inject CpuRepository cpuRepository;
 
     @Transactional
-    public void onStart(@Observes StartupEvent ev) {
+    public void onStart(@Observes @Priority(3) StartupEvent ev) {
         // Aguarda os outros Seeders. Só executa se houver usuários e CPUs, e se não houver pedidos.
         if (usuarioRepository.count() == 0 || cpuRepository.count() == 0) return;
         if (pedidoRepository.count() > 0) {

@@ -27,7 +27,6 @@
             <p class="text-sm text-gray-600">{{ endereco.bairro }} - {{ endereco.cidade }}/{{ endereco.estado }}</p>
             <p class="text-sm text-gray-500 mt-1">CEP: {{ endereco.cep }}</p>
           </div>
-
           <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end gap-2">
             <button mat-button color="primary" (click)="abrirFormulario(endereco)">Editar</button>
             <button mat-button color="warn" (click)="excluir(endereco.id)">Excluir</button>
@@ -92,15 +91,26 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Cidade</mat-label>
-            <input matInput [formControl]="cidadeCtrl">
-            <mat-error>{{ cidadeCtrl.errors | fieldError:cidadeCtrl.touched }}</mat-error>
+            <mat-label>Estado</mat-label>
+            <mat-select [formControl]="estadoSiglaCtrl" (selectionChange)="onEstadoChange($event.value)">
+              @for (estado of estados(); track estado.id) {
+                <mat-option [value]="estado.sigla">{{ estado.sigla }} — {{ estado.nome }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>{{ estadoSiglaCtrl.errors | fieldError:estadoSiglaCtrl.touched }}</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Estado (UF)</mat-label>
-            <input matInput [formControl]="estadoCtrl" placeholder="Ex: TO">
-            <mat-error>{{ estadoCtrl.errors | fieldError:estadoCtrl.touched }}</mat-error>
+            <mat-label>Cidade</mat-label>
+            <mat-select formControlName="cidadeId">
+              @if (cidades().length === 0) {
+                <mat-option disabled>Selecione um estado primeiro</mat-option>
+              }
+              @for (cidade of cidades(); track cidade.id) {
+                <mat-option [value]="cidade.id">{{ cidade.nome }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>{{ cidadeIdCtrl.errors | fieldError:cidadeIdCtrl.touched }}</mat-error>
           </mat-form-field>
         </div>
 
@@ -108,7 +118,12 @@
           <button type="button" mat-stroked-button (click)="cancelarFormulario()" [disabled]="estaCarregando()">
             Cancelar
           </button>
-          <button type="submit" mat-flat-button color="primary" [disabled]="enderecoForm.invalid || estaCarregando()">
+          <button
+            type="submit"
+            mat-flat-button
+            color="primary"
+            [disabled]="enderecoForm.invalid || estadoSiglaCtrl.invalid || estaCarregando()"
+          >
             @if (estaCarregando()) { Salvando... } @else { Salvar Endereço }
           </button>
         </div>

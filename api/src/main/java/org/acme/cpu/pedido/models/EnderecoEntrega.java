@@ -8,6 +8,7 @@ import org.acme.cpu.cliente.models.Endereco;
 
 @Embeddable
 public class EnderecoEntrega {
+
     @Column(length = 8, nullable = false)
     @NotBlank
     @Size(max = 8)
@@ -43,74 +44,30 @@ public class EnderecoEntrega {
     @Size(min = 2, max = 2)
     private String estado;
 
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public static EnderecoEntrega fromEndereco(Endereco endereco) {
-
         EnderecoEntrega e = new EnderecoEntrega();
-
         e.setBairro(endereco.getBairro());
         e.setCep(endereco.getCep());
-        e.setCidade(endereco.getCidade());
+        e.setCidade(endereco.getCidade().getNome());
         e.setComplemento(endereco.getComplemento());
-        e.setEstado(endereco.getEstado());
+        e.setEstado(endereco.getCidade().getEstado().getSigla());
         e.setLogradouro(endereco.getLogradouro());
         e.setNumero(endereco.getNumero());
-
         return e;
     }
+
+    public String getCep() { return cep; }
+    public void setCep(String cep) { this.cep = cep; }
+    public String getLogradouro() { return logradouro; }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+    public String getComplemento() { return complemento; }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }

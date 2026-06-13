@@ -1,4 +1,3 @@
-// Modelo retornado pelas consultas (espelha EnderecoResponseDTO)
 export interface EnderecoDetail {
   id: number;
   cep: string;
@@ -7,11 +6,11 @@ export interface EnderecoDetail {
   numero: string;
   complemento?: string;
   bairro: string;
+  cidadeId: number;
   cidade: string;
   estado: string;
 }
 
-// Modelo de envio para criação/atualização (espelha EnderecoDTO)
 export interface EnderecoFormRequest {
   cep: string;
   logradouro: string;
@@ -19,6 +18,5 @@ export interface EnderecoFormRequest {
   numero: string;
   complemento?: string | null;
   bairro: string;
-  cidade: string;
-  estado: string;
+  cidadeId: number;
 }
