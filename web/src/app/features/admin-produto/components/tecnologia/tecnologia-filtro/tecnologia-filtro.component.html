@@ -1,0 +1,19 @@
+<div class="flex items-center gap-4 w-full">
+
+  <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
+    <mat-label>Pesquisar tecnologias</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Ex: Intel Hyper-Threading"
+      (input)="aoDigitar($event)"
+      #filtroInput
+    >
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-checkbox (change)="aoMudarInativos($event.checked)">
+    Mostrar Somente Inativos
+  </mat-checkbox>
+
+</div>

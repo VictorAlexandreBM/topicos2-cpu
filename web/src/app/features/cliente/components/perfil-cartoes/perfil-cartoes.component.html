@@ -1,0 +1,107 @@
+<div class="space-y-6">
+
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900">Formas de Pagamento</h2>
+      <p class="mt-1 text-sm text-gray-500">Gerencie seus cartões de crédito e débito salvos.</p>
+    </div>
+    @if (!mostrandoForm()) {
+      <button mat-flat-button color="primary" (click)="abrirFormulario()">
+        <mat-icon>add</mat-icon> Novo Cartão
+      </button>
+    }
+  </div>
+
+  @if (!mostrandoForm()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+      @for (cartao of cartoes(); track cartao.id) {
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-5 shadow-md flex flex-col justify-between text-white min-h-[160px] relative overflow-hidden">
+
+          <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+
+          <div class="relative z-10 flex justify-between items-start">
+            <mat-icon class="!w-8 !h-8 !text-3xl text-gray-300">credit_card</mat-icon>
+            <span class="font-bold text-lg tracking-wider">{{ cartao.bandeira | uppercase }}</span>
+          </div>
+
+          <div class="relative z-10 mt-6">
+            <p class="font-mono text-lg tracking-widest text-gray-200">**** **** **** {{ cartao.ultimos4 }}</p>
+
+            <div class="flex justify-between items-end mt-3">
+              <div class="flex gap-6">
+                <div>
+                  <span class="block text-xs text-gray-400 uppercase">Titular</span>
+                  <span class="text-sm uppercase truncate max-w-[120px] inline-block" [title]="cartao.titular">{{ cartao.titular }}</span>
+                </div>
+                <div>
+                  <span class="block text-xs text-gray-400 uppercase">Validade</span>
+                  <span class="text-sm">{{ cartao.mesExpiracao.toString().padStart(2, '0') }}/{{ cartao.anoExpiracao.toString().slice(-2) }}</span>
+                </div>
+              </div>
+
+              <button mat-icon-button class="text-red-400 hover:bg-red-500/20" (click)="excluir(cartao.id)" matTooltip="Remover cartão">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-span-full p-8 text-center bg-gray-50 border border-dashed border-gray-300 rounded-lg">
+          <mat-icon class="text-gray-400 mb-2">credit_score</mat-icon>
+          <p class="text-gray-600">Você ainda não possui cartões cadastrados.</p>
+        </div>
+      }
+    </div>
+  }
+
+  @if (mostrandoForm()) {
+    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mt-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+        <mat-icon class="text-gray-500">lock</mat-icon>
+        Adicionar Cartão
+      </h3>
+      <p class="text-xs text-gray-500 mb-6">Seus dados são criptografados e não são armazenados em nossos servidores.</p>
+
+      <form [formGroup]="cartaoForm" (ngSubmit)="salvar()" class="flex flex-col gap-4 max-w-xl">
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Número do Cartão</mat-label>
+          <input matInput [formControl]="numeroCtrl" mask="0000 0000 0000 0000" placeholder="0000 0000 0000 0000">
+          <mat-icon matSuffix class="text-gray-400 mr-2">credit_card</mat-icon>
+          <mat-error>{{ numeroCtrl.errors | fieldError:numeroCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Nome Impresso no Cartão</mat-label>
+          <input matInput [formControl]="titularCtrl" class="uppercase">
+          <mat-error>{{ titularCtrl.errors | fieldError:titularCtrl.touched }}</mat-error>
+        </mat-form-field>
+
+        <div class="grid grid-cols-2 gap-4">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Validade (MM/AA)</mat-label>
+            <input matInput [formControl]="validadeCtrl" mask="00/00" placeholder="MM/AA">
+            <mat-error>{{ validadeCtrl.errors | fieldError:validadeCtrl.touched }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>CVV</mat-label>
+            <input matInput [formControl]="cvvCtrl" mask="000" placeholder="123" type="password">
+            <mat-icon matSuffix matTooltip="Código de 3 ou 4 dígitos no verso do cartão" class="text-gray-400 mr-2 cursor-help">info</mat-icon>
+            <mat-error>{{ cvvCtrl.errors | fieldError:cvvCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <button type="button" mat-stroked-button (click)="cancelarFormulario()" [disabled]="estaCarregando()">
+            Cancelar
+          </button>
+          <button type="submit" mat-flat-button color="primary" [disabled]="cartaoForm.invalid || estaCarregando()">
+            @if (estaCarregando()) { Salvando... } @else { Adicionar Cartão }
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+</div>

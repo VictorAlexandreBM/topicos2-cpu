@@ -1,0 +1,74 @@
+<div class="flex flex-col bg-white rounded-lg overflow-hidden max-w-2xl">
+
+  <div class="px-6 py-4 flex justify-between items-center border-b border-gray-100 bg-gray-50">
+    <h2 class="text-xl font-semibold text-gray-800 m-0">
+      {{ cupomEmEdicao ? "Editar Cupom: " + cupomEmEdicao.codigo : "Novo Cupom de Desconto" }}
+    </h2>
+    <button mat-icon-button type="button" (click)="fechar()" class="text-gray-500">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form (ngSubmit)="salvar()" [formGroup]="cupomForm" class="flex flex-col p-6 gap-y-4">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Código do Cupom</mat-label>
+        <input matInput formControlName="codigo" placeholder="Ex: NINJA10" />
+        <mat-hint>Apenas letras e números</mat-hint>
+        <mat-error>{{ ctrl.codigo.errors | fieldError:ctrl.codigo.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data de Validade</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dataValidade">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ ctrl.dataValidade.errors | fieldError:ctrl.dataValidade.touched }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de Desconto</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="PERCENTUAL">Percentual (%)</mat-option>
+          <mat-option value="VALOR_FIXO">Valor Fixo (R$)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor do Desconto</mat-label>
+        <input matInput type="number" formControlName="valor" />
+        <span matTextPrefix class="mr-1">@if(ctrl.tipo.value === 'VALOR_FIXO'){R$}</span>
+        <span matTextSuffix class="ml-1">@if(ctrl.tipo.value === 'PERCENTUAL'){%}</span>
+        <mat-error>{{ ctrl.valor.errors | fieldError:ctrl.valor.touched }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Limite de Usos (Opcional)</mat-label>
+        <input matInput type="number" formControlName="limiteUsos" placeholder="Ilimitado se vazio" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor Mín. Pedido (Opcional)</mat-label>
+        <input matInput type="number" formControlName="valorMinimoPedido" placeholder="Ex: 500" />
+        <span matTextPrefix class="mr-1">R$</span>
+      </mat-form-field>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <mat-checkbox formControlName="ativo">Cupom Ativo</mat-checkbox>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+      <button type="button" (click)="fechar()" mat-button>Cancelar</button>
+      <button type="submit" mat-flat-button color="primary" [disabled]="cupomForm.invalid">
+        {{ cupomEmEdicao ? 'Atualizar Cupom' : 'Salvar Cupom' }}
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+  <mat-label>Socket</mat-label>
+  <mat-select [formControl]="control()">
+    <mat-option>
+      <ngx-mat-select-search
+        [formControl]="filtroCtrl"
+        placeholderLabel="Pesquisar socket..."
+        noEntriesFoundLabel="Nenhum socket encontrado">
+      </ngx-mat-select-search>
+    </mat-option>
+
+    <mat-option [value]="null">Selecione...</mat-option>
+
+    @for (s of socketsFiltrados(); track s.id) {
+      <mat-option [value]="s.id">{{ s.tipo }}</mat-option>
+    }
+  </mat-select>
+
+  @if (control().errors && control().touched) {
+    <mat-error>Campo obrigatório</mat-error>
+  }
+</mat-form-field>

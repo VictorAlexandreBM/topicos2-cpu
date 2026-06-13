@@ -1,0 +1,121 @@
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-2xl">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Criar uma conta
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Já possui cadastro?
+      <a routerLink="/login" class="font-medium text-primary-600 hover:text-primary-500">
+        Faça login aqui
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <form class="flex flex-col gap-6" [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+
+        <div class="border-b border-gray-200 pb-4">
+          <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Dados Pessoais</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Primeiro Nome</mat-label>
+              <input matInput formControlName="primeiroNome" placeholder="Ex: João">
+              <mat-error>{{ primeiroNomeCtrl.errors | fieldError:primeiroNomeCtrl.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Sobrenome</mat-label>
+              <input matInput formControlName="sobrenome" placeholder="Ex: da Silva">
+              <mat-error>{{ sobrenomeCtrl.errors | fieldError:sobrenomeCtrl.touched }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="border-b border-gray-200 pb-4">
+          <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Credenciais de Acesso</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>E-mail</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="Ex: email@dominio.com">
+              <mat-error>{{ emailCtrl.errors | fieldError:emailCtrl.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Confirmar E-mail</mat-label>
+              <input matInput type="email" formControlName="confirmarEmail">
+              <mat-error>
+                @if (confirmarEmailCtrl.hasError('emailsDiferentes')) {
+                  Os e-mails não conferem.
+                } @else {
+                  {{ confirmarEmailCtrl.errors | fieldError:confirmarEmailCtrl.touched }}
+                }
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Senha</mat-label>
+              <input matInput [type]="mostrarSenha ? 'text' : 'password'" formControlName="senha">
+              <button type="button" mat-icon-button matSuffix (click)="mostrarSenha = !mostrarSenha">
+                <mat-icon>{{ mostrarSenha ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error>{{ senhaCtrl.errors | fieldError:senhaCtrl.touched }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Confirmar Senha</mat-label>
+              <input matInput [type]="mostrarSenha ? 'text' : 'password'" formControlName="confirmarSenha">
+              <mat-error>
+                @if (confirmarSenhaCtrl.hasError('senhasDiferentes')) {
+                  As senhas não conferem.
+                } @else {
+                  {{ confirmarSenhaCtrl.errors | fieldError:confirmarSenhaCtrl.touched }}
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">Telefones</h3>
+            <button type="button" mat-stroked-button color="primary" (click)="adicionarTelefone()">
+              <mat-icon>add</mat-icon> Adicionar
+            </button>
+          </div>
+
+          <div formArrayName="telefones" class="flex flex-col gap-4">
+            @for (tel of telefonesArray.controls; track $index) {
+              <div [formGroupName]="$index" class="flex items-center gap-4 bg-gray-50 p-3 rounded-md border border-gray-200">
+                <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
+                  <mat-label>Número (com DDD)</mat-label>
+                  <input matInput formControlName="numero" placeholder="Ex: 63984961810">
+                  <mat-error>{{ tel.get('numero')?.errors || null | fieldError:(tel.get('numero')?.touched || false) }}</mat-error>
+                </mat-form-field>
+
+                <mat-checkbox formControlName="principal" class="mt-1">Principal</mat-checkbox>
+
+                <button type="button" mat-icon-button color="warn" (click)="removerTelefone($index)" [disabled]="telefonesArray.length === 1">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="pt-4 flex justify-end">
+          <button type="submit" mat-flat-button color="primary" class="w-full sm:w-auto px-8" [disabled]="cadastroForm.invalid || estaCarregando()">
+            @if (estaCarregando()) {
+              <span class="flex items-center gap-2">
+                Cadastrando...
+              </span>
+            } @else {
+              Finalizar Cadastro
+            }
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

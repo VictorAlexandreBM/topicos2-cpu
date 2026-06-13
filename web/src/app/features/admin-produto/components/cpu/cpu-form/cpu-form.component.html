@@ -1,0 +1,150 @@
+<div class="flex flex-col h-full bg-white">
+
+  <div class="flex flex-row align-bottom gap-4 px-6 pt-6 pb-4 border-b border-gray-200">
+    <button mat-icon-button (click)="voltarParaListagem()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="text-3xl font-bold text-gray-800">
+      {{ modoEdicao ? 'Editar CPU' : 'Nova CPU' }}
+    </h2>
+  </div>
+
+  <form class="flex flex-col flex-1 p-6 gap-6" [formGroup]="cpuForm" (ngSubmit)="salvar('voltar')">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="col-span-full md:col-span-2 mb-4 bg-gray-50 border border-dashed border-gray-300 rounded-lg p-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-4">Imagem Principal da CPU</h3>
+
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-32 h-32 rounded-lg border-2 border-gray-200 bg-white overflow-hidden flex-shrink-0 flex items-center justify-center relative group">
+            @if (imagemPreview()) {
+              <img [src]="imagemPreview()" alt="Preview da CPU" class="w-full h-full object-cover">
+            } @else {
+              <mat-icon class="text-gray-300 !w-12 !h-12 !text-5xl">image</mat-icon>
+            }
+          </div>
+
+          <div class="flex flex-col gap-2 flex-1 w-full text-center sm:text-left">
+            <input
+              type="file"
+              #fileInput
+              class="hidden"
+              accept="image/jpeg, image/png, image/webp"
+              (change)="onFileSelected($event)">
+
+            <div>
+              <button type="button" mat-flat-button color="primary" (click)="fileInput.click()">
+                <mat-icon>upload</mat-icon>
+                {{ imagemPreview() ? 'Trocar Imagem' : 'Selecionar Imagem' }}
+              </button>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-2">
+              @if (arquivoImagemSelecionado) {
+                Arquivo selecionado: <span class="font-medium text-gray-700">{{ arquivoImagemSelecionado.name }}</span>
+              } @else {
+                Formatos aceitos: JPG, PNG, WEBP. Tamanho máximo: 5MB.
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Tipo de CPU</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="BOX">BOX (Vendido em caixa com cooler)</mat-option>
+          <mat-option value="TRAY">TRAY (Vendido em lote/OEM)</mat-option>
+        </mat-select>
+        <mat-error>{{ tipoCtrl.errors | fieldError:tipoCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Modelo de CPU</mat-label>
+        <mat-select formControlName="modeloId">
+          <mat-option [value]="null">Selecione um modelo...</mat-option>
+          @for (m of modelosResponse()?.dados; track m.id) {
+            <mat-option [value]="m.id">{{ m.nome }} ({{ m.nomeMarca }})</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ modeloIdCtrl.errors | fieldError:modeloIdCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>SKU</mat-label>
+        <input matInput placeholder="Ex: BX8071513700K" formControlName="sku">
+        <mat-error>{{ skuCtrl.errors | fieldError:skuCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nome Comercial</mat-label>
+        <input matInput placeholder="Ex: Intel Core i7-13700K para Desktop" formControlName="nomeComercial">
+        <mat-error>{{ nomeComercialCtrl.errors | fieldError:nomeComercialCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Preço (R$)</mat-label>
+        <input matInput type="text" placeholder="0,00" formControlName="preco">
+        <mat-error>{{ precoCtrl.errors | fieldError:precoCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Estoque Atual</mat-label>
+        <input matInput type="text" placeholder="Quantidade disponível" formControlName="estoque">
+        <mat-error>{{ estoqueCtrl.errors | fieldError:estoqueCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <div class="flex items-center gap-4 px-2">
+        <mat-checkbox formControlName="emVenda">Disponível para venda</mat-checkbox>
+      </div>
+    </div>
+
+    @if (tipoCtrl.value === 'BOX') {
+      <div class="border border-blue-100 bg-blue-50/30 rounded-lg p-4">
+        <h3 class="text-base font-semibold text-blue-800 mb-3 flex items-center gap-2">
+          <mat-icon>inventory_2</mat-icon> Informações de Embalagem (BOX)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex items-center gap-4">
+            <mat-checkbox formControlName="incluiCooler">Acompanha Cooler Original</mat-checkbox>
+          </div>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Peso da Embalagem (g)</mat-label>
+            <input matInput type="text" placeholder="Ex: 450" formControlName="pesoEmbalagemGramas">
+            <mat-error>{{ pesoEmbalagemGramasCtrl.errors | fieldError:pesoEmbalagemGramasCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    }
+
+    @if (tipoCtrl.value === 'TRAY') {
+      <div class="border border-gray-200 bg-gray-50/30 rounded-lg p-4">
+        <h3 class="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <mat-icon>Precision_manufacturing</mat-icon> Informações de Lote (TRAY)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-1">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Identificador do Lote de Fabricação</mat-label>
+            <input matInput placeholder="Ex: L244E456" formControlName="loteFabricacao">
+            <mat-error>{{ loteFabricacaoCtrl.errors | fieldError:loteFabricacaoCtrl.touched }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    }
+
+    <div class="flex justify-end gap-2 pt-4 border-t border-gray-200 mt-auto">
+      <button type="button" mat-stroked-button (click)="cancelar()">Cancelar</button>
+
+      @if (!modoEdicao) {
+        <button type="button" mat-stroked-button color="primary" [disabled]="cpuForm.invalid" (click)="salvar('continuar')">
+          Salvar e Cadastrar Outra
+        </button>
+      }
+
+      <button type="submit" mat-flat-button color="primary" [disabled]="cpuForm.invalid">
+        {{ modoEdicao ? 'Atualizar e Voltar' : 'Salvar e Voltar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

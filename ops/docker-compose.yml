@@ -1,0 +1,27 @@
+volumes:
+  dados_postgres:
+  arquivos:
+  arquivos2:
+
+services:
+  postgres:
+    image: postgres:17.5
+    environment:
+      POSTGRES_USER: cpu
+      POSTGRES_PASSWORD: cpu
+      POSTGRES_DB: cpu
+    ports:
+      - "5434:5432"
+    volumes: [ "dados_postgres:/var/lib/postgresql/data" ]
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs
+    ports:
+      - "9333:9333"
+      - "8081:8080"
+      - "8888:8888"
+    command: "server -dir=/data -filer"
+    volumes:
+      - ./seaweedfs-data:/data
+    restart: unless-stopped

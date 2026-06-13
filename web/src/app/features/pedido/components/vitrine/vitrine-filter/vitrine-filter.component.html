@@ -1,0 +1,180 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+
+  <div class="p-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+    <div class="flex items-center gap-2 text-gray-800 font-semibold text-lg">
+      <mat-icon>filter_alt</mat-icon> Filtros
+    </div>
+    <button mat-button color="warn" (click)="limparTudo()" class="!px-4" [disabled]="filtroForm.pristine">
+      Limpar
+    </button>
+  </div>
+
+  <form [formGroup]="filtroForm" class="flex flex-col">
+
+    <div class="p-5 border-b border-gray-100">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+        <mat-label>Pesquisar modelo...</mat-label>
+        <input matInput formControlName="nome" placeholder="Ex: Ryzen 5">
+        <mat-icon matSuffix class="text-gray-400">search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <mat-expansion-panel [expanded]="true" class="!shadow-none !border-b border-gray-100 !rounded-none">
+      <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+        <mat-panel-title class="font-medium text-gray-700 text-base">Ordenar por</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="px-5 py-3">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+          <mat-label>Ordenação</mat-label>
+          <mat-select formControlName="ordenacao">
+            <mat-option value="maisRecentes">Mais recentes</mat-option>
+            <mat-option value="precoCrescente">Preço Crescente</mat-option>
+            <mat-option value="precoDecrescente">Preço Decrescente</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-accordion multi="true" displayMode="flat">
+
+      <mat-expansion-panel [expanded]="true" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Marca</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-selection-list formControlName="marcaId">
+          @for (marca of marcasDisponiveis(); track marca.id) {
+            <mat-list-option [value]="marca.id" class="text-gray-700">
+              {{ marca.nome }}
+            </mat-list-option>
+          } @empty {
+            <p class="text-sm text-gray-400 px-5 py-3">Carregando...</p>
+          }
+        </mat-selection-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="true" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Preço (R$)</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="flex items-center gap-3 pt-3 px-3 pb-2">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Mín</mat-label>
+            <input matInput type="number" formControlName="minPreco" min="0">
+          </mat-form-field>
+          <span class="text-gray-400 font-bold">-</span>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Máx</mat-label>
+            <input matInput type="number" formControlName="maxPreco" min="0">
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Socket</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-selection-list formControlName="socketId">
+          @for (socket of socketsDisponiveis(); track socket.id) {
+            <mat-list-option [value]="socket.id" class="text-gray-700">
+              {{ socket.tipo }}
+            </mat-list-option>
+          }
+        </mat-selection-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="true" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Formato</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-radio-group formControlName="tipoCPU" class="flex flex-col gap-3 pt-3 px-5 pb-4">
+          <mat-radio-button value="">Ambos</mat-radio-button>
+          <mat-radio-button value="BOX">BOX (Na Caixa)</mat-radio-button>
+          <mat-radio-button value="TRAY">TRAY (Sem Caixa)</mat-radio-button>
+        </mat-radio-group>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Chipset</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-selection-list formControlName="chipsetsId">
+          @for (chipset of chipsetsDisponiveis(); track chipset.id) {
+            <mat-list-option [value]="chipset.id" class="text-gray-700">
+              {{ chipset.tipo }}
+            </mat-list-option>
+          }
+        </mat-selection-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Tecnologia</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-selection-list formControlName="tecnologiasId">
+          @for (tecnologia of tecnologiasDisponiveis(); track tecnologia.id) {
+            <mat-list-option [value]="tecnologia.id" class="text-gray-700">
+              {{ tecnologia.nome }}
+            </mat-list-option>
+          }
+        </mat-selection-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Núcleos</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="flex items-center gap-3 pt-3 px-3 pb-2">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Mín</mat-label>
+            <input matInput type="number" formControlName="minCores" min="0">
+          </mat-form-field>
+          <span class="text-gray-400 font-bold">-</span>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Máx</mat-label>
+            <input matInput type="number" formControlName="maxCores" min="0">
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">Frequência (GHz)</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="flex items-center gap-3 pt-3 px-3 pb-2">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Mín</mat-label>
+            <input matInput type="number" formControlName="minFreq" min="0" step="0.1">
+          </mat-form-field>
+          <span class="text-gray-400 font-bold">-</span>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Máx</mat-label>
+            <input matInput type="number" formControlName="maxFreq" min="0" step="0.1">
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="false" class="!shadow-none !border-b border-gray-100 !rounded-none">
+        <mat-expansion-panel-header class="hover:bg-gray-50 !h-14">
+          <mat-panel-title class="font-medium text-gray-700 text-base">TDP Base (W)</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="px-5 py-4">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>TDP Base</mat-label>
+            <input matInput type="number" formControlName="tdpBase" min="0">
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+
+    </mat-accordion>
+  </form>
+</div>

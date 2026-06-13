@@ -1,0 +1,89 @@
+<div class="space-y-6">
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-900">Informações Pessoais</h2>
+    <p class="mt-1 text-sm text-gray-500">Atualize seus dados básicos e números de contato.</p>
+  </div>
+
+  <form [formGroup]="perfilForm" (ngSubmit)="salvar()" class="flex flex-col gap-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="md:col-span-2 md:w-1/2">
+        <mat-label>E-mail de Acesso</mat-label>
+        <input matInput [formControl]="emailCtrl">
+        <mat-icon matPrefix class="text-gray-400 mr-2">lock</mat-icon>
+        <mat-hint>O e-mail não pode ser alterado por aqui.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Primeiro Nome</mat-label>
+        <input matInput [formControl]="nomeCtrl" placeholder="Ex: João">
+        <mat-error>{{ nomeCtrl.errors | fieldError:nomeCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Sobrenome</mat-label>
+        <input matInput [formControl]="sobrenomeCtrl" placeholder="Ex: da Silva">
+        <mat-error>{{ sobrenomeCtrl.errors | fieldError:sobrenomeCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div class="border-t border-gray-200 pt-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Telefones</h3>
+          <p class="text-sm text-gray-500">Você deve ter pelo menos um telefone cadastrado.</p>
+        </div>
+        <button type="button" mat-stroked-button color="primary" (click)="adicionarTelefone()">
+          <mat-icon>add</mat-icon> Adicionar
+        </button>
+      </div>
+
+      <div formArrayName="telefones" class="flex flex-col gap-4">
+        @for (tel of telefonesArray.controls; track $index) {
+          <div [formGroupName]="$index" class="flex items-center gap-4 bg-gray-50 p-3 rounded-md border border-gray-200">
+            <mat-form-field appearance="outline" class="flex-1" subscriptSizing="dynamic">
+              <mat-label>Número (com DDD)</mat-label>
+              <input matInput formControlName="numero" placeholder="Ex: 63984961810">
+              <mat-error>{{ tel.get('numero')?.errors || null | fieldError:(tel.get('numero')?.touched || false) }}</mat-error>
+            </mat-form-field>
+
+            <mat-checkbox formControlName="principal" class="mt-1">Principal</mat-checkbox>
+
+            <button type="button" mat-icon-button color="warn" (click)="removerTelefone($index)" [disabled]="telefonesArray.length === 1">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="border-t border-gray-200 pt-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Confirmação de Segurança</h3>
+      <p class="text-sm text-gray-500 mb-4">Para aplicar as alterações, digite sua senha atual.</p>
+
+      <mat-form-field appearance="outline" class="w-full sm:w-1/2" subscriptSizing="dynamic">
+        <mat-label>Senha Atual</mat-label>
+        <input matInput [type]="ocultaSenha() ? 'password' : 'text'" [formControl]="senhaAtualCtrl" placeholder="Digite sua senha">
+        <button mat-icon-button matSuffix (click)="ocultaSenha.set(!ocultaSenha())" type="button" tabindex="-1">
+          <mat-icon>{{ ocultaSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error>{{ senhaAtualCtrl.errors | fieldError:senhaAtualCtrl.touched }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="flex justify-end pt-4 border-t border-gray-200">
+      <button type="submit" mat-flat-button color="primary" class="w-full sm:w-auto px-8" [disabled]="perfilForm.invalid || estaCarregando() || !perfilForm.dirty">
+        @if (estaCarregando()) {
+          <span class="flex items-center gap-2">
+            Salvando...
+          </span>
+        } @else {
+          Salvar Alterações
+        }
+      </button>
+    </div>
+
+  </form>
+</div>

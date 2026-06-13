@@ -1,0 +1,131 @@
+[
+  {
+    "email": "admin@gmail.com",
+    "senha": "admin",
+    "perfil": "Administrador",
+    "primeiroNome": "Super",
+    "sobrenome": "Administrador",
+    "ativo": true,
+    "telefones": [
+      { "numero": "63988887777", "principal": true }
+    ],
+    "enderecos": [],
+    "cartoes": []
+  },
+  {
+    "email": "cliente@gmail.com",
+    "senha": "123",
+    "perfil": "Cliente",
+    "primeiroNome": "João",
+    "sobrenome": "Silva",
+    "ativo": true,
+    "telefones": [
+      { "numero": "63984961810", "principal": true },
+      { "numero": "6332154455", "principal": false }
+    ],
+    "enderecos": [
+      {
+        "cep": "77000000",
+        "logradouro": "Avenida JK",
+        "numero": "100",
+        "complemento": "Apto 201",
+        "quadra": "104 Sul",
+        "bairro": "Plano Diretor Sul",
+        "cidade": "Palmas",
+        "estado": "TO"
+      }
+    ],
+    "cartoes": [
+      {
+        "gatewayToken": "tok_12345abcde",
+        "ultimos4": "4242",
+        "bandeira": "Visa",
+        "mesExpiracao": 12,
+        "anoExpiracao": 2029,
+        "titular": "JOAO S SILVA",
+        "ativo": true
+      }
+    ]
+  },
+  {
+    "email": "maria.oliveira@gmail.com",
+    "senha": "senha123",
+    "perfil": "Cliente",
+    "primeiroNome": "Maria",
+    "sobrenome": "Oliveira",
+    "ativo": true,
+    "telefones": [
+      { "numero": "11987654321", "principal": true }
+    ],
+    "enderecos": [
+      {
+        "cep": "01001000",
+        "logradouro": "Praça da Sé",
+        "numero": "S/N",
+        "complemento": "Lado Ímpar",
+        "quadra": "Centro",
+        "bairro": "Sé",
+        "cidade": "São Paulo",
+        "estado": "SP"
+      },
+      {
+        "cep": "01310100",
+        "logradouro": "Avenida Paulista",
+        "numero": "1578",
+        "complemento": "Sala 10",
+        "quadra": "Bela Vista",
+        "bairro": "Bela Vista",
+        "cidade": "São Paulo",
+        "estado": "SP"
+      }
+    ],
+    "cartoes": [
+      {
+        "gatewayToken": "tok_98765zyxwv",
+        "ultimos4": "1234",
+        "bandeira": "Mastercard",
+        "mesExpiracao": 5,
+        "anoExpiracao": 2027,
+        "titular": "MARIA F OLIVEIRA",
+        "ativo": true
+      }
+    ]
+  },
+  {
+    "email": "carlos.souza@gmail.com",
+    "senha": "123",
+    "perfil": "Cliente",
+    "primeiroNome": "Carlos",
+    "sobrenome": "Souza",
+    "ativo": true,
+    "telefones": [
+      { "numero": "41999998888", "principal": true }
+    ],
+    "enderecos": [
+      {
+        "cep": "80010000",
+        "logradouro": "Rua XV de Novembro",
+        "numero": "500",
+        "complemento": null,
+        "quadra": "Centro",
+        "bairro": "Centro",
+        "cidade": "Curitiba",
+        "estado": "PR"
+      }
+    ],
+    "cartoes": []
+  },
+  {
+    "email": "ana.costa@gmail.com",
+    "senha": "123",
+    "perfil": "Cliente",
+    "primeiroNome": "Ana",
+    "sobrenome": "Costa",
+    "ativo": false,
+    "telefones": [
+      { "numero": "62988885555", "principal": true }
+    ],
+    "enderecos": [],
+    "cartoes": []
+  }
+]

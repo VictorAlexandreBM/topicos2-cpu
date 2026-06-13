@@ -1,0 +1,31 @@
+<div class="p-6 h-full flex flex-col">
+
+  <div class="mb-6 pb-4 border-b border-gray-200">
+    <h1 class="text-2xl font-bold text-gray-900">Gerência de Sockets</h1>
+    <p class="text-sm text-gray-500 mt-1">Gerencie os encaixes físicos (Sockets) compatíveis com as CPUs.</p>
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <app-socket-filtro
+      class="w-[550px]"
+      (filtroAlterado)="handlePesquisa($event)"
+      (mostrarInativos)="handleMostrarInativos($event)"/>
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="abrirFormulario()">
+      <mat-icon>add</mat-icon> Adicionar Socket
+    </button>
+  </div>
+
+  <app-socket-table
+    [sockets]="socketsResponse()?.dados ?? []"
+    [total]="socketsResponse()?.total ?? 0"
+    [socketEmEdicao]="socketEmEdicao()"
+    [estaCarregando]="estaCarregando()"
+    (mudancaPagina)="handleMudancaPagina($event)"
+    (mudancaOrdem)="handleMudancaOrdem($event)"
+    (socketDeletado)="handleDelecao($event)"
+    (socketEditado)="handleEdicao($event)"
+    (socketAlteradoEstado)="handleEstadoAlterado($event)"/>
+</div>

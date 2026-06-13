@@ -1,0 +1,36 @@
+<div class="flex flex-col bg-white rounded-lg overflow-hidden">
+
+  <div class="px-6 py-4 flex justify-between items-center border-b border-gray-100 bg-gray-50">
+    <h2 class="text-xl font-semibold text-gray-800 m-0">
+      {{ tecnologiaEmEdicao ? "Atualizar Tecnologia" : "Cadastrar Tecnologia" }}
+    </h2>
+    <button mat-icon-button type="button" (click)="fechar()" class="text-gray-500 hover:bg-gray-200">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form (ngSubmit)="tecnologiaEmEdicao ? atualizar() : cadastrar()" [formGroup]="tecnologiaForm" class="flex flex-col p-6">
+
+    <div class="flex flex-col gap-4">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" />
+        <mat-error>{{ nomeCtrl.errors | fieldError:nomeCtrl.touched }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Descrição</mat-label>
+        <textarea matInput formControlName="descricao" rows="4"></textarea>
+        <mat-error>{{ descricaoCtrl.errors | fieldError:descricaoCtrl.touched }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-100">
+      <button type="button" (click)="fechar()" mat-button class="text-gray-600">Cancelar</button>
+      <button type="submit" mat-flat-button color="primary" [disabled]="tecnologiaForm.invalid" class="px-6">
+        {{ tecnologiaEmEdicao ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

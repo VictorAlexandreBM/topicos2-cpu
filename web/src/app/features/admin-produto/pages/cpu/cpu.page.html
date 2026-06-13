@@ -1,0 +1,25 @@
+<div class="p-6 h-full flex flex-col">
+
+  <div class="mb-6 pb-4 border-b border-gray-200 flex justify-between items-start flex-wrap gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Gerência de CPUs</h1>
+      <p class="text-sm text-gray-500 mt-1">Controle o estoque e a disponibilidade com filtros avançados.</p>
+    </div>
+
+    <button mat-flat-button color="primary" class="shrink-0 h-[48px]" (click)="novoCpu()">
+      <mat-icon>add</mat-icon> Adicionar CPU
+    </button>
+  </div>
+
+  <app-cpu-filtro (filtrosMudaram)="handleFiltros($event)" />
+
+  <app-cpu-table
+    [cpus]="cpusResponse()?.dados ?? []"
+    [total]="cpusResponse()?.total ?? 0"
+    [estaCarregando]="estaCarregando()"
+    (mudancaPagina)="handleMudancaPagina($event)"
+    (mudancaOrdem)="handleMudancaOrdem($event)"
+    (cpuDeletado)="handleRefresh()"
+    (cpuAlteradoEstado)="handleRefresh()"
+  />
+</div>

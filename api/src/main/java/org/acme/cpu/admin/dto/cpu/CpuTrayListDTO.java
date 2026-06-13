@@ -1,0 +1,21 @@
+package org.acme.cpu.admin.dto.cpu;
+
+import java.math.BigDecimal;
+
+public record CpuTrayListDTO(
+        Long id,
+        String sku,
+        BigDecimal preco,
+        Integer estoque,
+        String nomeModelo,
+        String nomeComercial,
+        String marca,
+        Boolean emVenda,
+        String imagemUrl,
+        String tipo
+) implements CpuListDTO {
+    @Override
+    public String tipo() {
+        return "TRAY";
+    }
+}

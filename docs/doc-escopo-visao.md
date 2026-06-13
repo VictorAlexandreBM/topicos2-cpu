@@ -1,6 +1,8 @@
 # Documento de Escopo e Visão
-| Versão | Data | Autor |
-| 1.0.0 | 21/03/2026 | Victor Alexandre B. Milhomem |
+
+| Versão | Data       | Autor                        |
+|--------|------------|------------------------------|
+| 1.0.0  | 21/03/2026 | Victor Alexandre B. Milhomem |
 
 ## 1. Requisitos do negócio
 
@@ -35,7 +37,7 @@ Para Caroline Bumdoviski, a plataforma CaBuM será um ecommerce ninchado com fil
 - FU-3: Visualizar estatísticas de vendas e pagamento
 - FU-4 Apresentar opinião, comentários e visão do público quanto aos produtos
 - FU-5: Realizar e acompanhar pedidos e compras de uma ou múltiplas CPUs
-- FU-6: Permitir acesso e cadastro de clientes e administradores
+- FU-6: Permitir acesso e cadastro de informações pessoais e públicas de clientes e administradores. Além de gerenciamento e visualização de clientes por parte dos administradores.
 
 ### 2.2 Escopo de Funcionalidades Principais
 | Funcionalidades          | Lançamento 1                                                      | Lançamento 2                                             | Lançamento 3               |
@@ -45,7 +47,7 @@ Para Caroline Bumdoviski, a plataforma CaBuM será um ecommerce ninchado com fil
 | FU-3: Estatísticas       | Não implementado                                                  | Não implementado                                         | Completamente implementado |
 | FU-4: Comentarios        | Não implementado                                                  | Não implementado                                         | Completamente implementado |
 | FU-5: Compras e pedidos  | Apenas listará o número de contato da vendedora                   | Sistema de compras implementado e pedido sem notificação | Completamente implementado |
-| FU-6: Cadastro e Acesso  | Completamente Implementado                                        | Completamente Implementado                               | Completamente Implementado |
+| FU-6: Cadastro e Acesso  | Autenticação Implementada                                         | Apenas autenticação e cadastro de informações            | Completamente Implementado |
 
 ### 2.3 Limiações e Exclusões
 
